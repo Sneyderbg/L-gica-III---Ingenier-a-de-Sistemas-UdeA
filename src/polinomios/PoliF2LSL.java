@@ -1,5 +1,6 @@
 package polinomios;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,6 +109,19 @@ public class PoliF2LSL extends LSL {
         return variable;
     }
 
+    public boolean isZero() {
+        return isEmpty();
+    }
+
+    /**
+     * Polinomio nulo
+     * 
+     * @return {@link PoliF2LSL} que representa el polinomio nulo o cero.
+     */
+    public static PoliF2LSL zero(char var) {
+        return new PoliF2LSL(var);
+    }
+
     /**
      * Realiza una suma entre este polinomio y el polinomio dado como parámetro,
      * luego retorna el resultado en otro polinomio de la clase {@link PoliF2LSL}.
@@ -183,6 +197,169 @@ public class PoliF2LSL extends LSL {
         }
 
         return poliC;
+
+    }
+
+    public PoliF2LSL sumF2(PoliF2 poliF2_B) {
+
+        assert (getVariable() == poliF2_B.getVariable())
+                : "No es posible sumar dos polinomios con distintas variables.";
+
+        PoliF2LSL poliF2LSL_C = new PoliF2LSL(getVariable());
+
+        NodoSimple nodoA, nodoC;
+        Termino termA, termB, termC;
+        int j;
+        double s;
+
+        nodoA = getPrimerNodo();
+        j = 1;
+
+        while (!FinDeRecorrido(nodoA) && j <= poliF2_B.getNumElementosNoCero()) {
+
+            termA = (Termino) nodoA.getDato();
+            termB = poliF2_B.getTerm(j);
+
+            switch (Integer.compare(termA.getExp(), termB.getExp())) {
+                case +1:
+
+                    termC = new Termino(termA.getCoef(), termA.getExp());
+                    nodoC = new NodoSimple(termC);
+                    poliF2LSL_C.add(nodoC);
+                    nodoA = nodoA.getLiga();
+                    break;
+
+                case -1:
+
+                    termC = new Termino(termB.getCoef(), termB.getExp());
+                    nodoC = new NodoSimple(termC);
+                    poliF2LSL_C.add(nodoC);
+                    j++;
+                    break;
+
+                case 0:
+
+                    s = termA.getCoef() + termB.getCoef();
+                    if (s != 0) {
+
+                        termC = new Termino(s, termA.getExp());
+                        nodoC = new NodoSimple(termC);
+                        poliF2LSL_C.add(nodoC);
+
+                    }
+
+                    nodoA = nodoA.getLiga();
+                    j++;
+                    break;
+
+            }
+
+        }
+        while (!FinDeRecorrido(nodoA)) {
+
+            termA = (Termino) nodoA.getDato();
+            termC = new Termino(termA.getCoef(), termA.getExp());
+
+            nodoC = new NodoSimple(termC);
+            poliF2LSL_C.add(nodoC);
+            nodoA = nodoA.getLiga();
+
+        }
+        while (j <= poliF2_B.getNumElementosNoCero()) {
+
+            termB = poliF2_B.getTerm(j);
+            termC = new Termino(termB.getCoef(), termB.getExp());
+
+            nodoC = new NodoSimple(termC);
+            poliF2LSL_C.add(nodoC);
+            j++;
+
+        }
+
+        return poliF2LSL_C;
+
+    }
+
+    public static PoliF2LSL sumF1_F2(PoliF1 poliF1_A, PoliF2 poliF2_B) {
+
+        assert (poliF1_A.getVariable() == poliF2_B.getVariable())
+                : "No es posible sumar dos polinomios con diferentes variables.";
+
+        PoliF2LSL poliF2LSL_C = new PoliF2LSL(poliF1_A.getVariable());
+
+        double coefA, coefB, coefC;
+        int i, j, expA, expB;
+        Termino termB, termC;
+        NodoSimple nodoC;
+
+        i = 1;
+        j = 1;
+
+        while (i <= poliF1_A.getGrade() + 1 && j <= poliF2_B.getNumElementosNoCero()) {
+
+            coefA = poliF1_A.getCoef(i);
+            expA = poliF1_A.getExp(i);
+
+            termB = poliF2_B.getTerm(j);
+            coefB = termB.getCoef();
+            expB = termB.getExp();
+
+            if (expA > expB) {
+
+                termC = new Termino(coefA, expA);
+                nodoC = new NodoSimple(termC);
+                poliF2LSL_C.add(nodoC);
+                i++;
+
+            } else if (expA < expB) {
+
+                termC = new Termino(coefB, expB);
+                nodoC = new NodoSimple(termC);
+                poliF2LSL_C.add(nodoC);
+                j++;
+
+            } else {
+
+                coefC = coefA + coefB;
+                if (coefC != 0) {
+
+                    termC = new Termino(coefC, expA);
+                    nodoC = new NodoSimple(termC);
+                    poliF2LSL_C.add(nodoC);
+
+                }
+
+                i++;
+                j++;
+
+            }
+
+        }
+        while (i <= poliF1_A.getGrade() + 1) {
+
+            coefA = poliF1_A.getCoef(i);
+            expA = poliF1_A.getExp(i);
+
+            termC = new Termino(coefA, expA);
+            nodoC = new NodoSimple(termC);
+            poliF2LSL_C.add(nodoC);
+            i++;
+
+        }
+        while (j <= poliF2_B.getNumElementosNoCero()) {
+
+            termB = poliF2_B.getTerm(j);
+            coefB = termB.getCoef();
+            expB = termB.getExp();
+
+            termC = new Termino(coefB, expB);
+            nodoC = new NodoSimple(termC);
+            poliF2LSL_C.add(nodoC);
+            j++;
+
+        }
+
+        return poliF2LSL_C;
 
     }
 
@@ -277,9 +454,14 @@ public class PoliF2LSL extends LSL {
         assert (getVariable() == poliB.getVariable())
                 : "No se pueden multiplicar 2 polinomios con distinta variable. (de momento)";
 
+        PoliF2LSL poliC = zero(getVariable());
+
+        if (isZero() || poliB.isZero()) {
+            return poliC;
+        }
+
         NodoSimple nodoB;
         Termino termB;
-        PoliF2LSL poliC = new PoliF2LSL(getVariable());
 
         nodoB = poliB.getPrimerNodo();
 
@@ -295,6 +477,36 @@ public class PoliF2LSL extends LSL {
 
     }
 
+    public static PoliF2LSL multiplyF1_F2(PoliF1 poliF1_A, PoliF2 poliF2_B) {
+
+        assert (poliF1_A.getVariable() == poliF2_B.getVariable())
+                : "No se pueden multiplicar 2 polinomios con distinta variable. (de momento)";
+
+        PoliF2LSL poliF2LSL_C = zero(poliF1_A.getVariable());
+
+        if (poliF1_A.isZero() || poliF2_B.isZero()) {
+            return poliF2LSL_C;
+        }
+
+        double coefA;
+        int i, expA;
+        Termino termA;
+
+        for (i = 1; i <= poliF1_A.getGrade() + 1; i++) {
+
+            coefA = poliF1_A.getCoef(i);
+            expA = poliF1_A.getExp(i);
+
+            termA = new Termino(coefA, expA);
+
+            poliF2LSL_C = poliF2LSL_C.sumF2(poliF2_B.smult(termA));
+
+        }
+
+        return poliF2LSL_C;
+
+    }
+
     /**
      * Multiplica todo este polinomio por el término entregado como parámetro, y
      * devuelde un {@link PoliF2LSL} como resultado.
@@ -304,7 +516,11 @@ public class PoliF2LSL extends LSL {
      */
     public PoliF2LSL smult(Termino term) {
 
-        PoliF2LSL poliC = new PoliF2LSL(getVariable());
+        PoliF2LSL poliC = zero(getVariable());
+
+        if(isZero() || term.isZero()){
+            return poliC;
+        }
 
         Termino termA, termC;
         NodoSimple nodoA, nodoC;
@@ -443,7 +659,7 @@ public class PoliF2LSL extends LSL {
 
         if (coefMatc.find()) {
 
-            coefAux = coefMatc.group().replaceAll("[^\\d\\-]", "");
+            coefAux = coefMatc.group().replaceAll("[^\\d\\-\\.]", "");
             if (Pattern.matches("\\-?%c?".formatted(this.variable), coefAux)) {
 
                 coefAndExp[0] = 1;
@@ -499,11 +715,61 @@ public class PoliF2LSL extends LSL {
 
     }
 
+    public String arrayToString() {
+
+        if (isEmpty()) {
+            System.out.println("[]");
+        }
+
+        String output = "";
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(0);
+        df.setMaximumFractionDigits(4);
+
+        NodoSimple nodoX = getPrimerNodo();
+        Termino t;
+
+        while (!FinDeRecorrido(nodoX)) {
+
+            t = (Termino) nodoX.getDato();
+            if (nodoX == getPrimerNodo()) {
+
+                output = output + "[(%s%c%d)".formatted(df.format(t.getCoef()), '|', t.getExp());
+
+            } else {
+
+                output = output + ", (%s%c%d)".formatted(df.format(t.getCoef()), '|', t.getExp());
+
+            }
+
+            if (nodoX == getUltimoNodo()) {
+
+                output = output + "]";
+
+            }
+
+            nodoX = nodoX.getLiga();
+
+        }
+
+        return output;
+
+    }
+
     /**
      * Muestra la representación en string de este polinomio por consola.
      */
     public void show() {
+
         System.out.println(toString());
+
+    }
+
+    public void showArray() {
+
+        System.out.println(arrayToString());
+
     }
 
     public static void main(String[] args) {
@@ -511,16 +777,19 @@ public class PoliF2LSL extends LSL {
         String polB = "2x - 1";
 
         PoliF2LSL A = new PoliF2LSL(polA, 'x');
-        PoliF2LSL B = new PoliF2LSL(polB, 'x');
+        PoliF2 B = new PoliF2(2, polB, 'x');
 
         A.show();
         B.show();
 
         System.out.println();
 
-        PoliF2LSL C = A.divide(B);
+        PoliF2LSL C = A.sumF2(B);
 
         C.show();
+        C.showArray();
+
+        System.out.println(zero('x').isZero());
 
     }
 

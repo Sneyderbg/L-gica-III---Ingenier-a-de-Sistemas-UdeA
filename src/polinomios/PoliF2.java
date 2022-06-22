@@ -1,8 +1,11 @@
 package polinomios;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import listasLigadas.nodos.NodoSimple;
 
 public class PoliF2 {
 
@@ -65,6 +68,13 @@ public class PoliF2 {
         V.set(0, n);
     }
 
+    /**
+     * Retorna el {@link Termino} ubicado en la posición <b>idx</b> del vector
+     * {@link #V}.
+     * 
+     * @param idx Índice del termino a obtener.
+     * @return {@link Termino} en la posición <b>idx</b> del vector {@link #V}.
+     */
     public Termino getTerm(int idx) {
         return (Termino) V.get(idx);
     }
@@ -96,6 +106,19 @@ public class PoliF2 {
 
     public char getVariable() {
         return variable;
+    }
+
+    public boolean isZero() {
+        return (getNumElementosNoCero() == 0);
+    }
+
+    /**
+     * Polinomio nulo
+     * 
+     * @return {@link PoliF2} que representa el polinomio nulo o cero.
+     */
+    public static PoliF2 zero(char var) {
+        return new PoliF2(0, var);
     }
 
     public void insertTerm(Termino term, boolean reemplazar) {
@@ -215,6 +238,90 @@ public class PoliF2 {
 
     }
 
+    public PoliF2 sumF2LSL(PoliF2LSL poliF2LSL_B) {
+
+        assert (getVariable() == poliF2LSL_B.getVariable())
+                : "No se pueden sumar 2 polinomios con distintas variables.";
+
+        PoliF2 poliC;
+
+        int numElemNoCeroA, numElemNoCeroB, numElemNoCeroC, i, k;
+        double s;
+        Termino termA, termB, termC;
+        NodoSimple nodoB;
+
+        numElemNoCeroA = getNumElementosNoCero();
+        numElemNoCeroB = poliF2LSL_B.getNumElementosNoCero();
+        numElemNoCeroC = numElemNoCeroA + numElemNoCeroB;
+
+        poliC = new PoliF2(numElemNoCeroC, variable);
+
+        i = 1;
+        nodoB = poliF2LSL_B.getPrimerNodo();
+        k = 1;
+
+        while (i <= numElemNoCeroA && !poliF2LSL_B.FinDeRecorrido(nodoB)) {
+
+            termA = getTerm(i);
+            termB = (Termino) nodoB.getDato();
+
+            if (termA.getExp() > termB.getExp()) {
+
+                termC = new Termino(termA.getCoef(), termA.getExp());
+                poliC.setTerm(termC, k);
+                i++;
+
+            } else if (termA.getExp() < termB.getExp()) {
+
+                termC = new Termino(termB.getCoef(), termB.getExp());
+                poliC.setTerm(termC, k);
+                nodoB = nodoB.getLiga();
+
+            } else {
+
+                s = termA.getCoef() + termB.getCoef();
+                if (s != 0) {
+
+                    termC = new Termino(s, termA.getExp());
+                    poliC.setTerm(termC, k);
+
+                } else {
+                    k--;
+                }
+
+                i++;
+                nodoB = nodoB.getLiga();
+
+            }
+            k++;
+
+        }
+        while (i <= numElemNoCeroA) {
+
+            termA = getTerm(i);
+            termC = new Termino(termA.getCoef(), termA.getExp());
+
+            poliC.setTerm(termC, k);
+            i++;
+            k++;
+
+        }
+        while (!poliF2LSL_B.FinDeRecorrido(nodoB)) {
+
+            termB = (Termino) nodoB.getDato();
+            termC = new Termino(termB.getCoef(), termB.getExp());
+
+            poliC.setTerm(termC, k);
+            nodoB = nodoB.getLiga();
+            k++;
+
+        }
+
+        poliC.setNumElementosNoCero(k - 1);
+        return poliC;
+
+    }
+
     /**
      * Reste este polinomio con el polinomio dado como parámetro y retorna el
      * resultado como un polinomio de la clase {@link PoliF2}.
@@ -313,14 +420,18 @@ public class PoliF2 {
      */
     public PoliF2 multiply(PoliF2 poliB) {
 
-        assert (variable == poliB.getVariable())
+        assert (getVariable() == poliB.getVariable())
                 : "No se pueden multiplicar 2 polinomios con distinta variable. (de momento)";
 
-        Termino termB = poliB.getTerm(1);
+        PoliF2 poliC = zero(getVariable());
 
-        PoliF2 poliC = smult(termB);
+        if (isZero() || poliB.isZero()) {
+            return poliC;
+        }
 
-        for (int j = 2; j <= poliB.getNumElementosNoCero(); j++) {
+        Termino termB;
+
+        for (int j = 1; j <= poliB.getNumElementosNoCero(); j++) {
 
             termB = poliB.getTerm(j);
             poliC = poliC.sum(smult(termB));
@@ -328,6 +439,35 @@ public class PoliF2 {
         }
 
         return poliC;
+
+    }
+
+    public static PoliF2 multiplyF1_F2LSL(PoliF1 poliF1_A, PoliF2LSL poliF2LSL_B) {
+
+        assert (poliF1_A.getVariable() == poliF2LSL_B.getVariable())
+                : "No se pueden multiplicar 2 polinomios con distinta variable. (de momento)";
+
+        PoliF2 poliF2_C = zero(poliF1_A.getVariable());
+
+        if (poliF1_A.isZero() || poliF2LSL_B.isZero()) {
+            return poliF2_C;
+        }
+
+        double coefA;
+        int i, expA;
+        Termino termA;
+
+        for (i = 1; i <= poliF1_A.getGrade() + 1; i++) {
+
+            coefA = poliF1_A.getCoef(i);
+            expA = poliF1_A.getExp(i);
+            termA = new Termino(coefA, expA);
+
+            poliF2_C = poliF2_C.sumF2LSL(poliF2LSL_B.smult(termA));
+
+        }
+
+        return poliF2_C;
 
     }
 
@@ -340,7 +480,11 @@ public class PoliF2 {
      */
     public PoliF2 smult(Termino term) {
 
-        PoliF2 poliC = new PoliF2(getNumElementosNoCero(), getVariable());
+        PoliF2 poliC = zero(getVariable());
+
+        if(isZero() || term.isZero()) {
+            return poliC;
+        }
 
         Termino termA, termC;
 
@@ -358,6 +502,10 @@ public class PoliF2 {
 
     @Override
     public String toString() {
+
+        if (isZero()) {
+            return "0";
+        }
 
         String output, term;
 
@@ -387,7 +535,7 @@ public class PoliF2 {
 
         String coefAux, expAux;
         Termino t;
-        int coefAndExp[] = new int[2];
+        double coefAndExp[] = new double[2];
         term = term.replaceAll(" ", "");
 
         if (term.length() == 0) {
@@ -397,7 +545,7 @@ public class PoliF2 {
         Pattern coefPat, expPat;
         Matcher coefMatc, expMatc;
 
-        coefPat = Pattern.compile("(\\-|\\+?)[0-9]*%c?".formatted(this.variable));
+        coefPat = Pattern.compile("(\\-|\\+?)([0-9]*)(.[0-9])*%c?".formatted(this.variable));
         expPat = Pattern.compile("%c((\\^[0-9]+)?)".formatted(this.variable));
 
         coefMatc = coefPat.matcher(term);
@@ -405,7 +553,7 @@ public class PoliF2 {
 
         if (coefMatc.find()) {
 
-            coefAux = coefMatc.group().replaceAll("[^\\d\\-]", "");
+            coefAux = coefMatc.group().replaceAll("[^\\d\\-\\.]", "");
             if (Pattern.matches("\\-?%c?".formatted(this.variable), coefAux)) {
 
                 coefAndExp[0] = 1;
@@ -414,7 +562,7 @@ public class PoliF2 {
 
                 try {
 
-                    coefAndExp[0] = Integer.parseInt(coefAux);
+                    coefAndExp[0] = Double.parseDouble(coefAux);
 
                 } catch (NumberFormatException e) {
 
@@ -456,13 +604,49 @@ public class PoliF2 {
 
         }
 
-        t = new Termino(coefAndExp[0], coefAndExp[1]);
+        t = new Termino(coefAndExp[0], (int) coefAndExp[1]);
         return t;
 
     }
 
+    public String arrayToString() {
+
+        String output = "";
+        Termino t;
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(0);
+        df.setMaximumFractionDigits(4);
+
+        for (int i = 0; i < V.size(); i++) {
+
+            if (i == 0) {
+                output = output + "[%s".formatted(df.format(V.get(i)));
+            } else {
+                t = (Termino) V.get(i);
+                output = output + ", (%s%c%d)".formatted(df.format(t.getCoef()), '|', t.getExp());
+            }
+
+            if (i == V.size() - 1) {
+                output = output + "]";
+            }
+
+        }
+
+        return output;
+
+    }
+
     public void show() {
+
         System.out.println(toString());
+
+    }
+
+    public void showArray() {
+
+        System.out.println(arrayToString());
+
     }
 
     public static void main(String[] args) {
@@ -470,17 +654,17 @@ public class PoliF2 {
         String polA = "7x^4 + 4x^2 + 7x + 2";
         String polB = "6x^3 + 8x +3";
 
-        PoliF2 A = new PoliF2(4, polA, 'x');
-        PoliF2 B = new PoliF2(3, polB, 'x');
+        PoliF1 A = new PoliF1(4, polA, 'x');
+        PoliF2LSL B = new PoliF2LSL(polB, 'x');
 
-        A.show();
-        B.show();
+        System.out.println(A.toString() + " <==> " + A.arrayToString());
+        System.out.println(B.toString() + " <==> " + B.arrayToString());
 
-        PoliF2 C = A.multiply(B);
+        PoliF2 C = PoliF2.multiplyF1_F2LSL(A, B);
 
         System.out.println();
 
-        C.show();
+        System.out.println(C.toString() + " <==> " + C.arrayToString());
 
     }
 
@@ -517,10 +701,18 @@ class Termino {
         this.exp = exp;
     }
 
+    public boolean isZero(){
+        return getCoef() == 0;
+    }
+
     @Override
     public String toString() {
 
         String output = "%1$s%2$s%3$s%4$s"; // 1 = signo, 2 = coef, 3 = variable, 4 = exp
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(0);
+        df.setMaximumFractionDigits(4);
 
         if (coef == 0) {
 
@@ -544,11 +736,11 @@ class Termino {
 
         if (coef > 0) {
 
-            output = output.formatted("+ ", Math.abs(coef), 'x', "^" + exp);
+            output = output.formatted("+ ", df.format(Math.abs(coef)), 'x', "^" + exp);
 
         } else {
 
-            output = output.formatted("- ", Math.abs(coef), 'x', "^" + exp);
+            output = output.formatted("- ", df.format(Math.abs(coef)), 'x', "^" + exp);
 
         }
 

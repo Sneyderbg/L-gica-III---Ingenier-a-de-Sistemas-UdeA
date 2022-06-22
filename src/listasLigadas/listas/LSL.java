@@ -108,7 +108,7 @@ public class LSL {
 	}
 
 	/**
-	 * Aùade el {@link NodoSimple} <b>x</b> al final de la lista.
+	 * A?ade el {@link NodoSimple} <b>x</b> al final de la lista.
 	 * 
 	 * @param x {@link NodoSimple} a aùadir.
 	 */

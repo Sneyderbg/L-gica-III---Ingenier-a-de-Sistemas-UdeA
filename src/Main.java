@@ -1,25 +1,19 @@
-﻿import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+﻿import java.text.DecimalFormat;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		String term = "-.2x^2";
+		DecimalFormat df = new DecimalFormat();
+		df.setMinimumFractionDigits(0);
+		
+		double d = -1.0;
+		String s = "%f";
+		if(d % 1 == 0){
+			s = s.replace("%s", "%.0f");
+		}
 
-		Pattern coefPat, expPat;
-		Matcher coefMatc, expMatc;
-
-		coefPat = Pattern.compile("(\\-|\\+?)([0-9]*)(.[0-9])*%c?".formatted('x'));
-		expPat = Pattern.compile("%c((\\^[0-9]+)?)".formatted('x'));
-
-		coefMatc = coefPat.matcher(term);
-		expMatc = expPat.matcher(term);
-
-		coefMatc.find();
-
-		System.out.println(coefMatc.group());
-		System.out.println(Double.parseDouble("2"));
+		System.out.println(Double.parseDouble("8,5"));
 
 	}
 

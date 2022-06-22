@@ -1,19 +1,22 @@
 package polinomios;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import listasLigadas.nodos.NodoSimple;
 
 /**
  * Polinomios en vector, términos ordenados descendentemente por exponente
  */
 public class PoliF1 {
 
-    private int[] V;
+    private double[] V;
     private char variable;
 
     /**
-     * Constructor for the Polinomios
+     * Constructor.
      * 
      * @param grade grado del polinomio.
      */
@@ -21,17 +24,24 @@ public class PoliF1 {
 
         assert (grade >= -1) : "grade must be >=-1";
 
-        V = new int[grade + 2];
+        V = new double[grade + 2];
         V[0] = grade;
         variable = 'x';
 
     }
 
+    /**
+     * Constructor. Construye un polinomio representado en vector con los parámetros
+     * dados.
+     * 
+     * @param grade Grado del polinomio.
+     * @param var   Variable del polinomio.
+     */
     public PoliF1(int grade, char var) {
 
         assert (grade >= -1) : "grade must be >=-1";
 
-        V = new int[grade + 2];
+        V = new double[grade + 2];
         V[0] = grade;
         variable = var;
 
@@ -48,14 +58,14 @@ public class PoliF1 {
      * omitirá.
      * 
      * @param grade Grado del polinomio.
-     * @param Poli  String que representa el polinomio.
+     * @param poli  String que representa el polinomio.
      * @param var   Variable del polinomio.
      */
-    public PoliF1(int grade, String Poli, char var) {
+    public PoliF1(int grade, String poli, char var) {
 
         assert (grade >= -1) : "grade must be >=-1";
 
-        V = new int[grade + 2];
+        V = new double[grade + 2];
         V[0] = grade;
         variable = var;
 
@@ -64,22 +74,22 @@ public class PoliF1 {
         int i, j;
         i = 0;
         j = 0;
-        while (j < Poli.length()) {
+        while (j < poli.length()) {
 
-            if ((Poli.charAt(j) != '+' && Poli.charAt(j) != '-') || i == j) {
+            if ((poli.charAt(j) != '+' && poli.charAt(j) != '-') || i == j) {
                 j++;
                 continue;
             }
 
-            terms.add(Poli.substring(i, j));
+            terms.add(poli.substring(i, j));
             i = j;
             j++;
 
         }
 
-        terms.add(Poli.substring(i, j));
+        terms.add(poli.substring(i, j));
 
-        int coefAndExp[];
+        double coefAndExp[];
 
         for (String term : terms) {
 
@@ -89,7 +99,7 @@ public class PoliF1 {
                 continue;
             }
 
-            V[getPos(coefAndExp[1])] += coefAndExp[0];
+            sumCoefByExp(coefAndExp[0], (int) coefAndExp[1]);
 
         }
 
@@ -97,15 +107,31 @@ public class PoliF1 {
 
     }
 
+    /**
+     * Calcula la posición del término con exponente <b>exp</b> del vector
+     * {@link #V}.
+     * 
+     * @param exp Exponente del término.
+     * @return Posición del término con exponente <b>exp</b> en el vector
+     *         {@link #V}.
+     */
     public int getPos(int exp) {
         return getGrade() - exp + 1;
     }
 
+    /**
+     * Calcula el exponente del término en la posición <b>pos</b> del vector
+     * {@link #V}.
+     * 
+     * @param pos Posición del término en el vector {@link #V}.
+     * @return El exponente del término en la posición <b>pos</b> del vector
+     *         {@link #V}.
+     */
     public int getExp(int pos) {
         return getGrade() - pos + 1;
     }
 
-    public void setCoef(int coef, int idx) {
+    public void setCoef(double coef, int idx) {
 
         assert (idx != 0) : "idx cannot be zero!";
 
@@ -113,7 +139,15 @@ public class PoliF1 {
 
     }
 
-    public int getCoef(int idx) {
+    public void setCoefByExp(double coef, int exp) {
+
+        assert (exp >= 0 && exp <= getGrade()) : "No existen términos con el exponente dado.";
+
+        V[getPos(exp)] = coef;
+
+    }
+
+    public double getCoef(int idx) {
 
         assert (idx != 0) : "idx cannot be zero!";
 
@@ -121,14 +155,70 @@ public class PoliF1 {
 
     }
 
+    public double getCoefFromExp(int exp) {
+
+        assert (exp >= 0 && exp <= getGrade()) : "No existen términos con el exponente dado.";
+
+        return V[getPos(exp)];
+
+    }
+
+    /**
+     * Suma el coeficiente <b>coef</b> dado al vector en la posición <b>idx</b> del
+     * vector {@link #V}. Es decir:
+     * <p>
+     * {@code V[idx] = V[idx] + coef}.
+     * 
+     * @param coef Coeficiente a sumar.
+     * @param idx  Índice en el vector a sumar.
+     */
+    public void sumCoef(double coef, int idx) {
+
+        assert (idx != 0) : "idx cannot be zero!";
+
+        setCoef(getCoef(idx) + coef, idx);
+
+    }
+
+    /**
+     * Suma el coeficiente <b>coef</b> al vector {@link #V} en la posición
+     * correspondiente al exponente <b>exp</b> dado.
+     * <p>
+     * {@code V[getPos(exp)] = V[idx] + coef}.
+     * 
+     * @param coef Coeficiente a sumar al vector.
+     * @param exp  Exponente en donde se quiere sumar <b>coef</b>.
+     * @see {@link #getPos()}
+     */
+    public void sumCoefByExp(double coef, int exp) {
+
+        assert (exp >= 0 && exp <= getGrade()) : "No existen términos con el exponente dado.";
+
+        setCoefByExp(getCoefFromExp(exp) + coef, exp);
+
+    }
+
     public int getGrade() {
 
-        return V[0];
+        return (int) V[0];
 
     }
 
     public char getVariable() {
         return variable;
+    }
+
+    public boolean isZero() {
+        return (getCoef(1) == 0);
+    }
+
+    /**
+     * Polinomio nulo
+     * 
+     * @return {@link PoliF1} que representa el polinomio nulo o cero.
+     */
+    public static PoliF1 zero(char var) {
+        return new PoliF1(0, var);
     }
 
     /**
@@ -142,7 +232,8 @@ public class PoliF1 {
 
         assert (variable == PoliB.getVariable()) : "No quiero sumar dos polinomios con diferentes variables.";
 
-        int gradeA, gradeB, gradeC, i, j, k, s;
+        int gradeA, gradeB, gradeC, i, j, k;
+        double s;
         PoliF1 PoliC;
 
         gradeA = this.getGrade();
@@ -185,12 +276,152 @@ public class PoliF1 {
 
     }
 
+    public PoliF1 sumF2(PoliF2 poliF2_B) {
+
+        assert (getVariable() == poliF2_B.getVariable())
+                : "No es posible sumar dos polinomios con diferentes variables.";
+
+        PoliF1 poliF1_C;
+
+        double coefA, coefB, coefC;
+        int expA, expB, i, j, gradeC;
+        Termino termB;
+
+        gradeC = Math.max(getGrade(), poliF2_B.getGrade());
+
+        poliF1_C = new PoliF1(gradeC, getVariable());
+
+        i = 1;
+        j = 1;
+
+        while (i <= getGrade() + 1 && j <= poliF2_B.getNumElementosNoCero()) {
+
+            coefA = getCoef(i);
+            expA = getExp(i);
+
+            termB = poliF2_B.getTerm(j);
+            coefB = termB.getCoef();
+            expB = termB.getExp();
+
+            if (expA > expB) {
+
+                poliF1_C.setCoefByExp(coefA, expA);
+                i++;
+
+            } else if (expA < expB) {
+
+                poliF1_C.setCoefByExp(coefB, expB);
+                j++;
+
+            } else {
+
+                coefC = coefA + coefB;
+                poliF1_C.setCoefByExp(coefC, expA);
+                i++;
+                j++;
+
+            }
+
+        }
+        while (i <= getGrade() + 1) {
+
+            coefA = getCoef(i);
+            expA = getExp(i);
+            poliF1_C.setCoefByExp(coefA, expA);
+            i++;
+
+        }
+        while (j <= poliF2_B.getNumElementosNoCero()) {
+
+            termB = poliF2_B.getTerm(j);
+            coefB = termB.getCoef();
+            expB = termB.getExp();
+            poliF1_C.setCoefByExp(coefB, expB);
+            j++;
+
+        }
+
+        poliF1_C.normalize();
+        return poliF1_C;
+
+    }
+
+    public PoliF1 sumF2LSL(PoliF2LSL poliF2LSL_B) {
+
+        assert (getVariable() == poliF2LSL_B.getVariable())
+                : "No es posible sumar dos polinomios con diferentes variables.";
+
+        PoliF1 poliF1_C;
+
+        double coefA, coefB, coefC;
+        int expA, expB, i, gradeC;
+        NodoSimple nodoB = poliF2LSL_B.getPrimerNodo();
+        Termino termB;
+
+        gradeC = Math.max(getGrade(), poliF2LSL_B.getGrade());
+
+        poliF1_C = new PoliF1(gradeC, getVariable());
+
+        i = 1;
+        while (i <= getGrade() + 1 && !poliF2LSL_B.FinDeRecorrido(nodoB)) {
+
+            coefA = getCoef(i);
+            expA = getExp(i);
+
+            termB = (Termino) nodoB.getDato();
+            coefB = termB.getCoef();
+            expB = termB.getExp();
+
+            if (expA > expB) {
+
+                poliF1_C.setCoefByExp(coefA, expA);
+                i++;
+
+            } else if (expA < expB) {
+
+                poliF1_C.setCoefByExp(coefB, expB);
+                nodoB = nodoB.getLiga();
+
+            } else {
+
+                coefC = coefA + coefB;
+                poliF1_C.setCoefByExp(coefC, expA);
+                i++;
+                nodoB = nodoB.getLiga();
+
+            }
+
+        }
+        while (i <= getGrade() + 1) {
+
+            coefA = getCoef(i);
+            expA = getExp(i);
+            poliF1_C.setCoefByExp(coefA, expA);
+            i++;
+
+        }
+        while (!poliF2LSL_B.FinDeRecorrido(nodoB)) {
+
+            termB = (Termino) nodoB.getDato();
+            coefB = termB.getCoef();
+            expB = termB.getExp();
+            poliF1_C.setCoefByExp(coefB, expB);
+            nodoB = nodoB.getLiga();
+
+        }
+
+        poliF1_C.normalize();
+        return poliF1_C;
+
+    }
+
     public PoliF1 substract(PoliF1 poliB) {
 
         assert (variable == poliB.getVariable()) : "No se pueden restar 2 polinomios con distintas variables.";
 
         PoliF1 poliC;
-        int gradeA, gradeB, gradeC, i, j, k, r;
+        int gradeA, gradeB, gradeC, i, j, k;
+        double r;
 
         gradeA = getGrade();
         gradeB = poliB.getGrade();
@@ -202,33 +433,33 @@ public class PoliF1 {
         j = gradeB + 1;
         k = gradeC + 1;
 
-        while (i >= 1 && j >= 1){
+        while (i >= 1 && j >= 1) {
 
             r = getCoef(i) - poliB.getCoef(j);
             poliC.setCoef(r, k);
-            
+
             i--;
             j--;
             k--;
 
         }
         while (i >= 1) {
-        
+
             poliC.setCoef(getCoef(i), k);
-            
+
             i--;
             k--;
 
         }
         while (j >= 1) {
-            
+
             poliC.setCoef(poliB.getCoef(j), k);
 
             j--;
             k--;
-            
+
         }
-        
+
         normalize();
         return poliC;
 
@@ -243,15 +474,20 @@ public class PoliF1 {
      */
     public PoliF1 multiply(PoliF1 poliB) {
 
-        assert (variable == poliB.getVariable())
+        assert (getVariable() == poliB.getVariable())
                 : "No se pueden multiplicar 2 polinomios con distinta variable. (de momento)";
 
+        if (isZero() || poliB.isZero()) {
+            return zero(getVariable());
+        }
+
         PoliF1 poliC;
-        int gradeA, gradeB, gradeC, i, j, k, coefA, coefB, expA, expB, coefC, expC;
+        int gradeA, gradeB, gradeC, i, j, k, expA, expB, expC;
+        double coefA, coefB, coefC;
 
         gradeA = getGrade();
         gradeB = poliB.getGrade();
-        gradeC = gradeA * gradeB;
+        gradeC = gradeA + gradeB;
 
         poliC = new PoliF1(gradeC, variable);
 
@@ -277,6 +513,53 @@ public class PoliF1 {
         }
 
         return poliC;
+
+    }
+
+    public static PoliF1 multiplyF2_F2LSL(PoliF2 poliF2_A, PoliF2LSL poliF2LSL_B) {
+
+        assert (poliF2_A.getVariable() == poliF2LSL_B.getVariable())
+                : "No se pueden multiplicar 2 polinomios con distinta variable. (de momento)";
+
+        if (poliF2_A.isZero() || poliF2LSL_B.isZero()) {
+            return zero(poliF2_A.getVariable());
+        }
+
+        PoliF1 poliF1_C;
+        int gradeC, i, expA, expB, expC;
+        double coefA, coefB, coefC;
+        Termino termA, termB;
+        NodoSimple nodoB;
+
+        gradeC = poliF2_A.getGrade() + poliF2LSL_B.getGrade();
+        poliF1_C = new PoliF1(gradeC, poliF2_A.getVariable());
+
+        for (i = 1; i <= poliF2_A.getNumElementosNoCero(); i++) {
+
+            termA = poliF2_A.getTerm(i);
+            coefA = termA.getCoef();
+            expA = termA.getExp();
+
+            nodoB = poliF2LSL_B.getPrimerNodo();
+
+            while (!poliF2LSL_B.FinDeRecorrido(nodoB)) {
+
+                termB = (Termino) nodoB.getDato();
+                coefB = termB.getCoef();
+                expB = termB.getExp();
+
+                coefC = coefA * coefB;
+                expC = expA + expB;
+
+                poliF1_C.sumCoefByExp(coefC, expC);
+
+                nodoB = nodoB.getLiga();
+                
+            }
+
+        }
+
+        return poliF1_C;
 
     }
 
@@ -322,9 +605,14 @@ public class PoliF1 {
     @Override
     public String toString() {
 
+        if (isZero()) {
+            return "0";
+        }
+
         String output, term;
         output = "";
-        int grade, coef, exp, i;
+        int grade, exp, i;
+        double coef;
         grade = getGrade();
 
         for (i = 1; i <= grade + 1; i++) {
@@ -361,9 +649,13 @@ public class PoliF1 {
      * @param exp  Exponente del término a convertir.
      * @return String de la forma <b><i>(+/-)cx^e</i></b.
      */
-    public String termToString(int coef, int exp) {
+    public String termToString(double coef, int exp) {
 
-        String term = "%1$s%2$d%3$s%4$s"; // 1 = signo, 2 = coef, 3 = variable, 4 = exp
+        String term = "%1$s%2$s%3$s%4$s"; // 1 = signo, 2 = coef, 3 = variable, 4 = exp
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(0);
+        df.setMaximumFractionDigits(4);
 
         if (coef == 0) {
 
@@ -384,14 +676,20 @@ public class PoliF1 {
             term = term.replace("%2$d", "");
 
         }
+        if (coef % 1 == 0) {
 
-        if (coef > 0) {
-
-            term = term.formatted("+ ", Math.abs(coef), variable, "^" + exp);
+            term = term.replace("%2$s", "%2$s");
 
         } else {
 
-            term = term.formatted("- ", Math.abs(coef), variable, "^" + exp);
+        }
+        if (coef > 0) {
+
+            term = term.formatted("+ ", df.format(Math.abs(coef)), variable, "^" + exp);
+
+        } else {
+
+            term = term.formatted("- ", df.format(Math.abs(coef)), variable, "^" + exp);
 
         }
 
@@ -412,10 +710,10 @@ public class PoliF1 {
      * @param term El string a convertir.
      * @return Vector de 2 elementos, coeficiente y exponente.
      */
-    public int[] StringToCoefAndExp(String term) {
+    public double[] StringToCoefAndExp(String term) {
 
         String coefAux, expAux;
-        int coefAndExp[] = new int[2];
+        double[] coefAndExp = new double[2];
         term = term.replaceAll(" ", "");
 
         if (term.length() == 0) {
@@ -425,7 +723,7 @@ public class PoliF1 {
         Pattern coefPat, expPat;
         Matcher coefMatc, expMatc;
 
-        coefPat = Pattern.compile("(\\-|\\+?)[0-9]*%c?".formatted(this.variable));
+        coefPat = Pattern.compile("(\\-|\\+?)([0-9]*)(.[0-9])*%c?".formatted(this.variable));
         expPat = Pattern.compile("%c((\\^[0-9]+)?)".formatted(this.variable));
 
         coefMatc = coefPat.matcher(term);
@@ -433,7 +731,7 @@ public class PoliF1 {
 
         if (coefMatc.find()) {
 
-            coefAux = coefMatc.group().replaceAll("[^\\d\\-]", "");
+            coefAux = coefMatc.group().replaceAll("[^\\d\\-\\.]", "");
             if (Pattern.matches("\\-?%c?".formatted(this.variable), coefAux)) {
 
                 coefAndExp[0] = 1;
@@ -442,7 +740,7 @@ public class PoliF1 {
 
                 try {
 
-                    coefAndExp[0] = Integer.parseInt(coefAux);
+                    coefAndExp[0] = Double.parseDouble(coefAux);
 
                 } catch (NumberFormatException e) {
 
@@ -488,26 +786,56 @@ public class PoliF1 {
 
     }
 
+    public String arrayToString() {
+
+        String output = "";
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(0);
+        df.setMaximumFractionDigits(4);
+
+        for (int i = 0; i < V.length; i++) {
+
+            output = (i == 0) ? output + "[%s".formatted(df.format(V[i]))
+                    : output + ", (%s%c%d)".formatted(df.format(V[i]), '|', getExp(i));
+
+            if (i == V.length - 1) {
+                output = output + "]";
+            }
+
+        }
+
+        return output;
+
+    }
+
     public void show() {
+
         System.out.println(toString());
+
+    }
+
+    public void showArray() {
+
+        System.out.println(arrayToString());
+
     }
 
     public static void main(String[] args) {
 
-        String polA = "7x^4 + 4x^2 + 7x + 2";
-        String polB = "6x^3 + 8x +3";
+        String polA = "x+1";
+        String polB = "x-1";
 
-        PoliF1 A = new PoliF1(4, polA, 'x');
-        PoliF1 B = new PoliF1(3, polB, 'x');
+        PoliF2 A = new PoliF2(2, polA, 'x');
+        PoliF2LSL B = new PoliF2LSL(polB, 'x');
 
-        A.show();
-        B.show();
-
+        System.out.println(A.toString() + " <==> " + A.arrayToString());
+        System.out.println(B.toString() + " <==> " + B.arrayToString());
+        
         System.out.println();
-
-        PoliF1 C = A.substract(B);
-
-        C.show();
+        
+        PoliF1 C = multiplyF2_F2LSL(A, B);
+        
+        System.out.println(C.toString() + " <==> " + C.arrayToString());
 
     }
 
