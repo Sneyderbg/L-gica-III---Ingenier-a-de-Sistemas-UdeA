@@ -136,10 +136,10 @@ public class LSL {
 			System.out.println("ERROR = Parùmetro invùlido");
 			return;
 		}
-		Desconectar(x, Anterior(x));
+		desconectar(x, Anterior(x));
 	}
 
-	public void Desconectar(NodoSimple x, NodoSimple ax) {
+	public void desconectar(NodoSimple x, NodoSimple ax) {
 		if (ax == null) {
 			primerNodo = x.getLiga();
 			return;

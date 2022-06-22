@@ -363,6 +363,97 @@ public class PoliF2LSL extends LSL {
 
     }
 
+    public static void sum(PoliF2LSL poliA, PoliF2LSL poliB) {
+
+        NodoSimple nodoA, nodoAntA, nodoB, nodoAntB;
+        Termino termA, termB;
+        double coefA, coefB, s;
+        int expA, expB;
+
+        nodoA = poliA.getPrimerNodo();
+        nodoB = poliB.getPrimerNodo();
+
+        nodoAntA = null;
+        nodoAntB = null;
+
+        while (!poliA.FinDeRecorrido(nodoA) && !poliB.FinDeRecorrido(nodoB)) {
+
+            termA = (Termino) nodoA.getDato();
+            coefA = termA.getCoef();
+            expA = termA.getExp();
+
+            termB = (Termino) nodoB.getDato();
+            coefB = termB.getCoef();
+            expB = termB.getExp();
+
+            if (expA > expB) {
+
+                nodoAntA = nodoA;
+                nodoA = nodoA.getLiga();
+
+            } else if (expA < expB) {
+
+                nodoA = nodoB;
+                nodoB = nodoA.getLiga();
+                poliB.desconectar(nodoA, nodoAntB);
+                poliA.Conectar(nodoA, nodoAntA);
+                nodoAntA = nodoA;
+                nodoA = nodoA.getLiga();
+
+            } else {
+
+                s = coefA + coefB;
+                if (s != 0) {
+
+                    termA.setCoef(s);
+                    nodoA.setDato(termA);
+                    nodoAntA = nodoA;
+                    nodoA = nodoA.getLiga();
+
+                } else {
+
+                    poliA.desconectar(nodoA, nodoAntA);
+
+                    if (nodoAntA != null) {
+
+                        nodoA = nodoAntA.getLiga();
+
+                    } else {
+
+                        nodoA = poliA.getPrimerNodo();
+
+                    }
+
+                }
+
+                poliB.desconectar(nodoB, nodoAntB);
+
+                if (nodoAntB != null) {
+
+                    nodoB = nodoAntB.getLiga();
+
+                } else {
+
+                    nodoB = poliB.getPrimerNodo();
+
+                }
+
+            }
+
+        }
+
+        while (!poliB.FinDeRecorrido(nodoB)) {
+
+            nodoAntA = poliA.getUltimoNodo();
+            poliB.desconectar(nodoB, nodoAntB);
+            poliA.Conectar(nodoB, nodoAntA);
+            nodoAntB = nodoB;
+            nodoB = nodoB.getLiga();
+
+        }
+
+    }
+
     /**
      * Realiza una resta entre este polinomio y el polinomio dado como parámetro,
      * luego retorna el resultado en otro polinomio de la clase {@link PoliF2LSL}.
@@ -518,7 +609,7 @@ public class PoliF2LSL extends LSL {
 
         PoliF2LSL poliC = zero(getVariable());
 
-        if(isZero() || term.isZero()){
+        if (isZero() || term.isZero()) {
             return poliC;
         }
 
@@ -660,9 +751,13 @@ public class PoliF2LSL extends LSL {
         if (coefMatc.find()) {
 
             coefAux = coefMatc.group().replaceAll("[^\\d\\-\\.]", "");
-            if (Pattern.matches("\\-?%c?".formatted(this.variable), coefAux)) {
+            if (Pattern.matches("\\+?%c?".formatted(this.variable), coefAux)) {
 
                 coefAndExp[0] = 1;
+
+            } else if (Pattern.matches("\\-?%c?".formatted(this.variable), coefAux)) {
+
+                coefAndExp[0] = -1;
 
             } else {
 
@@ -718,7 +813,7 @@ public class PoliF2LSL extends LSL {
     public String arrayToString() {
 
         if (isEmpty()) {
-            System.out.println("[]");
+            return "[]";
         }
 
         String output = "";
@@ -773,23 +868,20 @@ public class PoliF2LSL extends LSL {
     }
 
     public static void main(String[] args) {
-        String polA = "3x^3+2x-5";
-        String polB = "2x - 1";
+        String polA = "4x^5 + 6x^4 -x";
+        String polB = "6x^6 - 6x^4 -2x + 8";
 
         PoliF2LSL A = new PoliF2LSL(polA, 'x');
-        PoliF2 B = new PoliF2(2, polB, 'x');
+        PoliF2LSL B = new PoliF2LSL(polB, 'x');
 
-        A.show();
-        B.show();
+        System.out.println(A.toString() + " <==> " + A.arrayToString());
+        System.out.println(B.toString() + " <==> " + B.arrayToString());
+
+        PoliF2LSL.sum(B, A);
 
         System.out.println();
-
-        PoliF2LSL C = A.sumF2(B);
-
-        C.show();
-        C.showArray();
-
-        System.out.println(zero('x').isZero());
+        System.out.println(A.toString() + " <==> " + A.arrayToString());
+        System.out.println(B.toString() + " <==> " + B.arrayToString());
 
     }
 
