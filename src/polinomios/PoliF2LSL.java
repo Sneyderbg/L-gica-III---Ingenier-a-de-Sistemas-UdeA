@@ -742,8 +742,8 @@ public class PoliF2LSL extends LSL {
         Pattern coefPat, expPat;
         Matcher coefMatc, expMatc;
 
-        coefPat = Pattern.compile("(\\-|\\+?)([0-9]*)(.[0-9])*%c?".formatted(this.variable));
-        expPat = Pattern.compile("%c((\\^[0-9]+)?)".formatted(this.variable));
+        coefPat = Pattern.compile(String.format("(\\-|\\+?)([0-9]*)(.[0-9])*%c?", this.variable));
+        expPat = Pattern.compile(String.format("%c((\\^[0-9]+)?)", this.variable));
 
         coefMatc = coefPat.matcher(term);
         expMatc = expPat.matcher(term);
@@ -751,11 +751,11 @@ public class PoliF2LSL extends LSL {
         if (coefMatc.find()) {
 
             coefAux = coefMatc.group().replaceAll("[^\\d\\-\\.]", "");
-            if (Pattern.matches("\\+?%c?".formatted(this.variable), coefAux)) {
+            if (Pattern.matches(String.format("\\+?%c?", this.variable), coefAux)) {
 
                 coefAndExp[0] = 1;
 
-            } else if (Pattern.matches("\\-?%c?".formatted(this.variable), coefAux)) {
+            } else if (Pattern.matches(String.format("\\-?%c?", this.variable), coefAux)) {
 
                 coefAndExp[0] = -1;
 
@@ -830,11 +830,11 @@ public class PoliF2LSL extends LSL {
             t = (Termino) nodoX.getDato();
             if (nodoX == getPrimerNodo()) {
 
-                output = output + "[(%s%c%d)".formatted(df.format(t.getCoef()), '|', t.getExp());
+                output = output + String.format("[(%s%c%d)", df.format(t.getCoef()), '|', t.getExp());
 
             } else {
 
-                output = output + ", (%s%c%d)".formatted(df.format(t.getCoef()), '|', t.getExp());
+                output = output + String.format(", (%s%c%d)", df.format(t.getCoef()), '|', t.getExp());
 
             }
 

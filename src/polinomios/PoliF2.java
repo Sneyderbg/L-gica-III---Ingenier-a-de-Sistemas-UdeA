@@ -482,7 +482,7 @@ public class PoliF2 {
 
         PoliF2 poliC = zero(getVariable());
 
-        if(isZero() || term.isZero()) {
+        if (isZero() || term.isZero()) {
             return poliC;
         }
 
@@ -545,8 +545,8 @@ public class PoliF2 {
         Pattern coefPat, expPat;
         Matcher coefMatc, expMatc;
 
-        coefPat = Pattern.compile("(\\-|\\+?)([0-9]*)(.[0-9])*%c?".formatted(this.variable));
-        expPat = Pattern.compile("%c((\\^[0-9]+)?)".formatted(this.variable));
+        coefPat = Pattern.compile(String.format("(\\-|\\+?)([0-9]*)(.[0-9])*%c?", this.variable));
+        expPat = Pattern.compile(String.format("%c((\\^[0-9]+)?)", this.variable));
 
         coefMatc = coefPat.matcher(term);
         expMatc = expPat.matcher(term);
@@ -554,7 +554,7 @@ public class PoliF2 {
         if (coefMatc.find()) {
 
             coefAux = coefMatc.group().replaceAll("[^\\d\\-\\.]", "");
-            if (Pattern.matches("\\-?%c?".formatted(this.variable), coefAux)) {
+            if (Pattern.matches(String.format("\\-?%c?", this.variable), coefAux)) {
 
                 coefAndExp[0] = 1;
 
@@ -621,10 +621,10 @@ public class PoliF2 {
         for (int i = 0; i < V.size(); i++) {
 
             if (i == 0) {
-                output = output + "[%s".formatted(df.format(V.get(i)));
+                output = output + String.format("[%s", df.format(V.get(i)));
             } else {
                 t = (Termino) V.get(i);
-                output = output + ", (%s%c%d)".formatted(df.format(t.getCoef()), '|', t.getExp());
+                output = output + String.format(", (%s%c%d)", df.format(t.getCoef()), '|', t.getExp());
             }
 
             if (i == V.size() - 1) {
@@ -701,7 +701,7 @@ class Termino {
         this.exp = exp;
     }
 
-    public boolean isZero(){
+    public boolean isZero() {
         return getCoef() == 0;
     }
 
@@ -736,11 +736,11 @@ class Termino {
 
         if (coef > 0) {
 
-            output = output.formatted("+ ", df.format(Math.abs(coef)), 'x', "^" + exp);
+            output = String.format(output, "+ ", df.format(Math.abs(coef)), 'x', "^" + exp);
 
         } else {
 
-            output = output.formatted("- ", df.format(Math.abs(coef)), 'x', "^" + exp);
+            output = String.format(output, "- ", df.format(Math.abs(coef)), 'x', "^" + exp);
 
         }
 

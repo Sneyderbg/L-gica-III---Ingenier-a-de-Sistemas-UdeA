@@ -554,7 +554,7 @@ public class PoliF1 {
                 poliF1_C.sumCoefByExp(coefC, expC);
 
                 nodoB = nodoB.getLiga();
-                
+
             }
 
         }
@@ -685,11 +685,11 @@ public class PoliF1 {
         }
         if (coef > 0) {
 
-            term = term.formatted("+ ", df.format(Math.abs(coef)), variable, "^" + exp);
+            term = String.format(term, "+ ", df.format(Math.abs(coef)), variable, "^" + exp);
 
         } else {
 
-            term = term.formatted("- ", df.format(Math.abs(coef)), variable, "^" + exp);
+            term = String.format(term, "- ", df.format(Math.abs(coef)), variable, "^" + exp);
 
         }
 
@@ -723,8 +723,8 @@ public class PoliF1 {
         Pattern coefPat, expPat;
         Matcher coefMatc, expMatc;
 
-        coefPat = Pattern.compile("(\\-|\\+?)([0-9]*)(.[0-9])*%c?".formatted(this.variable));
-        expPat = Pattern.compile("%c((\\^[0-9]+)?)".formatted(this.variable));
+        coefPat = Pattern.compile(String.format("(\\-|\\+?)([0-9]*)(.[0-9])*%c?", this.variable));
+        expPat = Pattern.compile(String.format("%c((\\^[0-9]+)?)", this.variable));
 
         coefMatc = coefPat.matcher(term);
         expMatc = expPat.matcher(term);
@@ -732,7 +732,7 @@ public class PoliF1 {
         if (coefMatc.find()) {
 
             coefAux = coefMatc.group().replaceAll("[^\\d\\-\\.]", "");
-            if (Pattern.matches("\\-?%c?".formatted(this.variable), coefAux)) {
+            if (Pattern.matches(String.format("\\-?%c?", this.variable), coefAux)) {
 
                 coefAndExp[0] = 1;
 
@@ -795,8 +795,8 @@ public class PoliF1 {
 
         for (int i = 0; i < V.length; i++) {
 
-            output = (i == 0) ? output + "[%s".formatted(df.format(V[i]))
-                    : output + ", (%s%c%d)".formatted(df.format(V[i]), '|', getExp(i));
+            output = (i == 0) ? output + String.format("[%s", df.format(V[i]))
+                    : output + String.format(", (%s%c%d)", df.format(V[i]), '|', getExp(i));
 
             if (i == V.length - 1) {
                 output = output + "]";
@@ -830,11 +830,11 @@ public class PoliF1 {
 
         System.out.println(A.toString() + " <==> " + A.arrayToString());
         System.out.println(B.toString() + " <==> " + B.arrayToString());
-        
+
         System.out.println();
-        
+
         PoliF1 C = multiplyF2_F2LSL(A, B);
-        
+
         System.out.println(C.toString() + " <==> " + C.arrayToString());
 
     }
