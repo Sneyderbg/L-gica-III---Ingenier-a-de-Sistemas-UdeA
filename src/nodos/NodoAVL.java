@@ -1,5 +1,7 @@
 ﻿package nodos;
 
+import listasLigadas.nodos.NodoDoble;
+
 public class NodoAVL extends NodoDoble {
 
 	private int Fb;
@@ -22,10 +24,10 @@ public class NodoAVL extends NodoDoble {
 		String r, fields, dd, li, ld;
 		r = "ND" + "@" + Integer.toHexString(hashCode());
 
-		if (getD() == null) {
+		if (getDato() == null) {
 			dd = "null";
 		} else {
-			dd = getD().toString();
+			dd = getDato().toString();
 		}
 		if (getLi() == null) {
 			li = "null";

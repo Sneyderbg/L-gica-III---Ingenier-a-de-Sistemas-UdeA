@@ -6,7 +6,7 @@
  * @author sneyd
  *
  */
-public class Tripleta {
+public class Tripleta implements Cloneable {
 
 	private int fila;
 	private int columna;
@@ -80,16 +80,25 @@ public class Tripleta {
 		this.valor = valor;
 	}
 
-	/**
-	 * Crea una copia de la {@link Tripleta}.
-	 * <p>
-	 * Si el {@link #valor} es un objeto de tipo inmutable, se devuelve una copia de
-	 * este, de lo contrario se devuelve su referencia.
-	 * 
-	 * @return Una copia de esta {@link Tripleta}.
-	 */
-	public Tripleta copiar() {
-		return new Tripleta(getFila(), getColumna(), getValor());
+	@Override
+	public Tripleta clone() {
+		try {
+
+			return (Tripleta) super.clone();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return new Tripleta(getFila(), getColumna(), getValor());	
+
+		}
+	}
+
+	@Override
+	public String toString() {
+
+		return String.format("(%d, %d, %s)", getFila(), getColumna(), getValor().toString());
+
 	}
 
 }

@@ -8,12 +8,12 @@ public class LSLC extends LSL {
 	}
 
 	@Override
-	public boolean FinDeRecorrido(NodoSimple p) {
+	public boolean finDeRecorrido(NodoSimple p) {
 		return p == ultimoNodo;
 	}
 
 	@Override
-	public NodoSimple Anterior(NodoSimple p) {
+	public NodoSimple anterior(NodoSimple p) {
 		if (isEmpty()) {
 			return null;
 		}
@@ -28,13 +28,4 @@ public class LSLC extends LSL {
 		}
 	}
 
-	@Override
-	public void RecorrerLista() {
-		NodoSimple p = primerNodo;
-		do {
-			System.out.println(p.getDato());
-			p = p.getLiga();
-		} while (!FinDeRecorrido(p));
-	}
-	/* Falta */
 }

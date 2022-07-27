@@ -73,7 +73,7 @@ public class PoliF2LSL extends LSL {
 
             t = stringToTerm(term);
             nodoX = new NodoSimple(t);
-            Conectar(nodoX, nodoAntX);
+            conectar(nodoX, nodoAntX);
             nodoAntX = nodoX;
 
         }
@@ -141,7 +141,7 @@ public class PoliF2LSL extends LSL {
         nodoA = getPrimerNodo();
         nodoB = poliB.getPrimerNodo();
 
-        while (!FinDeRecorrido(nodoA) && !poliB.FinDeRecorrido(nodoB)) {
+        while (!finDeRecorrido(nodoA) && !poliB.finDeRecorrido(nodoB)) {
 
             termA = (Termino) nodoA.getDato();
             termB = (Termino) nodoB.getDato();
@@ -177,7 +177,7 @@ public class PoliF2LSL extends LSL {
             }
 
         }
-        while (!FinDeRecorrido(nodoA)) {
+        while (!finDeRecorrido(nodoA)) {
 
             termA = (Termino) nodoA.getDato();
             termC = new Termino(termA.getCoef(), termA.getExp());
@@ -186,7 +186,7 @@ public class PoliF2LSL extends LSL {
             nodoA = nodoA.getLiga();
 
         }
-        while (!poliB.FinDeRecorrido(nodoB)) {
+        while (!poliB.finDeRecorrido(nodoB)) {
 
             termB = (Termino) nodoB.getDato();
             termC = new Termino(termB.getCoef(), termB.getExp());
@@ -215,7 +215,7 @@ public class PoliF2LSL extends LSL {
         nodoA = getPrimerNodo();
         j = 1;
 
-        while (!FinDeRecorrido(nodoA) && j <= poliF2_B.getNumElementosNoCero()) {
+        while (!finDeRecorrido(nodoA) && j <= poliF2_B.getNumElementosNoCero()) {
 
             termA = (Termino) nodoA.getDato();
             termB = poliF2_B.getTerm(j);
@@ -255,7 +255,7 @@ public class PoliF2LSL extends LSL {
             }
 
         }
-        while (!FinDeRecorrido(nodoA)) {
+        while (!finDeRecorrido(nodoA)) {
 
             termA = (Termino) nodoA.getDato();
             termC = new Termino(termA.getCoef(), termA.getExp());
@@ -376,7 +376,7 @@ public class PoliF2LSL extends LSL {
         nodoAntA = null;
         nodoAntB = null;
 
-        while (!poliA.FinDeRecorrido(nodoA) && !poliB.FinDeRecorrido(nodoB)) {
+        while (!poliA.finDeRecorrido(nodoA) && !poliB.finDeRecorrido(nodoB)) {
 
             termA = (Termino) nodoA.getDato();
             coefA = termA.getCoef();
@@ -396,7 +396,7 @@ public class PoliF2LSL extends LSL {
                 nodoA = nodoB;
                 nodoB = nodoA.getLiga();
                 poliB.desconectar(nodoA, nodoAntB);
-                poliA.Conectar(nodoA, nodoAntA);
+                poliA.conectar(nodoA, nodoAntA);
                 nodoAntA = nodoA;
                 nodoA = nodoA.getLiga();
 
@@ -442,11 +442,11 @@ public class PoliF2LSL extends LSL {
 
         }
 
-        while (!poliB.FinDeRecorrido(nodoB)) {
+        while (!poliB.finDeRecorrido(nodoB)) {
 
             nodoAntA = poliA.getUltimoNodo();
             poliB.desconectar(nodoB, nodoAntB);
-            poliA.Conectar(nodoB, nodoAntA);
+            poliA.conectar(nodoB, nodoAntA);
             nodoAntB = nodoB;
             nodoB = nodoB.getLiga();
 
@@ -473,7 +473,7 @@ public class PoliF2LSL extends LSL {
         nodoA = getPrimerNodo();
         nodoB = poliB.getPrimerNodo();
 
-        while (!FinDeRecorrido(nodoA) && !poliB.FinDeRecorrido(nodoB)) {
+        while (!finDeRecorrido(nodoA) && !poliB.finDeRecorrido(nodoB)) {
 
             termA = (Termino) nodoA.getDato();
             termB = (Termino) nodoB.getDato();
@@ -509,7 +509,7 @@ public class PoliF2LSL extends LSL {
             }
 
         }
-        while (!FinDeRecorrido(nodoA)) {
+        while (!finDeRecorrido(nodoA)) {
 
             termA = (Termino) nodoA.getDato();
             termC = new Termino(termA.getCoef(), termA.getExp());
@@ -518,7 +518,7 @@ public class PoliF2LSL extends LSL {
             nodoA = nodoA.getLiga();
 
         }
-        while (!poliB.FinDeRecorrido(nodoB)) {
+        while (!poliB.finDeRecorrido(nodoB)) {
 
             termB = (Termino) nodoB.getDato();
             termC = new Termino(-termB.getCoef(), termB.getExp());
@@ -556,7 +556,7 @@ public class PoliF2LSL extends LSL {
 
         nodoB = poliB.getPrimerNodo();
 
-        while (!poliB.FinDeRecorrido(nodoB)) {
+        while (!poliB.finDeRecorrido(nodoB)) {
 
             termB = (Termino) nodoB.getDato();
             poliC = poliC.sum(smult(termB));
@@ -618,7 +618,7 @@ public class PoliF2LSL extends LSL {
 
         nodoA = getPrimerNodo();
 
-        while (!FinDeRecorrido(nodoA)) {
+        while (!finDeRecorrido(nodoA)) {
 
             termA = (Termino) nodoA.getDato();
             termC = new Termino(termA.getCoef() * term.getCoef(), termA.getExp() + term.getExp());
@@ -825,7 +825,7 @@ public class PoliF2LSL extends LSL {
         NodoSimple nodoX = getPrimerNodo();
         Termino t;
 
-        while (!FinDeRecorrido(nodoX)) {
+        while (!finDeRecorrido(nodoX)) {
 
             t = (Termino) nodoX.getDato();
             if (nodoX == getPrimerNodo()) {

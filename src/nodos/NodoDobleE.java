@@ -1,6 +1,8 @@
 ﻿package nodos;
 
-public class NodoDobleE {
+import listasLigadas.nodos.NodoDoble;
+
+public class NodoDobleE extends NodoDoble{
 
 	/**
 	 * 0 - <b>Li</b> es una hebra. <br>
@@ -14,20 +16,6 @@ public class NodoDobleE {
 	 */
 	private int Bd;
 
-	/**
-	 * Liga izquierda del nodo doble.
-	 */
-	private NodoDobleE Li;
-
-	/**
-	 * Liga derecha del nodo doble.
-	 */
-	private NodoDobleE Ld;
-
-	/**
-	 * Object del nodo doble.
-	 */
-	private Object d;
 
 	/**
 	 * Constructor. Inicializa el objeto instanciado asignando el campo {@link #d}
@@ -36,11 +24,10 @@ public class NodoDobleE {
 	 * @param d -> Valor a asignar al campo {@link #d}.
 	 */
 	public NodoDobleE(Object d) {
-		this.d = d;
+		super(d);
+		
 		this.Bi = 1;
 		this.Bd = 1;
-		this.Li = null;
-		this.Ld = null;
 	}
 
 	/**
@@ -49,7 +36,7 @@ public class NodoDobleE {
 	 * @return {@link NodoDobleE} conectado por el campo {@link #Li}.
 	 */
 	public NodoDobleE getLi() {
-		return Li;
+		return (NodoDobleE) super.getLi();
 	}
 
 	/**
@@ -59,7 +46,7 @@ public class NodoDobleE {
 	 * @param li -> {@link NodoDobleE} a conectar.
 	 */
 	public void setLi(NodoDobleE li) {
-		Li = li;
+		super.setLi(li);
 	}
 
 	/**
@@ -68,7 +55,7 @@ public class NodoDobleE {
 	 * @return {@link NodoDobleE} conectado por el campo {@link #Ld}.
 	 */
 	public NodoDobleE getLd() {
-		return Ld;
+		return (NodoDobleE) super.getLd();
 	}
 
 	/**
@@ -78,41 +65,23 @@ public class NodoDobleE {
 	 * @param ld -> {@link NodoDobleE} a conectar.
 	 */
 	public void setLd(NodoDobleE ld) {
-		Ld = ld;
-	}
-
-	/**
-	 * Retorna el objeto {@link #d}.
-	 * 
-	 * @return El objeto del campo {@link #d}, sea nulo o no.
-	 */
-	public Object getD() {
-		return d;
-	}
-
-	/**
-	 * Asigna al campo {@link #d} el objeto entregado en el parámetro.
-	 * 
-	 * @param d -> Objeto a asignar al campo {@link #d}.
-	 */
-	public void setD(Object d) {
-		this.d = d;
+		super.setLd(ld);
 	}
 
 	public int getBi() {
-		return Bi;
+		return this.Bi;
 	}
 
 	public int getBd() {
-		return Bd;
+		return this.Bd;
 	}
 
 	public void setBi(int bi) {
-		Bi = bi;
+		this.Bi = bi;
 	}
 
 	public void setBd(int bd) {
-		Bd = bd;
+		this.Bd = bd;
 	}
 
 	@Override
@@ -120,20 +89,20 @@ public class NodoDobleE {
 		String r, fields, dd, li, ld;
 		r = "NDE" + "@" + Integer.toHexString(hashCode());
 
-		if (d == null) {
+		if (getDato() == null) {
 			dd = "null";
 		} else {
-			dd = d.toString();
+			dd = getDato().toString();
 		}
-		if (Li == null) {
+		if (getLi() == null) {
 			li = "null";
 		} else {
-			li = "@" + Integer.toHexString(Li.hashCode());
+			li = "@" + Integer.toHexString(getLi().hashCode());
 		}
-		if (Ld == null) {
+		if (getLd() == null) {
 			ld = "null";
 		} else {
-			ld = "@" + Integer.toHexString(Ld.hashCode());
+			ld = "@" + Integer.toHexString(getLd().hashCode());
 		}
 		fields = String.format("(d=%s,li=%s,ld=%s,bi=%d,bd=%d)", dd, li, ld, Bi, Bd);
 

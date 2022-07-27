@@ -1,472 +1,435 @@
-﻿package matricesDispersas;
+package matricesDispersas;
 
-import nodos.NodoDoble;
+import nodos.NodoDobleT;
 
-/**
- * Clase que representa una matriz dispersa implementando listas doblemente
- * ligadas circulares con nodo cabeza.
- * <p>
- * <b>Nota:</b> Esta matriz dispersa tiene un nodo cabeza en el cual se usa la
- * liga derecha para la lista de las filas, y la liga izquierda para la lista de
- * las columnas.
- * 
- * @author sneyd
- *
- */
 public class MatrizForma2 {
 
-	/**
-	 * {@link NodoDoble} que representa la matriz dispersa.
-	 * <p>
-	 * <b>Nota:</b> Contiene el tamaño de la matriz dispersa.
-	 */
-	private NodoDoble mat;
-
-	/**
-	 * Objeto que representa el elemento nulo o vacío de la matriz dispersa.
-	 * <p>
-	 * <b>Nota:</b> Este campo se inicializa en los constructores.
-	 */
-	private final Object nulo;
-
-	/**
-	 * Constructor. Inicializa el objeto instanciado creando un {@link NodoDoble}
-	 * conteniendo una {@link Tripleta} que describe el tamaño de la matriz
-	 * dispersa.
-	 * <p>
-	 * Luego construye y conecta un {@link NodoDoble} cabeza para recorrer la lista
-	 * de las filas y la lista de las columnas.
-	 * 
-	 * @param m    -> Número de filas de la matriz dispersa.
-	 * @param n    -> Número de columnas de la matriz dispersa.
-	 *             <p>
-	 * @param nulo -> Establece el objet nulo o vacío de la matriz dispersa.<br>
-	 *             Ejs: <br>
-	 *             <i>1.</i> Si la matriz es de tipo {@link Boolean}, el parámetro
-	 *             <b>nulo</b> es <code>false</code>.<br>
-	 *             <i>2.</i> Si es de tipo {@link Integer}, <b>nulo</b> es
-	 *             <b>0</b>.<br>
-	 *             <i>3.</i> Si es tipo {@link String}, <b>nulo</b> es <b>""</b>.
-	 */
-	public MatrizForma2(int m, int n, Object nulo) {
-
-		// se inicializa el nodo que representa la matriz
-		Tripleta t = new Tripleta(m, n, null);
-		mat = new NodoDoble(t);
-
-		// se inicializa y se conecta el nodo cabeza para las filas y columnas
-		NodoDoble nodoCabeza = new NodoDoble(null);
-		nodoCabeza.setLd(nodoCabeza);
-		nodoCabeza.setLi(nodoCabeza);
-		mat.setLd(nodoCabeza);
-
-		this.nulo = nulo;
-	}
-
-	/**
-	 * Constructor. Construye la matriz dispersa a partir de los elementos
-	 * diferentes al elemento nulo o vacío de la matriz entregada como parámetro.
-	 * 
-	 * @param matriz -> Matriz de enteros de la cual se construye esta matriz
-	 *               dispersa.
-	 *               <p>
-	 * @param nulo   -> Establece el objeto nulo o vacío de la matriz dispersa.<br>
-	 *               Ejs: <br>
-	 *               <i>1.</i> Si la matriz es de tipo {@link Boolean}, el parámetro
-	 *               <b>nulo</b> es <code>false</code>.<br>
-	 *               <i>2.</i> Si es de tipo {@link Integer}, <b>nulo</b> es
-	 *               <b>0</b>.<br>
-	 *               <i>3.</i> Si es tipo {@link String}, <b>nulo</b> es <b>""</b>.
-	 */
-	public MatrizForma2(Object[][] matriz, Object nulo) {
-
-		// tamaño de la matriz que se almacena en el nodo mat
-		int m = matriz.length;
-		int n = matriz[0].length;
-
-		Tripleta t = new Tripleta(m, n, null);
-		this.mat = new NodoDoble(t);
-
-		// se inicializa y se conecta el nodo cabeza para las filas y columnas
-		NodoDoble nodoCabeza = new NodoDoble(null);
-
-		nodoCabeza.setLd(nodoCabeza); // liga derecha para lista de filas
-		nodoCabeza.setLi(nodoCabeza); // liga izquierda para lista de columnas
-
-		this.mat.setLd(nodoCabeza);
-
-		this.nulo = nulo;
-
-		// por cada elemento diferente del elemento nulo de la matriz se añade un nodo a
-		// la matriz
-		// dispersa conectandolo como corresponde.
-		Object v;
-		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz[i].length; j++) {
-				v = matriz[i][j];
-				if (v != this.nulo) {
-					t = new Tripleta(i, j, v);
-					NodoDoble x = new NodoDoble(t);
-					conectar(x, false); // al construir la matriz no hay nodos repetidos
-				}
-			}
-		}
-	}
-
-	/**
-	 * Invoca las funciones para conectar un {@link NodoDoble} <b>x</b> por filas y
-	 * por columnas. <br>
-	 * Si ya existe un nodo con la misma <b>fila</b> y <b>columna</b> que el nodo
-	 * <b>x</b>, <b>reemplazar</b> determina que operación se hace.
-	 * 
-	 * @param nodoX      -> {@link NodoDoble} a conectar en la matriz dispersa.
-	 * @param reemplazar -> Si es <code>true</code> se reemplaza el valor del nodo
-	 *                   en la matriz dispersa con el valor del nodo <b>x</b>. De lo
-	 *                   contrario no se reemplaza.
-	 */
-	public void conectar(NodoDoble nodoX, boolean reemplazar) {
-		conectarPorFilas(nodoX, reemplazar);
-		conectarPorColumnas(nodoX, reemplazar);
-	}
-
-	/**
-	 * Conecta un {@link NodoDoble} <b>x</b> en la posición que le corresponde según
-	 * su fila y columna. el {@link NodoDoble} es conectado en la lista de las
-	 * filas, osea, utilizando su liga derecha.<br>
-	 * Si ya existe un nodo con la misma <b>fila</b> y <b>columna</b> que el nodo
-	 * <b>x</b>, <b>reemplazar</b> determina que operación se hace.
-	 * 
-	 * @param nodoX      -> {@link NodoDoble} a conectar.
-	 * @param reemplazar -> Si es <code>true</code> se reemplaza el valor del nodo
-	 *                   en la matriz dispersa con el valor del nodo <b>x</b>. De lo
-	 *                   contrario no se reemplaza.
-	 */
-	public void conectarPorFilas(NodoDoble nodoX, boolean reemplazar) {
-		Tripleta tripletaT = (Tripleta) nodoX.getD();
-		int f = tripletaT.getFila();
-		int c = tripletaT.getColumna();
-		Object v = tripletaT.getValor();
-
-		NodoDoble primerNodo = getPrimerNodo();
-
-		NodoDoble antNodoQ = primerNodo;
-		NodoDoble nodoQ = antNodoQ.getLd(); // liga derecha para la lista de las filas
-		tripletaT = (Tripleta) nodoQ.getD();
-
-		// se busca la primera fila menor o igual a 'f'
-		while (nodoQ != primerNodo && tripletaT.getFila() < f) {
-			antNodoQ = nodoQ;
-			nodoQ = nodoQ.getLd();
-			tripletaT = (Tripleta) nodoQ.getD();
-		}
-
-		// se busca la primera columna menor o igual a 'c'
-		while (nodoQ != primerNodo && tripletaT.getColumna() < c) {
-			antNodoQ = nodoQ;
-			nodoQ = nodoQ.getLd();
-			tripletaT = (Tripleta) nodoQ.getD();
-		}
-
-		// si el nodo no existe en la matriz
-		if (nodoQ == primerNodo || f < tripletaT.getFila() || c < tripletaT.getColumna()) {
-
-			// se conecta el nodo entre 'antNodoQ' y 'nodoQ'
-			nodoX.setLd(nodoQ);
-			antNodoQ.setLd(nodoX);
-		} else { // ya existe
-
-			// si 'reemplazar' es 'true'
-			if (reemplazar) {
-				tripletaT.setValor(v);
-			} // else
-			return;
-		}
-	}
-
-	/**
-	 * Conecta un {@link NodoDoble} <b>x</b> en la posición que le corresponde según
-	 * su fila y columna. el {@link NodoDoble} es conectado en la lista de las
-	 * columnas, osea, utilizando su liga izquierda.<br>
-	 * Si ya existe un nodo con la misma <b>fila</b> y <b>columna</b> que el nodo
-	 * <b>x</b>, <b>reemplazar</b> determina que operación se hace.
-	 * 
-	 * @param nodoX      -> {@link NodoDoble} a conectar.
-	 * @param reemplazar -> Si es <code>true</code> se reemplaza el valor del nodo
-	 *                   en la matriz dispersa con el valor del nodo <b>x</b>. De lo
-	 *                   contrario no se reemplaza.
-	 */
-	public void conectarPorColumnas(NodoDoble nodoX, boolean reemplazar) {
-		Tripleta tripletaT = (Tripleta) nodoX.getD();
-		int f = tripletaT.getFila();
-		int c = tripletaT.getColumna();
-		Object v = tripletaT.getValor();
-
-		NodoDoble primerNodo = getPrimerNodo();
-
-		NodoDoble antNodoQ = primerNodo;
-		NodoDoble nodoQ = antNodoQ.getLi(); // liga izquierda para la lista de las columnas
-		tripletaT = (Tripleta) nodoQ.getD();
-
-		// se busca la primera columna menor o igual a 'c'
-		while (nodoQ != primerNodo && tripletaT.getColumna() < c) {
-			antNodoQ = nodoQ;
-			nodoQ = nodoQ.getLi();
-			tripletaT = (Tripleta) nodoQ.getD();
-		}
-
-		// se busca la primera fila menor o igual a 'f'
-		while (nodoQ != primerNodo && tripletaT.getFila() < f) {
-			antNodoQ = nodoQ;
-			nodoQ = nodoQ.getLi();
-			tripletaT = (Tripleta) nodoQ.getD();
-		}
-
-		// si el nodo no existe en la matriz
-		if (nodoQ == primerNodo || f < tripletaT.getFila() || c < tripletaT.getColumna()) {
-
-			// se conecta el nodo entre 'antNodoQ' y 'nodoQ'
-			nodoX.setLi(nodoQ);
-			antNodoQ.setLi(nodoX);
-		} else { // ya existe
-
-			// si 'reemplazar' es 'true'
-			if (reemplazar) {
-				tripletaT.setValor(v);
-			} // else
-			return;
-		}
-	}
-
-	/**
-	 * Retorna el {@link NodoDoble} que representa la matriz dispersa.
-	 * 
-	 * @return {@link NodoDoble} {@link #mat}
-	 */
-	public NodoDoble getNodoCabeza() {
-		return this.mat;
-	}
-
-	/**
-	 * Retorna el {@link NodoDoble} cabeza con el cual se puede recorrer la lista de
-	 * las filas y la lista de las columnas de la matriz dispersa.
-	 * <p>
-	 * Este {@link NodoDoble} está contenido en la liga derecha del
-	 * {@link NodoDoble} cabeza {@link #mat}.
-	 * 
-	 * @return {@link NodoDoble} cabeza que representa la lista de las filas y la
-	 *         lista de las columnas de la matriz dispersa.
-	 */
-	public NodoDoble getPrimerNodo() {
-		return this.mat.getLd();
-	}
-
-	/**
-	 * Retorna el elemento nulo o vacío que tiene definido esta matriz dispersa.
-	 * 
-	 * @return {@link #nulo}.
-	 */
-	public Object getNulo() {
-		return this.nulo;
-	}
-
-	/**
-	 * Retorna el número de filas que tiene esta matriz dispersa, el cual está en el
-	 * campo <b>fila</b> de la {@link Tripleta} contenida en el {@link NodoDoble}
-	 * cabeza {@link #mat}.
-	 * 
-	 * @return Número de filas de la matriz dispersa.
-	 */
-	public int getNumFilas() {
-		Tripleta t = (Tripleta) this.mat.getD();
-		int numFilas = t.getFila();
-		return numFilas;
-	}
-
-	/**
-	 * Retorna el número de columnas que tiene esta matriz dispersa, el cual está en
-	 * el campo <b>columna</b> de la {@link Tripleta} contenida en el
-	 * {@link NodoDoble} cabeza {@link #mat}.
-	 * 
-	 * @return Número de columnas de la matriz dispersa.
-	 */
-	public int getNumColumnas() {
-		Tripleta t = (Tripleta) this.mat.getD();
-		int numColumnas = t.getColumna();
-		return numColumnas;
-	}
-
-	/**
-	 * Busca en la matriz dispersa el dato correspondiente a los indíces (<b>i</b>,
-	 * <b>j</b>), si alguno de los indices está fuera del rango de la matriz
-	 * dispersa, ocurre una excepción.
-	 * 
-	 * @param i -> Indíce correspondiente a la fila.
-	 * @param j -> Indíce correcpondiente a la columna.
-	 * @return El dato en la posición (<b>i</b>, <b>j</b>). Si no se encuentra
-	 *         retorna {@link #nulo}.
-	 */
-	public Object get(int i, int j) {
-
-		int m = getNumFilas();
-		int n = getNumColumnas();
-
-		// se comprueban que los indíces estén dentro del rango del tamaño de la matriz
-		if ((i < 0 || i >= m) || (j < 0 || j >= m)) {
-			String error = "the index 'i' must be 0 <= i < %d, \n and 'j' must be 0 <= j < %d";
-			throw new IndexOutOfBoundsException(String.format(error, m, n));
-		}
-
-		NodoDoble primerNodo = getPrimerNodo();
-		NodoDoble nodoP = primerNodo.getLd();
-		Tripleta tripletaT = (Tripleta) nodoP.getD();
-
-		// se busca la fila 'i'
-		while (nodoP != primerNodo && tripletaT.getFila() < i) {
-			nodoP = nodoP.getLd();
-			tripletaT = (Tripleta) nodoP.getD();
-		}
-
-		// se busca la columna 'j'
-		while (nodoP != primerNodo && tripletaT.getColumna() < j) {
-			nodoP = nodoP.getLd();
-			tripletaT = (Tripleta) nodoP.getD();
-		}
-
-		// si se recorrió toda la lista o no se encontró un nodo con fila 'i' o columna
-		// 'j'
-		if (nodoP == primerNodo || i != tripletaT.getFila() || j != tripletaT.getColumna()) {
-			return this.nulo;
-		} else { // 'i' y 'j' se encontraron
-			return tripletaT.getValor();
-		}
-	}
-
-	/**
-	 * Crea un nodo con los datos entregados y lo inserta en donde corresponde. Si
-	 * ya existe un nodo con la misma <b>fila</b> y <b>columna</b>, se reemplaza el
-	 * valor de este. Si alguno de los indices está fuera del rango de la matriz,
-	 * ocurre una excepción.
-	 * 
-	 * @param i -> Fila en donde se asigna el valor <b>v</b>.
-	 * @param j -> Columna en donde se asigna el valor <b>v</b>.
-	 * @param v -> Valor que se asigna en la posición (<b>i</b>, <b>j</b>).
-	 */
-	public void set(int i, int j, Object v) {
-		int m = getNumFilas();
-		int n = getNumColumnas();
-
-		// se comprueban que los indíces estén dentro del rango del tamaño de la matriz
-		if ((i < 0 || i >= m) || (j < 0 || j >= m)) {
-			String error = "the index 'i' must be 0 <= i < %d, \n and 'j' must be 0 <= j < %d";
-			throw new IndexOutOfBoundsException(String.format(error, m, n));
-		}
-
-		Tripleta tripletaT = new Tripleta(i, j, v);
-		NodoDoble nodoX = new NodoDoble(tripletaT);
-		conectar(nodoX, true);
-	}
-
-	/**
-	 * Muestra los elementos diferentes de {@link #nulo} de la matriz dispersa,
-	 * ordenado ascendentemente por filas o columnas, según el valor del parámetro
-	 * <b>mode</b>.
-	 * 
-	 * @param mode -> Define el orden en el que se muestran los elementos
-	 *             diferenetes de <b>0</b>. <br>
-	 *             Si es <b>0</b>, se muestra ordenado por filas, si es <b>1</b>,
-	 *             ordenado por columnas.<br>
-	 *             Si es diferente de <b>0</b> o <b>1</b> provocará un
-	 *             {@link AssertionError}.
-	 */
-	public void show(int mode) {
-
-		assert (mode == 0 || mode == 1) : "\\'mode\\' must be 0 or 1";
-
-		NodoDoble primerNodo = getPrimerNodo();
-
-		NodoDoble nodoP = primerNodo; // NodoDoble para recorrer la matriz
-		Tripleta tripletaT;
-		int f, c;
-		Object v;
-
-		System.out.println(String.format("[%d, %d]", getNumFilas(), getNumColumnas()));
-
-		if (mode == 0) {
-			nodoP = nodoP.getLd();
-		} else {
-			nodoP = nodoP.getLi();
-		}
-
-		while (nodoP != primerNodo) {
-
-			tripletaT = (Tripleta) nodoP.getD();
-			f = tripletaT.getFila();
-			c = tripletaT.getColumna();
-			v = tripletaT.getValor();
-			System.out.println(String.format("(%d, %d, %s)", f, c, v));
-
-			// se pregunta si es por filas (0) o por columnas (1)
-			if (mode == 0) {
-				nodoP = nodoP.getLd(); // liga derecha para la lista de las filas
-			} else {
-				nodoP = nodoP.getLi(); // liga izquierda para la lista de las columnas
-			}
-		}
-	}
-
-	public void showLinked(int mode) {
-
-		assert (mode == 0 || mode == 1) : "\\'mode\\' must be 0 or 1";
-
-		NodoDoble primerNodo = getPrimerNodo();
-
-		NodoDoble nodoP = primerNodo; // NodoDoble para recorrer la matriz
-		Tripleta tripletaT;
-		int f, c;
-		Object v;
-
-		System.out.println(String.format("[%d, %d]", getNumFilas(), getNumColumnas()));
-
-		if (mode == 0) {
-			nodoP = nodoP.getLd();
-		} else {
-			nodoP = nodoP.getLi();
-		}
-
-		while (nodoP != primerNodo) {
-
-			tripletaT = (Tripleta) nodoP.getD();
-			f = tripletaT.getFila();
-			c = tripletaT.getColumna();
-			v = tripletaT.getValor();
-			System.out.print(String.format("(%d, %d, %s) --> ", f, c, v));
-
-			// se pregunta si es por filas (0) o por columnas (1)
-			if (mode == 0) {
-				nodoP = nodoP.getLd(); // liga derecha para la lista de las filas
-			} else {
-				nodoP = nodoP.getLi(); // liga izquierda para la lista de las columnas
-			}
-		}
-	}
-	
-	public void showAsArrayOfArrays() {
-		// TODO terminar
-	}
-
-	// pruebas
-	public static void main(String[] args) {
-		Object m[][] = { //
-				{ 0, 3, 1, 0 }, //
-				{ 6, 0, 0, 8 }, //
-				{ 2, 4, 5, 0 }, //
-		};
-		MatrizForma2 matriz = new MatrizForma2(m, 0);
-		matriz.show(0);
-		System.out.println(matriz.get(2, 0));
-		matriz.set(2, 0, "hola");
-		System.out.println(matriz.get(2, 0));
-		matriz.showLinked(0);
-	}
+    private NodoDobleT nodoCabeza;
+
+    public MatrizForma2(int m, int n) {
+
+        this.nodoCabeza = new NodoDobleT(new Tripleta(m, n, 0));
+        this.nodoCabeza.setLd(nodoCabeza);
+        this.nodoCabeza.setLi(nodoCabeza);
+
+    }
+
+    public MatrizForma2(int[][] m) {
+
+        this.nodoCabeza = new NodoDobleT(new Tripleta(m.length, m[0].length, 0));
+        this.nodoCabeza.setLd(nodoCabeza);
+        this.nodoCabeza.setLi(nodoCabeza);
+
+        for (int i = 0; i < m.length; i++) {
+
+            for (int j = 0; j < m[0].length; j++) {
+
+                if (m[i][j] != 0) {
+
+                    conectar(new NodoDobleT(new Tripleta(i, j, m[i][j])));
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public NodoDobleT getNodoCabeza() {
+
+        return nodoCabeza;
+
+    }
+
+    public int getNumFilas() {
+
+        return getNodoCabeza().getFila();
+
+    }
+
+    public int getNumColumnas() {
+
+        return getNodoCabeza().getColumna();
+
+    }
+
+    public boolean isEmpty() {
+
+        return getNodoCabeza().getLd() == getNodoCabeza();
+
+    }
+
+    public boolean finDeRecorrido(NodoDobleT p) {
+
+        return p == getNodoCabeza();
+
+    }
+
+    public void conectar(NodoDobleT x) {
+
+        conectarPorFilas(x);
+        conectarPorColumnas(x);
+
+    }
+
+    private void conectarPorFilas(NodoDobleT x) {
+
+        NodoDobleT antX, sigX;
+        antX = getNodoCabeza();
+        sigX = antX.getLd();
+
+        while (sigX != getNodoCabeza() && x.getFila() > sigX.getFila()) {
+
+            antX = sigX;
+            sigX = antX.getLd();
+
+        }
+
+        while (sigX != getNodoCabeza() && x.getFila() == sigX.getFila() && x.getColumna() > sigX.getColumna()) {
+
+            antX = sigX;
+            sigX = antX.getLd();
+
+        }
+
+        if (sigX != getNodoCabeza() && x.getFila() == sigX.getFila() && x.getColumna() == sigX.getColumna()) {
+
+            sigX.setValor(x.getValor());
+            return;
+
+        }
+
+        x.setLd(sigX);
+        antX.setLd(x);
+
+    }
+
+    private void conectarPorColumnas(NodoDobleT x) {
+
+        NodoDobleT antX, sigX;
+        antX = getNodoCabeza();
+        sigX = antX.getLi();
+
+        while (sigX != getNodoCabeza() && x.getColumna() > sigX.getColumna()) {
+
+            antX = sigX;
+            sigX = antX.getLi();
+
+        }
+
+        while (sigX != getNodoCabeza() && x.getColumna() == sigX.getColumna() && x.getFila() > sigX.getFila()) {
+
+            antX = sigX;
+            sigX = antX.getLi();
+
+        }
+
+        if (sigX != getNodoCabeza() && x.getColumna() == sigX.getColumna() && x.getFila() == sigX.getFila()) {
+
+            sigX.setValor(x.getValor());
+            return;
+
+        }
+
+        x.setLi(sigX);
+        antX.setLi(x);
+
+    }
+
+    public MatrizForma2 sum(MatrizForma2 matrizB) {
+
+        if (getNumFilas() != matrizB.getNumFilas() || getNumColumnas() != matrizB.getNumColumnas()) {
+
+            return null;
+
+        }
+
+        MatrizForma2 matrizC = new MatrizForma2(getNumFilas(), getNumColumnas());
+
+        NodoDobleT nodoA, nodoB, nodoC;
+        int s;
+
+        nodoA = getNodoCabeza().getLd();
+        nodoB = matrizB.getNodoCabeza().getLd();
+
+        while (nodoA != getNodoCabeza() && nodoB != matrizB.getNodoCabeza()) {
+
+            switch (Integer.compare(nodoA.getFila(), nodoB.getFila())) {
+
+                case 1:
+
+                    nodoC = new NodoDobleT(nodoB.getTripleta().clone());
+                    matrizC.conectar(nodoC);
+                    nodoB = nodoB.getLd();
+                    break;
+
+                case -1:
+
+                    nodoC = new NodoDobleT(nodoA.getTripleta().clone());
+                    matrizC.conectar(nodoC);
+                    nodoA = nodoA.getLd();
+                    break;
+
+                case 0:
+
+                    switch (Integer.compare(nodoA.getColumna(), nodoB.getColumna())) {
+
+                        case 1:
+
+                            nodoC = new NodoDobleT(nodoB.getTripleta().clone());
+                            matrizC.conectar(nodoC);
+                            nodoB = nodoB.getLd();
+                            break;
+
+                        case -1:
+
+                            nodoC = new NodoDobleT(nodoA.getTripleta().clone());
+                            matrizC.conectar(nodoC);
+                            nodoA = nodoA.getLd();
+                            break;
+
+                        case 0:
+
+                            s = (int) nodoA.getValor() + (int) nodoB.getValor();
+                            if (s != 0) {
+
+                                nodoC = new NodoDobleT(new Tripleta(nodoA.getFila(), nodoA.getColumna(), s));
+                                matrizC.conectar(nodoC);
+
+                            }
+
+                            nodoA = nodoA.getLd();
+                            nodoB = nodoB.getLd();
+                            break;
+
+                    }
+
+                    break;
+
+            }
+
+        }
+
+        return matrizC;
+
+    }
+
+    public MatrizForma2 multiply(MatrizForma2 matrizB) {
+
+        if (getNumColumnas() != matrizB.getNumFilas()) {
+
+            return null;
+
+        }
+
+        MatrizForma2 matrizC = new MatrizForma2(getNumFilas(), matrizB.getNumColumnas());
+
+        NodoDobleT nodoFilaA, nodoColumnaB, nodoC;
+        int s, fActual, cActual;
+
+        nodoFilaA = getNodoCabeza().getLd();
+        fActual = nodoFilaA.getFila();
+
+        while (nodoFilaA != getNodoCabeza()) {
+
+            nodoColumnaB = matrizB.getNodoCabeza().getLi();
+            cActual = nodoColumnaB.getColumna();
+
+            while (nodoColumnaB != matrizB.getNodoCabeza()) {
+
+                s = smult(nodoFilaA, nodoColumnaB);
+                if (s != 0) {
+
+                    nodoC = new NodoDobleT(new Tripleta(nodoFilaA.getFila(), nodoColumnaB.getColumna(), s));
+                    matrizC.conectar(nodoC);
+
+                }
+
+                while (nodoColumnaB != matrizB.getNodoCabeza() && nodoColumnaB.getColumna() == cActual) {
+
+                    nodoColumnaB = nodoColumnaB.getLi();
+
+                }
+
+                cActual = nodoColumnaB.getColumna();
+
+            }
+
+            while (nodoFilaA != getNodoCabeza() && nodoFilaA.getFila() == fActual) {
+
+                nodoFilaA = nodoFilaA.getLd();
+
+            }
+
+            fActual = nodoFilaA.getFila();
+
+        }
+
+        return matrizC;
+
+    }
+
+    private int smult(NodoDobleT nodoFilaA, NodoDobleT nodoColumnaB) {
+
+        int s = 0;
+        NodoDobleT nodoA, nodoB;
+
+        nodoA = nodoFilaA;
+        nodoB = nodoColumnaB;
+
+        while (nodoA.getFila() == nodoFilaA.getFila() && nodoB.getColumna() == nodoColumnaB.getColumna()) {
+
+            switch (Integer.compare(nodoA.getColumna(), nodoB.getFila())) {
+
+                case 1:
+
+                    nodoB = nodoB.getLi();
+                    break;
+
+                case -1:
+
+                    nodoA = nodoA.getLd();
+                    break;
+
+                case 0:
+
+                    s += (int) nodoA.getValor() * (int) nodoB.getValor();
+                    nodoA = nodoA.getLd();
+                    nodoB = nodoB.getLi();
+                    break;
+
+            }
+
+        }
+
+        return s;
+
+    }
+
+    @Override
+    public String toString() {
+
+        String s = String.format("{%d, %d}", getNumFilas(), getNumColumnas());
+
+        NodoDobleT nodoX;
+        int f = 0;
+
+        nodoX = getNodoCabeza().getLd();
+
+        while (nodoX != nodoCabeza) {
+
+            while (nodoX.getFila() == f) {
+
+                s = s.concat(" -> " + nodoX.getTripleta().toString());
+
+                nodoX = nodoX.getLd();
+
+            }
+
+            f++;
+
+        }
+
+        return s;
+
+    }
+
+    public String toMatrixRepr(int widthFix) {
+
+        String s, line;
+        line = ("┬" + "─".repeat(widthFix)).repeat(getNumColumnas()) + "┐\n";
+        line = line.replaceFirst("┬", "┌");
+        s = line;
+
+        NodoDobleT nodoX;
+
+        nodoX = getNodoCabeza().getLd();
+
+        for (int i = 0; i < getNumFilas(); i++) {
+
+            for (int j = 0; j < getNumColumnas(); j++) {
+
+                if (nodoX != getNodoCabeza() && nodoX.getFila() == i && nodoX.getColumna() == j) {
+
+                    s = s.concat(String.format("│%" + widthFix + "d", nodoX.getValor()));
+
+                    nodoX = nodoX.getLd();
+
+                } else {
+
+                    s = s.concat(String.format("│%" + widthFix + "d", 0));
+
+                }
+
+            }
+
+            if (i < getNumFilas() - 1) {
+
+                line = "│\n" + ("┼" + "─".repeat(widthFix)).repeat(getNumColumnas()) + "┤\n";
+                line = line.replaceFirst("┼", "├");
+
+            } else {
+
+                line = "│\n" + ("┴" + "─".repeat(widthFix)).repeat(getNumColumnas()) + "┘\n";
+                line = line.replaceFirst("┴", "└");
+
+            }
+            s = s.concat(line);
+
+        }
+
+        return s;
+
+    }
+
+    public void showAsMatrixRepr() {
+
+        System.out.println(toMatrixRepr(4));
+
+    }
+
+    public void show() {
+
+        System.out.println(toString());
+
+    }
+
+    public static void main(String[] args) {
+
+        int[][] m = {
+                { -2, 3 },
+                { -5, -5 },
+                { 0, -6 },
+                { 0, 0 },
+                { 40, 1 },
+        };
+
+        int[][] m2 = {
+                { 1, -5, 0 },
+                { -8, 5, 2 },
+        };
+
+        int[][] m3 = {
+                { 2, 2 },
+                { 2, 0 },
+                { 0, -12 }
+        };
+
+        MatrizForma2 a = new MatrizForma2(m);
+        MatrizForma2 b = new MatrizForma2(m2);
+        MatrizForma2 c = new MatrizForma2(m3);
+
+        a.showAsMatrixRepr();
+        System.out.println("   *\n");
+        b.showAsMatrixRepr();
+
+        System.out.println("   =\n");
+
+        MatrizForma2 s = a.multiply(b);
+        s.showAsMatrixRepr();
+        s.show();
+
+    }
 
 }

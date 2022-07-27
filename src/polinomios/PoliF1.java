@@ -363,7 +363,7 @@ public class PoliF1 {
         poliF1_C = new PoliF1(gradeC, getVariable());
 
         i = 1;
-        while (i <= getGrade() + 1 && !poliF2LSL_B.FinDeRecorrido(nodoB)) {
+        while (i <= getGrade() + 1 && !poliF2LSL_B.finDeRecorrido(nodoB)) {
 
             coefA = getCoef(i);
             expA = getExp(i);
@@ -400,7 +400,7 @@ public class PoliF1 {
             i++;
 
         }
-        while (!poliF2LSL_B.FinDeRecorrido(nodoB)) {
+        while (!poliF2LSL_B.finDeRecorrido(nodoB)) {
 
             termB = (Termino) nodoB.getDato();
             coefB = termB.getCoef();
@@ -542,7 +542,7 @@ public class PoliF1 {
 
             nodoB = poliF2LSL_B.getPrimerNodo();
 
-            while (!poliF2LSL_B.FinDeRecorrido(nodoB)) {
+            while (!poliF2LSL_B.finDeRecorrido(nodoB)) {
 
                 termB = (Termino) nodoB.getDato();
                 coefB = termB.getCoef();

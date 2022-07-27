@@ -31,23 +31,23 @@ public class LDL {
 	}
 
 	public NodoDoble Anterior(NodoDoble p) {
-		return p.RetornarLi();
+		return p.getLi();
 	}
 
 	public void RecorrerLista() {
 		NodoDoble p = Primero;
 		while (!FinDeRecorrido(p)) {
-			System.out.println(p.RetornarDato());
-			p = p.RetornarLd();
+			System.out.println(p.getDato());
+			p = p.getLd();
 		}
 	}
 
 	public NodoDoble BuscarDondeInsertar(Object d) {
 		NodoDoble p = Primero;
-		while (!FinDeRecorrido(p) && d.hashCode() > p.RetornarDato().hashCode()) {
-			p = p.RetornarLd();
+		while (!FinDeRecorrido(p) && d.hashCode() > p.getDato().hashCode()) {
+			p = p.getLd();
 		}
-		return p.RetornarLi();
+		return p.getLi();
 	}
 
 	public void Insertar(Object d, NodoDoble anterior) {
@@ -60,25 +60,25 @@ public class LDL {
 			if (Primero == null) {
 				ultimo = x;
 			}
-			x.AsignarLd(Primero);
+			x.setLd(Primero);
 			Primero = x;
 			return;
 		}
-		x.AsignarLd(ax.RetornarLd());
-		x.AsignarLi(ax);
-		ax.AsignarLd(x);
+		x.setLd(ax.getLd());
+		x.setLi(ax);
+		ax.setLd(x);
 		if (ax == ultimo) {
 			ultimo = x;
 			return;
 		} else {
-			x.RetornarLd().AsignarLi(x);
+			x.getLd().setLi(x);
 		}
 	}
 
 	public NodoDoble BuscarDato(Object d) {
 		NodoDoble p = Primero;
-		while (!FinDeRecorrido(p) && p.RetornarDato() != d) {
-			p = p.RetornarLd();
+		while (!FinDeRecorrido(p) && p.getDato() != d) {
+			p = p.getLd();
 		}
 		if (p == null) {
 			System.out.println("ERROR: Dato no encontrado");
@@ -88,7 +88,7 @@ public class LDL {
 
 	public void Borrar(NodoDoble x) {
 		if (x == null) {
-			System.out.println("ERROR: Parámetro inválido");
+			System.out.println("ERROR: Par?metro inv?lido");
 			return;
 		}
 		Desconectar(x);
@@ -96,18 +96,18 @@ public class LDL {
 
 	public void Desconectar(NodoDoble x) {
 		if (x == Primero) {
-			Primero = x.RetornarLd();
+			Primero = x.getLd();
 			if (x == ultimo) {
 				ultimo = Primero;
 				return;
 			}
-			Primero.AsignarLi(null);
+			Primero.setLi(null);
 		}
-		x.RetornarLi().AsignarLd(x.RetornarLd());
+		x.getLi().setLd(x.getLd());
 		if (x == ultimo) {
-			ultimo = x.RetornarLi();
+			ultimo = x.getLi();
 		} else {
-			x.RetornarLd().AsignarLi(x.RetornarLi());
+			x.getLd().setLi(x.getLi());
 		}
 	}
 }

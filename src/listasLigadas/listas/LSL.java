@@ -1,34 +1,65 @@
 package listasLigadas.listas;
 
-import javax.swing.JOptionPane;
-
 import listasLigadas.nodos.NodoSimple;
 
+/**
+ * Clase Lista Simplemente Ligada
+ */
 public class LSL {
+
+	/**
+	 * Apuntadores hacia el primer y último nodo de esta lista
+	 */
+	protected NodoSimple primerNodo, ultimoNodo;
 
 	public LSL() {
 		primerNodo = null;
 		ultimoNodo = null;
 	}
 
-	protected NodoSimple primerNodo, ultimoNodo;
-
+	/**
+	 * Retorna el primer nodo de esta lista
+	 * 
+	 * @return {@link #primerNodo}
+	 */
 	public NodoSimple getPrimerNodo() {
 		return primerNodo;
 	}
 
+	/**
+	 * Retorna el último nodo de esta lista
+	 * 
+	 * @return {@link #ultimoNodo}
+	 */
 	public NodoSimple getUltimoNodo() {
 		return ultimoNodo;
 	}
 
+	/**
+	 * Comprueba si esta lista está vacía.
+	 * 
+	 * @return {@code true} si {@code primerNodo == null}, {@code false} de lo
+	 *         contrario.
+	 */
 	public boolean isEmpty() {
 		return primerNodo == null;
 	}
 
-	public boolean FinDeRecorrido(NodoSimple p) {
+	/**
+	 * Evalua si el nodo <b>p</b> ya recorrió esta lista por completo.
+	 * 
+	 * @param p {@link NodoSimple} a evaluar.
+	 * @return {@code true} si el nodo <b>p</b> ya recorrió esta lista.
+	 */
+	public boolean finDeRecorrido(NodoSimple p) {
 		return p == null;
 	}
 
+	/**
+	 * Retorna el número de nodos que contiene esta lista
+	 * 
+	 * @return Número de nodos de esta lista.
+	 */
 	public int getSize() {
 
 		if (isEmpty()) {
@@ -47,7 +78,13 @@ public class LSL {
 
 	}
 
-	public NodoSimple Anterior(NodoSimple p) {
+	/**
+	 * Busca y retorna el nodo anterior a <b>p</b>.
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public NodoSimple anterior(NodoSimple p) {
 		if (p == primerNodo) {
 			return null;
 		} else {
@@ -59,26 +96,18 @@ public class LSL {
 		}
 	}
 
-	public void RecorrerLista() {
+	public NodoSimple buscarDondeInsertar(Object d) {
 		NodoSimple p = getPrimerNodo();
-		while (!FinDeRecorrido(p)) {
-			System.out.println(p.getDato());
+		while (!finDeRecorrido(p) && d.hashCode() < p.getDato().hashCode()) {
 			p = p.getLiga();
 		}
-	}
-
-	public NodoSimple BuscarDondeInsertar(Object d) {
-		NodoSimple p = getPrimerNodo();
-		while (!FinDeRecorrido(p) && d.hashCode() < p.getDato().hashCode()) {
-			p = p.getLiga();
-		}
-		NodoSimple ap = Anterior(p);
+		NodoSimple ap = anterior(p);
 		return ap;
 	}
 
-	public void Insertar(Object d, NodoSimple anterior) {
+	public void insertar(Object d, NodoSimple anterior) {
 		NodoSimple x = new NodoSimple(d);
-		Conectar(x, anterior);
+		conectar(x, anterior);
 	}
 
 	/**
@@ -89,7 +118,7 @@ public class LSL {
 	 * @param x  {@link NodoSimple} a conectar.
 	 * @param ax {@link NodoSimple} anterior a <b>x</b>.
 	 */
-	public void Conectar(NodoSimple x, NodoSimple ax) {
+	public void conectar(NodoSimple x, NodoSimple ax) {
 		if (ax == null) {
 			x.setLiga(primerNodo);
 			primerNodo = x;
@@ -108,35 +137,39 @@ public class LSL {
 	}
 
 	/**
-	 * A?ade el {@link NodoSimple} <b>x</b> al final de la lista.
+	 * Añade el {@link NodoSimple} <b>x</b> al final de la lista.
 	 * 
-	 * @param x {@link NodoSimple} a a�adir.
+	 * @param x {@link NodoSimple} a aadir.
 	 */
 	public void add(NodoSimple x) {
-		Conectar(x, getUltimoNodo());
+		conectar(x, getUltimoNodo());
 	}
 
-	public NodoSimple BuscarDato(Object d) {
-		if (isEmpty()) {
-			JOptionPane.showMessageDialog(null, "La lista est� vacia");
-			return null;
-		}
+	/**
+	 * Busca y retorna el {@link NodoSimple} que contiene el dato <b>d</b>.
+	 * 
+	 * @param d Dato a buscar.
+	 * @return {@link NodoSimple} con el dato <b>d</b>. Si el dato <b>d</b> no se
+	 *         encontró, se retorna {@code null}.
+	 */
+	public NodoSimple buscarDato(Object d) {
+
+		assert (!isEmpty()) : "La lista está vacia";
+
 		NodoSimple p = getPrimerNodo();
-		while (!FinDeRecorrido(p) && d.hashCode() != p.getDato().hashCode()) {
+		while (!finDeRecorrido(p) && d != p.getDato()) {
 			p = p.getLiga();
 		}
-		if (p == null) {
-			System.out.println("Dato no encontrado");
-		}
 		return p;
+
 	}
 
-	public void Borrar(NodoSimple x) {
+	public void borrar(NodoSimple x) {
 		if (x == null) {
-			System.out.println("ERROR = Par�metro inv�lido");
+			System.out.println("ERROR = Parmetro invlido");
 			return;
 		}
-		desconectar(x, Anterior(x));
+		desconectar(x, anterior(x));
 	}
 
 	public void desconectar(NodoSimple x, NodoSimple ax) {
@@ -152,11 +185,11 @@ public class LSL {
 		ax.setLiga(x.getLiga());
 	}
 
-	public void Invertir() {
+	public void invertir() {
 		NodoSimple p, q, r;
 		p = getPrimerNodo();
-		q = Anterior(p);
-		while (!FinDeRecorrido(p)) {
+		q = anterior(p);
+		while (!finDeRecorrido(p)) {
 			r = q;
 			q = p;
 			p = p.getLiga();

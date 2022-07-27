@@ -260,7 +260,7 @@ public class PoliF2 {
         nodoB = poliF2LSL_B.getPrimerNodo();
         k = 1;
 
-        while (i <= numElemNoCeroA && !poliF2LSL_B.FinDeRecorrido(nodoB)) {
+        while (i <= numElemNoCeroA && !poliF2LSL_B.finDeRecorrido(nodoB)) {
 
             termA = getTerm(i);
             termB = (Termino) nodoB.getDato();
@@ -306,7 +306,7 @@ public class PoliF2 {
             k++;
 
         }
-        while (!poliF2LSL_B.FinDeRecorrido(nodoB)) {
+        while (!poliF2LSL_B.finDeRecorrido(nodoB)) {
 
             termB = (Termino) nodoB.getDato();
             termC = new Termino(termB.getCoef(), termB.getExp());

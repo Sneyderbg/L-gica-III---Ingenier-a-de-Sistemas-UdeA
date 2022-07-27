@@ -1,36 +1,42 @@
 package listasLigadas.nodos;
 
 public class NodoSimple {
+
+	private Object dato;
+	private NodoSimple liga;
+
 	public NodoSimple() {
-		Dato = null;
+		dato = null;
 	}
 
 	public NodoSimple(Object d) {
-		Dato = d;
+		dato = d;
 	}
 
-	private Object Dato;
-	private NodoSimple Liga;
-
+	public NodoSimple(Object d, NodoSimple liga){
+		this.dato = d;
+		this.liga = liga;
+	}
+	
 	public Object getDato() {
-		return Dato;
+		return dato;
 	}
 
 	public NodoSimple getLiga() {
-		return Liga;
+		return liga;
 	}
 
 	public void setDato(Object D) {
-		Dato = D;
+		dato = D;
 	}
 
 	public void setLiga(NodoSimple X) {
-		Liga = X;
+		liga = X;
 	}
 
 	@Override
 	public String toString() {
-		return Dato.toString();
+		return dato.toString();
 	}
-	
+
 }

@@ -7,32 +7,34 @@ public class NodoDoble {
 
 	public NodoDoble(Object d) {
 		Dato = d;
+		this.Li = null;
+		this.Ld = null;
 	}
 
 	private Object Dato;
 	private NodoDoble Li, Ld;
 
-	public Object RetornarDato() {
+	public Object getDato() {
 		return Dato;
 	}
 
-	public NodoDoble RetornarLi() {
+	public NodoDoble getLi() {
 		return Li;
 	}
 
-	public NodoDoble RetornarLd() {
+	public NodoDoble getLd() {
 		return Ld;
 	}
 
-	public void AsignarDato(Object D) {
+	public void setDato(Object D) {
 		Dato = D;
 	}
 
-	public void AsignarLi(NodoDoble X) {
+	public void setLi(NodoDoble X) {
 		Li = X;
 	}
 
-	public void AsignarLd(NodoDoble X) {
+	public void setLd(NodoDoble X) {
 		Ld = X;
 	}
 }

@@ -1,36 +1,26 @@
 ﻿package nodos;
 
+import listasLigadas.nodos.NodoSimple;
+
 /**
  * Clase que representa un nodo con 3 campos para las listas generalizadas.
  * 
  * @author sneyd
  *
  */
-public class NodoLg {
+public class NodoLg extends NodoSimple {
 
 	/**
 	 * Indica si el campo {@link #dato} es un átomo o es un apuntador hacia una
 	 * sublista, <b>0</b> y <b>1</b> respectivamente.
 	 */
-	private int sw;
+	private boolean sw;
 
 	/**
-	 * Dato del nodo.
+	 * Inicializa el nodo con el campo de dato dado.
 	 */
-	private Object dato;
-
-	/**
-	 * Liga derecha del nodo.
-	 */
-	private NodoLg liga;
-
-	/**
-	 * Inicializa el nodo solo con el campo de liga.
-	 */
-	public NodoLg(NodoLg l) {
-		this.liga = l;
-		this.sw = 0;
-		this.dato = null;
+	public NodoLg() {
+		super(null);
 	}
 
 	/**
@@ -42,35 +32,17 @@ public class NodoLg {
 	 * @param d  Dato a almacenar en el nodo.
 	 * @param l  {@link NodoLg} al cual apunta la liga de este nodo.
 	 */
-	public NodoLg(int sw, Object d, NodoLg l) {
-		assert sw == 0 || sw == 1 : "sw must be 0 or 1";
+	public NodoLg(boolean sw, Object d, NodoLg l) {
+		super(d, l);
 		this.sw = sw;
-		this.dato = d;
-		this.liga = l;
 	}
 
-	public int getSw() {
+	public boolean getSw() {
 		return sw;
 	}
 
-	public void setSw(int sw) {
+	public void setSw(boolean sw) {
 		this.sw = sw;
-	}
-
-	public Object getDato() {
-		return dato;
-	}
-
-	public void setDato(Object dato) {
-		this.dato = dato;
-	}
-
-	public NodoLg getLiga() {
-		return liga;
-	}
-
-	public void setLiga(NodoLg liga) {
-		this.liga = liga;
 	}
 
 	@Override
@@ -78,15 +50,15 @@ public class NodoLg {
 		String r, fields, d, l;
 		r = "NLg" + "@" + Integer.toHexString(hashCode());
 
-		if (dato == null) {
+		if (getDato() == null) {
 			d = "null";
 		} else {
-			d = dato.toString();
+			d = getDato().toString();
 		}
-		if (liga == null) {
+		if (getLiga() == null) {
 			l = "null";
 		} else {
-			l = "@" + Integer.toHexString(liga.hashCode());
+			l = "@" + Integer.toHexString(getLiga().hashCode());
 		}
 		fields = String.format("(sw=%d,d=%s,l=%s)", sw, d, l);
 
