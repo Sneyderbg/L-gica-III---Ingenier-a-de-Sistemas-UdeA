@@ -476,6 +476,7 @@ public class MatrizForma2 implements MatrizDispersa {
 
     }
 
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
 
         int[][] m = {
@@ -500,7 +501,7 @@ public class MatrizForma2 implements MatrizDispersa {
         MatrizForma2 a = new MatrizForma2(m);
         MatrizForma2 b = new MatrizForma2(m2);
         MatrizForma2 c = new MatrizForma2(m3);
-
+        
         a.showAsMatrixRepr();
         System.out.println("   *\n");
         b.showAsMatrixRepr();

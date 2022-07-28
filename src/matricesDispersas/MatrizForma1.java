@@ -493,6 +493,7 @@ public class MatrizForma1 implements MatrizDispersa {
 
     }
 
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
 
         int[][] m = {
