@@ -2,7 +2,7 @@ package matricesDispersas;
 
 import java.util.ArrayList;
 
-public class MatrizEnTripletas {
+public class MatrizEnTripletas implements MatrizDispersa {
 
     private ArrayList<Tripleta> V;
 
@@ -91,6 +91,75 @@ public class MatrizEnTripletas {
     public void add(int f, int c, int v) {
 
         addTripleta(new Tripleta(f, c, v));
+
+    }
+
+    @Override
+    public Object get(int i, int j) {
+
+        if (i < 0 || j < 0 || i >= getNumFilas() || j >= getNumColumnas()) {
+
+            throw new IndexOutOfBoundsException();
+
+        }
+
+        Tripleta t;
+        int idx = 1;
+
+        while (idx <= getNumTripletas() && i > (t = getTripleta(idx)).getFila()) {
+
+            idx++;
+
+        }
+
+        while (idx <= getNumTripletas() && i == (t = getTripleta(idx)).getFila() && j > t.getColumna()) {
+
+            idx++;
+
+        }
+
+        if (idx <= getNumTripletas() && i == (t = getTripleta(idx)).getFila() && j == t.getColumna()) {
+
+            return t.getValor();
+
+        }
+
+        return 0;
+
+    }
+
+    @Override
+    public void set(int i, int j, Object val) {
+
+        if (i < 0 || j < 0 || i >= getNumFilas() || j >= getNumColumnas()) {
+
+            throw new IndexOutOfBoundsException();
+
+        }
+
+        Tripleta t;
+        int idx = 1;
+
+        while (idx <= getNumTripletas() && i > (t = getTripleta(idx)).getFila()) {
+
+            idx++;
+
+        }
+
+        while (idx <= getNumTripletas() && i == (t = getTripleta(idx)).getFila() && j > t.getColumna()) {
+
+            idx++;
+
+        }
+
+        if (idx <= getNumTripletas() && i == (t = getTripleta(idx)).getFila() && j == t.getColumna()) {
+
+            t.setValor(val);
+            return;
+
+        }
+
+        insertTripleta(new Tripleta(i, j, val), true);
 
     }
 
@@ -210,7 +279,14 @@ public class MatrizEnTripletas {
 
     }
 
-    public MatrizEnTripletas sum(MatrizEnTripletas b) {
+    @Override
+    public MatrizEnTripletas sum(MatrizDispersa B) {
+
+        return sumT((MatrizEnTripletas) B);
+
+    }
+
+    private MatrizEnTripletas sumT(MatrizEnTripletas b) {
 
         assert (getNumFilas() == b.getNumFilas() && getNumColumnas() == b.getNumColumnas());
 
@@ -291,7 +367,14 @@ public class MatrizEnTripletas {
 
     }
 
-    public MatrizEnTripletas multiply(MatrizEnTripletas b) {
+    @Override
+    public MatrizEnTripletas multiply(MatrizDispersa B) {
+
+        return multiplyT((MatrizEnTripletas) B);
+
+    }
+
+    private MatrizEnTripletas multiplyT(MatrizEnTripletas b) {
 
         assert (getNumColumnas() == b.getNumFilas());
 
@@ -423,7 +506,7 @@ public class MatrizEnTripletas {
     }
 
     @Override
-    public String   toString() {
+    public String toString() {
 
         String s = String.format("[%d, %d, %d]\n", getNumFilas(), getNumColumnas(), getNumTripletas());
 
@@ -525,7 +608,11 @@ public class MatrizEnTripletas {
 
         System.out.println("---------");
 
-        c = a.multiply(b);
+        c = a.multiplyT(b);
+        c.showAsMatrixRepr();
+        c.show();
+
+        c.set(2, 2, 12);
         c.showAsMatrixRepr();
         c.show();
 

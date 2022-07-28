@@ -2,7 +2,7 @@ package matricesDispersas;
 
 import nodos.NodoDobleT;
 
-public class MatrizForma2 {
+public class MatrizForma2 implements MatrizDispersa {
 
     private NodoDobleT nodoCabeza;
 
@@ -63,6 +63,73 @@ public class MatrizForma2 {
     public boolean finDeRecorrido(NodoDobleT p) {
 
         return p == getNodoCabeza();
+
+    }
+
+    @Override
+    public Object get(int i, int j) {
+
+        if (i < 0 || j < 0 || i >= getNumFilas() || j >= getNumColumnas()) {
+
+            throw new IndexOutOfBoundsException();
+
+        }
+
+        NodoDobleT nodoX = getNodoCabeza().getLd();
+
+        while (nodoX != getNodoCabeza() && i > nodoX.getFila()) {
+
+            nodoX = nodoX.getLd();
+
+        }
+
+        while (nodoX != getNodoCabeza() && i == nodoX.getFila() && j > nodoX.getColumna()) {
+
+            nodoX = nodoX.getLd();
+
+        }
+
+        if (nodoX != getNodoCabeza() && i == nodoX.getFila() && j == nodoX.getColumna()) {
+
+            return nodoX.getValor();
+
+        }
+
+        return 0;
+
+    }
+
+    @Override
+    public void set(int i, int j, Object val) {
+
+        if (i < 0 || j < 0 || i >= getNumFilas() || j >= getNumColumnas()) {
+
+            throw new IndexOutOfBoundsException();
+
+        }
+
+        NodoDobleT nodoX = getNodoCabeza().getLd();
+
+        while (nodoX != getNodoCabeza() && i > nodoX.getFila()) {
+
+            nodoX = nodoX.getLd();
+
+        }
+
+        while (nodoX != getNodoCabeza() && i == nodoX.getFila() && j > nodoX.getColumna()) {
+
+            nodoX = nodoX.getLd();
+
+        }
+
+        if (nodoX != getNodoCabeza() && i == nodoX.getFila() && j == nodoX.getColumna()) {
+
+            nodoX.setValor(val);
+            return;
+
+        }
+
+        conectar(new NodoDobleT(new Tripleta(i, j, val)));
 
     }
 
@@ -137,7 +204,14 @@ public class MatrizForma2 {
 
     }
 
-    public MatrizForma2 sum(MatrizForma2 matrizB) {
+    @Override
+    public MatrizForma2 sum(MatrizDispersa B) {
+
+        return sumF2((MatrizForma2) B);
+
+    }
+
+    private MatrizForma2 sumF2(MatrizForma2 matrizB) {
 
         if (getNumFilas() != matrizB.getNumFilas() || getNumColumnas() != matrizB.getNumColumnas()) {
 
@@ -215,7 +289,14 @@ public class MatrizForma2 {
 
     }
 
-    public MatrizForma2 multiply(MatrizForma2 matrizB) {
+    @Override
+    public MatrizForma2 multiply(MatrizDispersa B) {
+
+        return multiplyF2((MatrizForma2) B);
+
+    }
+
+    private MatrizForma2 multiplyF2(MatrizForma2 matrizB) {
 
         if (getNumColumnas() != matrizB.getNumFilas()) {
 
