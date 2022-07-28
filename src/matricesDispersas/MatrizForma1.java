@@ -1,7 +1,5 @@
 package matricesDispersas;
 
-import java.nio.channels.NetworkChannel;
-
 import nodos.NodoDobleT;
 
 public class MatrizForma1 implements MatrizDispersa {
