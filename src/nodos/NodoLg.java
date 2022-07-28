@@ -14,7 +14,7 @@ public class NodoLg extends NodoSimple {
 	 * Indica si el campo {@link #dato} es un átomo o es un apuntador hacia una
 	 * sublista, <b>0</b> y <b>1</b> respectivamente.
 	 */
-	private boolean sw;
+	private int sw;
 
 	/**
 	 * Inicializa el nodo con el campo de dato dado.
@@ -32,16 +32,16 @@ public class NodoLg extends NodoSimple {
 	 * @param d  Dato a almacenar en el nodo.
 	 * @param l  {@link NodoLg} al cual apunta la liga de este nodo.
 	 */
-	public NodoLg(boolean sw, Object d, NodoLg l) {
+	public NodoLg(int sw, Object d, NodoLg l) {
 		super(d, l);
 		this.sw = sw;
 	}
 
-	public boolean getSw() {
+	public int getSw() {
 		return sw;
 	}
 
-	public void setSw(boolean sw) {
+	public void setSw(int sw) {
 		this.sw = sw;
 	}
 

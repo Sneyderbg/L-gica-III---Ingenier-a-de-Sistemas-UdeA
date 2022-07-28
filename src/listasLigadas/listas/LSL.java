@@ -26,6 +26,10 @@ public class LSL {
 		return primerNodo;
 	}
 
+	protected void setPrimerNodo(NodoSimple primerNodo) {
+		this.primerNodo = primerNodo;
+	}
+
 	/**
 	 * Retorna el último nodo de esta lista
 	 * 
@@ -33,6 +37,10 @@ public class LSL {
 	 */
 	public NodoSimple getUltimoNodo() {
 		return ultimoNodo;
+	}
+
+	protected void setUltimoNodo(NodoSimple ultimoNodo) {
+		this.ultimoNodo = ultimoNodo;
 	}
 
 	/**
@@ -198,4 +206,34 @@ public class LSL {
 		ultimoNodo = primerNodo;
 		primerNodo = q;
 	}
+
+	@Override
+	public String toString() {
+
+		String s = "";
+
+		NodoSimple nodoX = getPrimerNodo();
+
+		while (!finDeRecorrido(nodoX)) {
+
+			if (nodoX != getPrimerNodo()) {
+
+				s = s.concat(", ");
+
+			}
+
+			s = s.concat(nodoX.getDato().toString());
+
+		}
+
+		return s;
+
+	}
+
+	public void show() {
+
+		System.out.println(toString());
+
+	}
+
 }
