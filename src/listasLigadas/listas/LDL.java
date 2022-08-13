@@ -1,6 +1,6 @@
 package listasLigadas.listas;
 
-import listasLigadas.nodos.NodoDoble;
+import nodos.NodoDoble;
 
 public class LDL {
 	public LDL() {

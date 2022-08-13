@@ -1,4 +1,4 @@
-package listasLigadas.nodos;
+package nodos;
 
 public class NodoSimple {
 

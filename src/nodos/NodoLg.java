@@ -1,7 +1,5 @@
 ﻿package nodos;
 
-import listasLigadas.nodos.NodoSimple;
-
 /**
  * Clase que representa un nodo con 3 campos para las listas generalizadas.
  * 

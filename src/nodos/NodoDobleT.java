@@ -1,6 +1,5 @@
 ﻿package nodos;
 
-import listasLigadas.nodos.NodoDoble;
 import matricesDispersas.Tripleta;
 
 /**

@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import listasLigadas.listas.LSL;
-import listasLigadas.nodos.NodoSimple;
+import nodos.NodoSimple;
 
 /**
  * Clase que representa Polinomios en La forma 2, y en Listas Simplemente

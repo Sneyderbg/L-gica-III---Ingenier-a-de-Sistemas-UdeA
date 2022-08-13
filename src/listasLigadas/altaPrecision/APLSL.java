@@ -1,7 +1,7 @@
 package listasLigadas.altaPrecision;
 
 import listasLigadas.listas.LSL;
-import listasLigadas.nodos.NodoSimple;
+import nodos.NodoSimple;
 
 public class APLSL extends LSL 
 {

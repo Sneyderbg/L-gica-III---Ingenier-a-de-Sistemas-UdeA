@@ -1,7 +1,5 @@
 ﻿package nodos;
 
-import listasLigadas.nodos.NodoDoble;
-
 public class NodoAVL extends NodoDoble {
 
 	private int Fb;

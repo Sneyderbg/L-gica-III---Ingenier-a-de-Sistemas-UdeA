@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import listasLigadas.nodos.NodoSimple;
+import nodos.NodoSimple;
 
 public class PoliF2 {
 

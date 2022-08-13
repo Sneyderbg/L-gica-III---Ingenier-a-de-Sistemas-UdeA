@@ -1,6 +1,6 @@
 package listasLigadas.listas;
 
-import listasLigadas.nodos.NodoSimple;
+import nodos.NodoSimple;
 
 public class LSLC extends LSL {
 	public LSLC() {

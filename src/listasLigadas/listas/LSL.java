@@ -1,6 +1,6 @@
 package listasLigadas.listas;
 
-import listasLigadas.nodos.NodoSimple;
+import nodos.NodoSimple;
 
 /**
  * Clase Lista Simplemente Ligada

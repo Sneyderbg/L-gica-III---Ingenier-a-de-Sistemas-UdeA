@@ -9,7 +9,7 @@ import nodos.NodoLg;
  * Esta clase representa un árbol n-ario cualquiera en forma de lista
  * generalizada.
  */
-public class arbolLg extends Lg {
+public class ArbolLg extends Lg {
 
     /**
      * Raíz de este árbol.
@@ -24,7 +24,7 @@ public class arbolLg extends Lg {
      *             de lo contrario arrojará una excepción.
      * @throws IllegalArgumentException Si {@code root == null}.
      */
-    public arbolLg(NodoLg root) {
+    public ArbolLg(NodoLg root) {
 
         super();
 
@@ -57,12 +57,12 @@ public class arbolLg extends Lg {
      * @param arbolStr String que representa el árbol a construir.
      * @param startIdx Índice en el String el cual indica donde comienza el arbol
      *                 que se va a construir.
-     * @return {@link arbolLg} que representa el String dado.
+     * @return {@link ArbolLg} que representa el String dado.
      */
-    private static arbolLg consArbolLg(String arbolStr, AtomicInteger startIdx) {
+    private static ArbolLg consArbolLg(String arbolStr, AtomicInteger startIdx) {
 
-        arbolLg A = null;
-        arbolLg subArbol;
+        ArbolLg A = null;
+        ArbolLg subArbol;
         NodoLg nodoX;
         String atomo;
 
@@ -85,7 +85,7 @@ public class arbolLg extends Lg {
                         // se asigna el átomo leído anteriormente, y se crea el árbol con el nodoX
                         nodoX.setSw(0);
                         nodoX.setDato(atomo.trim());
-                        A = new arbolLg(nodoX);
+                        A = new ArbolLg(nodoX);
 
                     } else { // el arbol ya esta creado, y por tanto su raíz está presente
 
@@ -172,7 +172,7 @@ public class arbolLg extends Lg {
 
     }
 
-    public static arbolLg consArbolLg(String arbolStr) {
+    public static ArbolLg consArbolLg(String arbolStr) {
 
         return consArbolLg(arbolStr, new AtomicInteger(0));
 
@@ -184,7 +184,7 @@ public class arbolLg extends Lg {
         String s = "";
 
         NodoLg nodoX = (NodoLg) getPrimerNodo();
-        arbolLg subArbol;
+        ArbolLg subArbol;
 
         while (!finDeRecorrido(nodoX)) {
 
@@ -204,7 +204,7 @@ public class arbolLg extends Lg {
 
             } else {
 
-                subArbol = (arbolLg) nodoX.getDato();
+                subArbol = (ArbolLg) nodoX.getDato();
                 s = s.concat(subArbol.toString());
 
             }
@@ -228,7 +228,7 @@ public class arbolLg extends Lg {
         StringBuilder sb = new StringBuilder("");
 
         NodoLg nodoX = (NodoLg) getPrimerNodo();
-        arbolLg subArbol;
+        ArbolLg subArbol;
 
         while (!finDeRecorrido(nodoX)) {
 
@@ -248,7 +248,7 @@ public class arbolLg extends Lg {
 
             } else {
 
-                subArbol = (arbolLg) nodoX.getDato();
+                subArbol = (ArbolLg) nodoX.getDato();
                 sb = sb.append(subArbol.toString());
 
             }
@@ -265,7 +265,7 @@ public class arbolLg extends Lg {
 
     public static void main(String[] args) {
 
-        arbolLg A = consArbolLg("a(b(c, d(e), x, y, zero(k, ss)), f, g(h, i(j, k(l)), m, n))", new AtomicInteger());
+        ArbolLg A = consArbolLg("a(b(c, d(e), x, y, zero(k, ss)), f, g(h, i(j, k(l)), m, n))", new AtomicInteger());
 
         A.showAsLgRepr(4);
 

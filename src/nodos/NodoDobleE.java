@@ -1,7 +1,5 @@
 ﻿package nodos;
 
-import listasLigadas.nodos.NodoDoble;
-
 public class NodoDobleE extends NodoDoble{
 
 	/**
