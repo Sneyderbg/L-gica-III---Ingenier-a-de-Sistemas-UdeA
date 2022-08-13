@@ -21,6 +21,8 @@ public class NodoLg extends NodoSimple {
 	 */
 	public NodoLg() {
 		super(null);
+		setSw(0);
+		setLiga(null);
 	}
 
 	/**

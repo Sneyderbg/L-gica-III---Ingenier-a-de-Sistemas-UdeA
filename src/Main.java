@@ -1,20 +1,19 @@
-﻿import java.text.DecimalFormat;
+﻿import java.lang.StackWalker.Option;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		DecimalFormat df = new DecimalFormat();
-		df.setMinimumFractionDigits(0);
+		Integer i = 1;
+
+		change();
 		
-		double d = -1.0;
-		String s = "%f";
-		if(d % 1 == 0){
-			s = s.replace("%s", "%.0f");
-		}
+	}
 
-		System.out.println(Double.parseDouble("8,5"));
-
+	public static void change(AtomicInteger... i){
+		
 	}
 
 }
