@@ -1,73 +1,183 @@
 package arboles;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class ArbolBinarioEnVector extends ArrayList<Object> {
+public class ArbolBinarioEnVector extends Vector<Object> {
 
     public ArbolBinarioEnVector() {
 
-        super();
+        super(0, 1);
 
     }
 
     public ArbolBinarioEnVector(int[] array) {
 
-        super();
+        super(array.length, 1);
 
-        for (int i = 0; i < array.length; i++) {
-
-            this.add(array[i]);
-
-        }
+        Collections.addAll(this, array);
 
     }
 
-    public static int consArbolBinario(ArbolBinarioEnVector aB, String aBStr, int startIdx) {
+    private static void consArbolBinario(ArbolBinarioEnVector A, String arbolStr, AtomicInteger globalCharIdx,
+            int parentIdx) {
 
-        return 0; //TODO
+        if (arbolStr.trim().length() == 0) {
 
-    }
+            A.setSize(0);
+            return;
 
-    @Override
-    public Object set(int index, Object element) {
-
-        if (index < 0) {
-            throw new IndexOutOfBoundsException();
         }
 
-        if (index >= size()) {
-            for (int i = size(); i <= index; i++) {
+        int charIdx, childIdx;
+        childIdx = A.leftChildIdx(parentIdx);
 
-                add(null);
+        charIdx = globalCharIdx.get();
+        String atomo = "";
+
+        // xx.
+        // a(b(c, d(e)), g(h, i(j, k(l))))
+        do {
+
+            switch (arbolStr.charAt(charIdx)) {
+
+                case '(':
+
+                    if (atomo.trim().length() == 0) {
+                        break;
+                    }
+
+                    A.setSize(Math.max(A.rightChildIdx(childIdx) + 1, A.size()));
+
+                    A.set(childIdx, atomo.trim());
+
+                    globalCharIdx.set(charIdx + 1);
+                    consArbolBinario(A, arbolStr, globalCharIdx, childIdx);
+                    charIdx = globalCharIdx.get();
+
+                    atomo = "";
+                    break;
+
+                case ',':
+
+                    if (atomo.trim().length() > 0) {
+
+                        A.set(childIdx, atomo.trim());
+
+                    }
+
+                    childIdx = A.rightChildIdx(parentIdx);
+                    atomo = "";
+                    break;
+
+                case ')':
+
+                    if (atomo.trim().length() > 0) {
+
+                        A.set(childIdx, atomo.trim());
+
+                    }
+
+                    globalCharIdx.set(charIdx);
+                    return;
+
+                default:
+
+                    atomo = atomo.concat(arbolStr.substring(charIdx, charIdx + 1));
+                    break;
 
             }
+
+            charIdx++;
+
+        } while (charIdx < arbolStr.length());
+
+        globalCharIdx.set(charIdx);
+
+    }
+
+    public static ArbolBinarioEnVector consABV(String aBStr) {
+
+        ArbolBinarioEnVector A = new ArbolBinarioEnVector();
+
+        consArbolBinario(A, aBStr, new AtomicInteger(0), -1);
+
+        return A;
+
+    }
+
+    public int leftChildIdx(int parentIdx) {
+
+        if (parentIdx < 0)
+            return 0;
+
+        return 2 * parentIdx + 1;
+
+    }
+
+    public int rightChildIdx(int parentIdx) {
+
+        if (parentIdx < 0)
+            return 0;
+
+        return 2 * parentIdx + 2;
+
+    }
+
+    public int parentIdx(int childIdx) {
+
+        return (childIdx - 1) / 2;
+
+    }
+
+    public void setLeftChild(int parentIdx, Object value) {
+
+        set(leftChildIdx(parentIdx), value);
+
+    }
+
+    public void setRightChild(int parentIdx, Object value) {
+
+        set(rightChildIdx(parentIdx), value);
+
+    }
+
+    public String toVecRepr(int fieldWidth) {
+
+        StringBuilder topLine, line, bottomLine;
+
+        int size = size();
+
+        // └ ┘ ┌ ┐ ─ │ ┼ ┴ ┬ ┤ ├
+        topLine = new StringBuilder(("┬" + "─".repeat(fieldWidth)).repeat(size));
+        topLine.replace(0, 1, "┌").append("┐");
+
+        bottomLine = new StringBuilder(("┴" + "─".repeat(fieldWidth)).repeat(size));
+        bottomLine.replace(0, 1, "└").append("┘");
+
+        line = new StringBuilder("");
+
+        String v;
+
+        for (int i = 0; i < size; i++) {
+
+            v = get(i) == null ? "" : get(i).toString();
+            line.append(String.format("│%" + fieldWidth + "s", v));
+
         }
 
-        return super.set(index, element);
+        line.append("│");
+
+        return topLine.toString() + "\n" +
+                line.toString() + "\n" +
+                bottomLine.toString();
 
     }
 
-    public int leftChild(int parent) {
+    public String strRepr(int parentIdx) {
 
-        return 2 * parent + 1;
-
-    }
-
-    public int rightChild(int parent) {
-
-        return 2 * parent + 2;
-
-    }
-
-    public int parent(int child) {
-
-        return (child - 1) / 2;
-
-    }
-
-    public String strRepr(int parent) {
-
-        if (parent >= size()) {
+        if (parentIdx >= size() || get(parentIdx) == null) {
 
             return "";
 
@@ -75,10 +185,10 @@ public class ArbolBinarioEnVector extends ArrayList<Object> {
 
         String left, right, s;
 
-        s = get(parent).toString();
+        s = get(parentIdx).toString();
 
-        left = strRepr(leftChild(parent));
-        right = strRepr(rightChild(parent));
+        left = strRepr(leftChildIdx(parentIdx));
+        right = strRepr(rightChildIdx(parentIdx));
 
         if (left.length() > 0 && right.length() > 0) {
 
@@ -98,13 +208,21 @@ public class ArbolBinarioEnVector extends ArrayList<Object> {
 
     }
 
+    @Override
+    public synchronized String toString() {
+
+        return strRepr(0);
+
+    }
+
     public static void main(String[] args) {
 
         int[] A = { 1, 2, 3, 4, 5, 6, 7 };
 
-        ArbolBinarioEnVector aV = new ArbolBinarioEnVector(A);
+        ArbolBinarioEnVector aV = consABV("a(b(c, d(e)), g(h, i(j, k(l))))");
 
-        System.out.println(aV.strRepr(0));
+        System.out.println(aV);
+        System.out.println(aV.toVecRepr(2));
 
     }
 

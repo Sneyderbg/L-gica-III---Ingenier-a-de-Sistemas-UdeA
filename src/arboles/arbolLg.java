@@ -55,18 +55,24 @@ public class ArbolLg extends Lg {
      * entregado como parámetro.
      * 
      * @param arbolStr String que representa el árbol a construir.
-     * @param startIdx Índice en el String el cual indica donde comienza el arbol
+     * @param globalIdx Índice en el String el cual indica donde comienza el arbol
      *                 que se va a construir.
      * @return {@link ArbolLg} que representa el String dado.
      */
-    private static ArbolLg consArbolLg(String arbolStr, AtomicInteger startIdx) {
+    private static ArbolLg consArbolLg(String arbolStr, AtomicInteger globalIdx) {
+
+        if (arbolStr.trim().length() == 0) {
+
+            return null;
+
+        }
 
         ArbolLg A = null;
         ArbolLg subArbol;
         NodoLg nodoX;
         String atomo;
 
-        int charIdx = startIdx.get();
+        int charIdx = globalIdx.get();
         atomo = "";
 
         // a(b(c, d(e)), f, g(h, i(j, k(l)), m, n))
@@ -92,13 +98,13 @@ public class ArbolLg extends Lg {
                         nodoX.setSw(1);
 
                         // se crea el subArbol a partir de la posición del átomo leído anteriormente
-                        startIdx.set(charIdx - atomo.length());
-                        subArbol = consArbolLg(arbolStr, startIdx);
+                        globalIdx.set(charIdx - atomo.length());
+                        subArbol = consArbolLg(arbolStr, globalIdx);
 
-                        // startIdx es la posición en la cual se deben seguir leyendo los datos, en
+                        // globalIdx es la posición en la cual se deben seguir leyendo los datos, en
                         // otras palabras, es donde el subArbol anterior termino de leer, por tanto no
                         // hay que leer los mismos datos
-                        charIdx = startIdx.get();
+                        charIdx = globalIdx.get();
 
                         // se asigna el campo Dato del nodoX al subArbol creado.
                         nodoX.setDato(subArbol);
@@ -137,17 +143,16 @@ public class ArbolLg extends Lg {
                     // si fue un subArbol, ya se debió haber conectado
 
                     // si fue un átomo
-                    if (atomo.trim().length() == 0) {
-                        break;
+                    if (atomo.trim().length() > 0) {
+
+                        // se crea un nuevo nodo con ese átomo y se conecta a este arbol
+                        nodoX = new NodoLg(0, atomo.trim(), null);
+                        A.conectar(nodoX, A.getUltimoNodo());
+
                     }
 
-                    // se crea un nuevo nodo con ese átomo y se conecta a este arbol
-                    nodoX = new NodoLg(0, atomo.trim(), null);
-                    A.conectar(nodoX, A.getUltimoNodo());
-
-                    // se reinicia el átomo
-                    atomo = "";
-                    break;
+                    globalIdx.set(charIdx);
+                    return A;
 
                 default:
 
@@ -160,13 +165,12 @@ public class ArbolLg extends Lg {
             // se avanza al siguiente carácter
             charIdx++;
 
-        } while (charIdx < arbolStr.length() && arbolStr.charAt(charIdx - 1) != ')');
-        // mientras charIdx este dentro del rango de arbolStr, y el último character
-        // leído no sea un cierre de paréntesis
+        } while (charIdx < arbolStr.length());
+        // mientras charIdx este dentro del rango de arbolStr
 
-        // startIdx será el la continuación en el string del arbol padre que contiene
+        // globalIdx será la continuación en el string del arbol padre que contiene
         // este arbol
-        startIdx.set(charIdx);
+        globalIdx.set(charIdx);
 
         return A;
 
@@ -209,11 +213,14 @@ public class ArbolLg extends Lg {
 
             }
 
+            if (nodoX == getUltimoNodo() && nodoX != getRoot()) {
+
+                s = s.concat(")");
+
+            }
             nodoX = (NodoLg) nodoX.getLiga();
 
         }
-
-        s = s.concat(")");
 
         return s;
 
@@ -223,49 +230,9 @@ public class ArbolLg extends Lg {
         return super.toString();
     }
 
-    public String toStr() {
-
-        StringBuilder sb = new StringBuilder("");
-
-        NodoLg nodoX = (NodoLg) getPrimerNodo();
-        ArbolLg subArbol;
-
-        while (!finDeRecorrido(nodoX)) {
-
-            if (getRoot().getLiga() == nodoX) {
-
-                sb = sb.append("(");
-
-            } else if (nodoX != getRoot()) {
-
-                sb = sb.append(", ");
-
-            }
-
-            if (nodoX.getSw() == 0) {
-
-                sb = sb.append(nodoX.getDato().toString());
-
-            } else {
-
-                subArbol = (ArbolLg) nodoX.getDato();
-                sb = sb.append(subArbol.toString());
-
-            }
-
-            nodoX = (NodoLg) nodoX.getLiga();
-
-        }
-
-        sb = sb.append(")");
-
-        return sb.toString();
-
-    }
-
     public static void main(String[] args) {
 
-        ArbolLg A = consArbolLg("a(b(c, d(e), x, y, zero(k, ss)), f, g(h, i(j, k(l)), m, n))", new AtomicInteger());
+        ArbolLg A = consArbolLg("a(b(c, d(e)), g(h, i(j, k(l))))", new AtomicInteger());
 
         A.showAsLgRepr(4);
 

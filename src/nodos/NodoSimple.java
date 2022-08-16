@@ -1,5 +1,8 @@
 package nodos;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class NodoSimple {
 
 	private Object dato;
@@ -13,11 +16,11 @@ public class NodoSimple {
 		dato = d;
 	}
 
-	public NodoSimple(Object d, NodoSimple liga){
+	public NodoSimple(Object d, NodoSimple liga) {
 		this.dato = d;
 		this.liga = liga;
 	}
-	
+
 	public Object getDato() {
 		return dato;
 	}
@@ -34,9 +37,56 @@ public class NodoSimple {
 		liga = X;
 	}
 
+	public List<StringBuilder> consNodeRepr(boolean includeLiga, int fieldWidth) {
+
+		StringBuilder topLine, line, bottomLine;
+		String d, l;
+
+		d = getDato() == null ? " " : getDato().toString();
+		l = getLiga() == null ? "¬" : (includeLiga ? "@" + Integer.toHexString(getLiga().hashCode()) : " ");
+
+		if (fieldWidth == 0) {
+
+			fieldWidth = Math.max(d.length(), l.length());
+
+		}
+
+		// └ ┘ ┌ ┐ ─ │ ┼ ┴ ┬ ┤ ├
+		topLine = new StringBuilder(("┬" + "─".repeat(fieldWidth)).repeat(2));
+		topLine.replace(0, 1, "┌").append("┐");
+
+		line = new StringBuilder(("│%" + fieldWidth + "s").repeat(2));
+		line.append("│");
+		line = new StringBuilder(String.format(line.toString(), d, l));
+
+		bottomLine = new StringBuilder(("┴" + "─".repeat(fieldWidth)).repeat(2));
+		bottomLine.replace(0, 1, "└").append("┘");
+
+		return Arrays.asList(topLine, line, bottomLine);
+
+	}
+
 	@Override
 	public String toString() {
-		return dato.toString();
+
+		String r, fields, d, l;
+		r = "NS" + "@" + Integer.toHexString(hashCode());
+
+		if (getDato() == null) {
+			d = "null";
+		} else {
+			d = getDato().toString();
+		}
+		if (getLiga() == null) {
+			l = "null";
+		} else {
+			l = "@" + Integer.toHexString(getLiga().hashCode());
+		}
+
+		fields = String.format("(d=%s,l=%s)", d, l);
+
+		return r.concat(fields);
+
 	}
 
 }

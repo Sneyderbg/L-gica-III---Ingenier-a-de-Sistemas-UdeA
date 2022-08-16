@@ -115,7 +115,7 @@ public class NodoDobleT extends NodoDoble {
 	@Override
 	public String toString() {
 		String r, fields, dd, li, ld;
-		r = "ND" + "@" + Integer.toHexString(hashCode());
+		r = "NDT" + "@" + Integer.toHexString(hashCode());
 
 		if (getDato() == null) {
 			dd = "null";
@@ -132,6 +132,7 @@ public class NodoDobleT extends NodoDoble {
 		} else {
 			ld = "@" + Integer.toHexString(getLd().hashCode());
 		}
+
 		fields = String.format("(d=%s,li=%s,ld=%s)", dd, li, ld);
 
 		return r.concat(fields);
