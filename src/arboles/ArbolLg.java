@@ -1,5 +1,6 @@
 package arboles;
 
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import listasGeneralizadas.Lg;
@@ -182,6 +183,116 @@ public class ArbolLg extends Lg {
 
     }
 
+    public int getHeight(){
+
+        ArbolLg subArbol;
+        int max, subHeight;
+
+        max = 1;
+        
+        NodoLg nodoX = (NodoLg) getPrimerNodo();
+        
+        if (nodoX.getLiga() != null){
+            
+            max = 2;
+
+        }
+        
+        while (nodoX != null) {
+            
+            if(nodoX.getSw() == 1){
+
+                subArbol = (ArbolLg) nodoX.getDato();
+                subHeight = subArbol.getHeight();
+                max = Math.max(max, subHeight + 1);
+
+            }
+            
+            nodoX = (NodoLg) nodoX.getLiga();
+            
+        }
+
+        return max;
+        
+    }
+    
+    public int getDegreeNonRecursive(){
+
+        if(getRoot().getLiga() == null){
+            return 0;
+        }
+
+        int maxDegree, count;
+
+        ArbolLg subArbol;
+        NodoLg nodoX, last;
+        Stack<NodoLg> stack = new Stack<>();
+
+        nodoX = (NodoLg) getPrimerNodo().getLiga();
+        last = nodoX;
+
+        maxDegree = 0;
+        count = 0;
+
+        while (nodoX != null){
+
+            count++;
+            if(nodoX.getSw() == 1){
+
+                stack.push(nodoX);
+                
+            }
+            
+            if (nodoX.getLiga() == null && !stack.isEmpty()){
+                
+                maxDegree = Math.max(maxDegree, count);
+                count = 0;
+                
+                last = stack.pop();
+                subArbol = (ArbolLg) last.getDato();
+                nodoX = (NodoLg) subArbol.getPrimerNodo(); // nunca es null
+                
+            }
+
+            nodoX = (NodoLg) nodoX.getLiga();
+            
+        }
+        
+        return maxDegree;
+        
+    }
+    
+    public int getDegree(){
+        
+        int degree, subDegree, maxSubDegree;
+        ArbolLg subArbol;
+        
+        NodoLg nodoX = (NodoLg) getPrimerNodo().getLiga();
+
+        degree = 0;
+        maxSubDegree = 0;
+        
+        while(nodoX != null) {
+
+            degree++;
+            if(nodoX.getSw() == 1){
+
+                subArbol = (ArbolLg) nodoX.getDato();
+                subDegree = subArbol.getDegree();
+                maxSubDegree = Math.max(maxSubDegree, subDegree);
+                
+            }
+
+            nodoX = (NodoLg) nodoX.getLiga();
+            
+        }
+
+        degree = Math.max(degree, maxSubDegree);
+
+        return degree;
+        
+    }
+    
     @Override
     public String toString() {
 
@@ -232,12 +343,14 @@ public class ArbolLg extends Lg {
 
     public static void main(String[] args) {
 
-        ArbolLg A = consArbolLg("a(b(c, d(e)), g(h, i(j, k(l))))", new AtomicInteger());
+        ArbolLg A = consArbolLg("a(b(c, d(e(a(b(c, d(e)), f, g(h, i(j, k(l)), m, n, o(p)))))), f(a(b(c, d(e)), f, g(h, i(j, k(l)), m, n))), g(h, i(j, k(l)), m, n))", new AtomicInteger());
 
-        A.showAsLgRepr(4);
+        A.showAsLgRepr(2);
 
         A.show();
 
+        System.out.println(A.getDegree());
+        
     }
 
 }

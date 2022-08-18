@@ -13,9 +13,9 @@ public class Lg extends LSL {
         super();
     }
 
-    private static Lg consLg(String strLg, AtomicInteger startIdx) {
+    private static Lg consLg(String strLg, AtomicInteger globalIdx) {
 
-        if (strLg.charAt(startIdx.get()) != '(') {
+        if (strLg.charAt(globalIdx.get()) != '(') {
 
             throw new IllegalArgumentException("Malformed lgStr");
 
@@ -26,7 +26,7 @@ public class Lg extends LSL {
         NodoLg nodoX;
         String atomo;
 
-        int charIdx = startIdx.get() + 1;
+        int charIdx = globalIdx.get() + 1;
         atomo = "";
 
         while (charIdx < strLg.length() && strLg.charAt(charIdx - 1) != ')') {
@@ -35,9 +35,9 @@ public class Lg extends LSL {
 
                 case '(':
 
-                    startIdx.set(charIdx);
-                    subLg = consLg(strLg, startIdx);
-                    charIdx = startIdx.get();
+                    globalIdx.set(charIdx);
+                    subLg = consLg(strLg, globalIdx);
+                    charIdx = globalIdx.get();
                     nodoX = new NodoLg(1, subLg, null);
                     A.conectar(nodoX, A.getUltimoNodo());
                     atomo = "";
@@ -74,7 +74,7 @@ public class Lg extends LSL {
 
         }
 
-        startIdx.set(charIdx);
+        globalIdx.set(charIdx);
         return A;
 
     }
@@ -238,6 +238,8 @@ public class Lg extends LSL {
 
         Lg A = consLg("((a, b, c, d), (a, (a, b, c, d), f, (a, b, c, d)), x, (a, b, c, d))");
 
+        Lg B = new Lg();
+        
         A.show();
 
         System.out.println();
