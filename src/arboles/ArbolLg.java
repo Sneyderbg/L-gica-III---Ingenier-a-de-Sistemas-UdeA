@@ -1,5 +1,7 @@
 package arboles;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -190,9 +192,9 @@ public class ArbolLg extends Lg implements Arbol {
     }
 
     @Override
-    public Nodo getParent(Nodo children) {
+    public Nodo getParent(Nodo child) {
 
-        if (children == null || children == getRoot()) {
+        if (child == null || child == getRoot()) {
             return null;
         }
 
@@ -205,7 +207,7 @@ public class ArbolLg extends Lg implements Arbol {
 
         while (nodoX != null) {
 
-            if (nodoX == children) {
+            if (nodoX == child) {
 
                 return root;
 
@@ -214,11 +216,11 @@ public class ArbolLg extends Lg implements Arbol {
             if (nodoX.getSw() == 1) {
 
                 subArbol = (ArbolLg) nodoX.getDato();
-                if (subArbol.getRoot() == children) {
+                if (subArbol.getRoot() == child) {
                     return root;
                 }
 
-                subResult = subArbol.getParent(children);
+                subResult = subArbol.getParent(child);
 
                 if (subResult != null) {
                     return subResult;
@@ -231,6 +233,61 @@ public class ArbolLg extends Lg implements Arbol {
         }
 
         return null;
+
+    }
+
+    @Override
+    public List<Object> getAncestors(Nodo nodoX) {
+
+        if (nodoX == null) {
+            return null;
+        }
+
+        List<Object> ancestors, subAncestors;
+        ArbolLg subArbol;
+        NodoLg root, child;
+
+        ancestors = new ArrayList<Object>();
+
+        root = getRoot();
+
+        if (root == nodoX) {
+            ancestors.add(root.getDato());
+        }
+
+        child = (NodoLg) root.getLiga();
+
+        while (child != null) {
+
+            if (child.getSw() == 1) {
+
+                subArbol = (ArbolLg) child.getDato();
+                subAncestors = subArbol.getAncestors(nodoX);
+
+                if (subAncestors.size() > 0 && subAncestors.get(subAncestors.size() - 1) == nodoX.getDato()) {
+
+                    subAncestors.add(0, root.getDato());
+                    return subAncestors;
+
+                }
+
+            } else {
+
+                if (child == nodoX) {
+
+                    ancestors.add(root.getDato());
+                    ancestors.add(child.getDato());
+                    return ancestors;
+
+                }
+
+            }
+
+            child = (NodoLg) child.getLiga();
+
+        }
+
+        return ancestors;
 
     }
 
@@ -313,7 +370,7 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
-    public int getDegree() {
+    public int getMaxDegree() {
 
         int degree, subDegree, maxSubDegree;
         ArbolLg subArbol;
@@ -329,7 +386,7 @@ public class ArbolLg extends Lg implements Arbol {
             if (nodoX.getSw() == 1) {
 
                 subArbol = (ArbolLg) nodoX.getDato();
-                subDegree = subArbol.getDegree();
+                subDegree = subArbol.getMaxDegree();
                 maxSubDegree = Math.max(maxSubDegree, subDegree);
 
             }
@@ -483,14 +540,18 @@ public class ArbolLg extends Lg implements Arbol {
 
     public static void main(String[] args) {
 
-        ArbolLg A = consArbolLg("a(b(c, d(e)), f, g(h, i(j, k(l)), m, n))", new AtomicInteger());
+        ArbolLg A = consArbolLg("a(b(c, d(e)), f, g(h, i(j, k(l(x(z, o(p))))), m, n))", new AtomicInteger());
 
         A.show();
 
         A.showAsTreeRepr();
 
-        System.out.println(A.getParent(A.find("mm")));
+        NodoLg B = A.find("p");
 
+        System.out.println(B);
+        
+        System.out.println(A.getAncestors(B));
+        
     }
 
 }

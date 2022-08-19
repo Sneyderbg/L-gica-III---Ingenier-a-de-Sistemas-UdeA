@@ -2,6 +2,7 @@ package arboles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import nodos.Nodo;
@@ -117,9 +118,9 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
     }
 
     @Override
-    public ArbolBinarioLL getParent(Nodo children) {
+    public ArbolBinarioLL getParent(Nodo child) {
 
-        if (children == null) {
+        if (child == null) {
             return null;
         }
 
@@ -128,18 +129,18 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
         leftChild = (ArbolBinarioLL) getLi();
         rightChild = (ArbolBinarioLL) getLd();
 
-        if (leftChild == children || rightChild == children) {
+        if (leftChild == child || rightChild == child) {
             return this;
         }
 
-        leftResult = (leftChild == null) ? null : leftChild.getParent(children);
+        leftResult = (leftChild == null) ? null : leftChild.getParent(child);
         if (leftResult != null) {
 
             return leftResult;
 
         }
 
-        rightResult = (rightChild == null) ? null : rightChild.getParent(children);
+        rightResult = (rightChild == null) ? null : rightChild.getParent(child);
         if (rightResult != null) {
 
             return rightResult;
@@ -150,7 +151,8 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
     }
 
-    public List<Object> getAncestors(ArbolBinarioLL arbolX) {
+    @Override
+    public List<Object> getAncestors(Nodo arbolX) {
 
         if (arbolX == null) {
             return null;
@@ -224,7 +226,7 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
     }
 
-    public int getDegree() {
+    public int getMaxDegree() {
 
         int maxDegree, leftDegree, rightDegree;
         ArbolBinarioLL leftChild, rightChild;
@@ -238,14 +240,14 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
         if (leftChild != null) {
 
-            leftDegree = leftChild.getDegree();
+            leftDegree = leftChild.getMaxDegree();
             maxDegree++;
 
         }
 
         if (rightChild != null) {
 
-            rightDegree = rightChild.getDegree();
+            rightDegree = rightChild.getMaxDegree();
             maxDegree++;
 
         }
@@ -296,7 +298,7 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
         if (leftChild != null) {
 
             sb.append(leftPrefix);
-            leftPrefix = prefix.concat("│").concat(" ".repeat(widthFix));
+            leftPrefix = prefix.concat((rightChild == null ? " " : "│")).concat(" ".repeat(widthFix));
 
             leftChild.consTreeRepr(sb, leftPrefix, widthFix);
 
@@ -361,7 +363,7 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
     public static void main(String[] args) {
 
-        ArbolBinarioLL A = consArbolBinario("a(b(c, d(e)), g(h, i(j, k(l))))", new AtomicInteger(0));
+        ArbolBinarioLL A = consArbolBinario("a(b(c, d(e)), g(h, i(j, k(l(x(z, o(p)))))))", new AtomicInteger(0));
 
         A.show();
 
@@ -369,7 +371,7 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
         List<Object> ancestors = A.getAncestors(A.find("l"));
 
-        System.out.println(A.getParent(A.find("p")));
+        System.out.println(A.countLeafs());
 
     }
 
