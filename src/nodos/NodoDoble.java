@@ -1,21 +1,17 @@
 package nodos;
 
-public class NodoDoble {
+public class NodoDoble extends Nodo {
+
+	private NodoDoble Li, Ld;
+
 	public NodoDoble() {
-		Dato = null;
+		super();
 	}
 
 	public NodoDoble(Object d) {
-		Dato = d;
+		super(d);
 		this.Li = null;
 		this.Ld = null;
-	}
-
-	private Object Dato;
-	private NodoDoble Li, Ld;
-
-	public Object getDato() {
-		return Dato;
 	}
 
 	public NodoDoble getLi() {
@@ -26,10 +22,6 @@ public class NodoDoble {
 		return Ld;
 	}
 
-	public void setDato(Object D) {
-		Dato = D;
-	}
-
 	public void setLi(NodoDoble X) {
 		Li = X;
 	}
@@ -37,4 +29,5 @@ public class NodoDoble {
 	public void setLd(NodoDoble X) {
 		Ld = X;
 	}
+
 }

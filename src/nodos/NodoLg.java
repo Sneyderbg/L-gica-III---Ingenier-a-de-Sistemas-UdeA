@@ -60,7 +60,7 @@ public class NodoLg extends NodoSimple {
 		} else {
 			l = "@" + Integer.toHexString(getLiga().hashCode());
 		}
-		
+
 		fields = String.format("(sw=%d,d=%s,l=%s)", sw, d, l);
 
 		return r.concat(fields);

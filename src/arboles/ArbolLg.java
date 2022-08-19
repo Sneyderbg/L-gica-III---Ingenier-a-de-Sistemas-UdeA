@@ -4,13 +4,14 @@ import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import listasGeneralizadas.Lg;
+import nodos.Nodo;
 import nodos.NodoLg;
 
 /**
  * Esta clase representa un árbol n-ario cualquiera en forma de lista
  * generalizada.
  */
-public class ArbolLg extends Lg {
+public class ArbolLg extends Lg implements Arbol {
 
     /**
      * Raíz de este árbol.
@@ -55,9 +56,9 @@ public class ArbolLg extends Lg {
      * Construye un árbol y sus subárboles recursivamente a partir del String
      * entregado como parámetro.
      * 
-     * @param arbolStr String que representa el árbol a construir.
+     * @param arbolStr  String que representa el árbol a construir.
      * @param globalIdx Índice en el String el cual indica donde comienza el arbol
-     *                 que se va a construir.
+     *                  que se va a construir.
      * @return {@link ArbolLg} que representa el String dado.
      */
     private static ArbolLg consArbolLg(String arbolStr, AtomicInteger globalIdx) {
@@ -183,42 +184,92 @@ public class ArbolLg extends Lg {
 
     }
 
-    public int getHeight(){
+    @Override
+    public NodoLg find(Object d) {
+        return super.find(d);
+    }
+
+    @Override
+    public Nodo getParent(Nodo children) {
+
+        if (children == null || children == getRoot()) {
+            return null;
+        }
+
+        ArbolLg subArbol;
+        Nodo subResult;
+        NodoLg nodoX, root;
+
+        root = getRoot();
+        nodoX = (NodoLg) root.getLiga();
+
+        while (nodoX != null) {
+
+            if (nodoX == children) {
+
+                return root;
+
+            }
+
+            if (nodoX.getSw() == 1) {
+
+                subArbol = (ArbolLg) nodoX.getDato();
+                if (subArbol.getRoot() == children) {
+                    return root;
+                }
+
+                subResult = subArbol.getParent(children);
+
+                if (subResult != null) {
+                    return subResult;
+                }
+
+            }
+
+            nodoX = (NodoLg) nodoX.getLiga();
+
+        }
+
+        return null;
+
+    }
+
+    public int getHeight() {
 
         ArbolLg subArbol;
         int max, subHeight;
 
         max = 1;
-        
+
         NodoLg nodoX = (NodoLg) getPrimerNodo();
-        
-        if (nodoX.getLiga() != null){
-            
+
+        if (nodoX.getLiga() != null) {
+
             max = 2;
 
         }
-        
+
         while (nodoX != null) {
-            
-            if(nodoX.getSw() == 1){
+
+            if (nodoX.getSw() == 1) {
 
                 subArbol = (ArbolLg) nodoX.getDato();
                 subHeight = subArbol.getHeight();
                 max = Math.max(max, subHeight + 1);
 
             }
-            
+
             nodoX = (NodoLg) nodoX.getLiga();
-            
+
         }
 
         return max;
-        
-    }
-    
-    public int getDegreeNonRecursive(){
 
-        if(getRoot().getLiga() == null){
+    }
+
+    public int getDegreeNonRecursive() {
+
+        if (getRoot().getLiga() == null) {
             return 0;
         }
 
@@ -234,65 +285,144 @@ public class ArbolLg extends Lg {
         maxDegree = 0;
         count = 0;
 
-        while (nodoX != null){
+        while (nodoX != null) {
 
             count++;
-            if(nodoX.getSw() == 1){
+            if (nodoX.getSw() == 1) {
 
                 stack.push(nodoX);
-                
+
             }
-            
-            if (nodoX.getLiga() == null && !stack.isEmpty()){
-                
+
+            if (nodoX.getLiga() == null && !stack.isEmpty()) {
+
                 maxDegree = Math.max(maxDegree, count);
                 count = 0;
-                
+
                 last = stack.pop();
                 subArbol = (ArbolLg) last.getDato();
                 nodoX = (NodoLg) subArbol.getPrimerNodo(); // nunca es null
-                
+
             }
 
             nodoX = (NodoLg) nodoX.getLiga();
-            
+
         }
-        
+
         return maxDegree;
-        
+
     }
-    
-    public int getDegree(){
-        
+
+    public int getDegree() {
+
         int degree, subDegree, maxSubDegree;
         ArbolLg subArbol;
-        
+
         NodoLg nodoX = (NodoLg) getPrimerNodo().getLiga();
 
         degree = 0;
         maxSubDegree = 0;
-        
-        while(nodoX != null) {
+
+        while (nodoX != null) {
 
             degree++;
-            if(nodoX.getSw() == 1){
+            if (nodoX.getSw() == 1) {
 
                 subArbol = (ArbolLg) nodoX.getDato();
                 subDegree = subArbol.getDegree();
                 maxSubDegree = Math.max(maxSubDegree, subDegree);
-                
+
             }
 
             nodoX = (NodoLg) nodoX.getLiga();
-            
+
         }
 
         degree = Math.max(degree, maxSubDegree);
 
         return degree;
-        
+
     }
-    
+
+    public int countLeafs() {
+
+        int count, subCount;
+
+        ArbolLg subArbol;
+        NodoLg nodoX = (NodoLg) getRoot().getLiga(); // root == primerNodo
+
+        count = 0;
+
+        while (nodoX != null) {
+
+            if (nodoX.getSw() == 1) {
+
+                subArbol = (ArbolLg) nodoX.getDato();
+                subCount = subArbol.countLeafs();
+                count += subCount;
+
+            } else {
+
+                count++;
+
+            }
+
+            nodoX = (NodoLg) nodoX.getLiga();
+
+        }
+
+        return count;
+
+    }
+
+    public void consTreeRepr(StringBuilder sb, String prefix, int widthFix) {
+
+        ArbolLg subArbol;
+        NodoLg nodoX;
+
+        String newPrefix;
+
+        sb.append(getRoot().getDato().toString());
+        sb.append("\n");
+
+        nodoX = (NodoLg) getRoot().getLiga();
+
+        newPrefix = prefix.concat("├").concat("─".repeat(widthFix));
+
+        // └ ┘ ┌ ┐ ─ │ ┼ ┴ ┬ ┤ ├
+        while (nodoX != null) {
+
+            if (nodoX == getUltimoNodo()) {
+
+                newPrefix = prefix.concat("└").concat("─".repeat(widthFix));
+
+            }
+
+            sb.append(newPrefix);
+
+            if (nodoX.getSw() == 1) {
+
+                newPrefix = prefix.concat((nodoX == getUltimoNodo()) ? " " : "│");
+                newPrefix = newPrefix.concat(" ".repeat(widthFix));
+
+                subArbol = (ArbolLg) nodoX.getDato();
+                subArbol.consTreeRepr(sb, newPrefix, widthFix);
+
+                newPrefix = prefix.concat("├").concat("─".repeat(widthFix));
+
+            } else {
+
+                sb.append(nodoX.getDato().toString());
+                sb.append("\n");
+
+            }
+
+            nodoX = (NodoLg) nodoX.getLiga();
+
+        }
+
+    }
+
     @Override
     public String toString() {
 
@@ -341,16 +471,26 @@ public class ArbolLg extends Lg {
         return super.toString();
     }
 
+    public void showAsTreeRepr() {
+
+        StringBuilder sb = new StringBuilder();
+
+        consTreeRepr(sb, "", 1);
+
+        System.out.println(sb.toString());
+
+    }
+
     public static void main(String[] args) {
 
-        ArbolLg A = consArbolLg("a(b(c, d(e(a(b(c, d(e)), f, g(h, i(j, k(l)), m, n, o(p)))))), f(a(b(c, d(e)), f, g(h, i(j, k(l)), m, n))), g(h, i(j, k(l)), m, n))", new AtomicInteger());
-
-        A.showAsLgRepr(2);
+        ArbolLg A = consArbolLg("a(b(c, d(e)), f, g(h, i(j, k(l)), m, n))", new AtomicInteger());
 
         A.show();
 
-        System.out.println(A.getDegree());
-        
+        A.showAsTreeRepr();
+
+        System.out.println(A.getParent(A.find("mm")));
+
     }
 
 }

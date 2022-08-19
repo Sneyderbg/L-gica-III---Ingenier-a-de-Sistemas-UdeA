@@ -1,6 +1,7 @@
 package arboles;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,7 +17,9 @@ public class ArbolBinarioEnVector extends Vector<Object> {
 
         super(array.length, 1);
 
-        Collections.addAll(this, array);
+        for (int i = 0; i < array.length; i++) {
+            this.add(array[i]);
+        }
 
     }
 
@@ -48,8 +51,7 @@ public class ArbolBinarioEnVector extends Vector<Object> {
                         break;
                     }
 
-                    A.setSize(Math.max(A.rightChildIdx(childIdx) + 1, A.size()));
-
+                    A.setSize(childIdx + 1);
                     A.set(childIdx, atomo.trim());
 
                     globalCharIdx.set(charIdx + 1);
@@ -63,6 +65,7 @@ public class ArbolBinarioEnVector extends Vector<Object> {
 
                     if (atomo.trim().length() > 0) {
 
+                        A.setSize(childIdx + 1);
                         A.set(childIdx, atomo.trim());
 
                     }
@@ -75,6 +78,7 @@ public class ArbolBinarioEnVector extends Vector<Object> {
 
                     if (atomo.trim().length() > 0) {
 
+                        A.setSize(childIdx + 1);
                         A.set(childIdx, atomo.trim());
 
                     }
@@ -140,6 +144,61 @@ public class ArbolBinarioEnVector extends Vector<Object> {
     public void setRightChild(int parentIdx, Object value) {
 
         set(rightChildIdx(parentIdx), value);
+
+    }
+
+    public void crearHeap(int parentIdx, int n) {
+
+        int d, childIdx;
+
+        d = (int) get(parentIdx);
+        childIdx = leftChildIdx(parentIdx);
+
+        while (childIdx < n) {
+
+            if (childIdx < n - 1 && (int) get(childIdx) < (int) get(childIdx + 1)) {
+
+                childIdx++;
+
+            }
+
+            if (d >= (int) get(childIdx)) {
+
+                set(parentIdx(childIdx), d);
+                return;
+
+            }
+
+            set(parentIdx(childIdx), get(childIdx));
+            childIdx = leftChildIdx(childIdx);
+
+        }
+
+        set(parentIdx(childIdx), d);
+
+    }
+
+    public void heapSort() {
+
+        // se crea los heaps para todos los subarboles, empezando desde el último
+        // subarbol
+        for (int i = parentIdx(size() - 1); i >= 0; i--) {
+
+            crearHeap(i, size());
+
+        }
+
+        int aux;
+        // el dato mayor queda en la primera posición del vector
+        for (int i = size() - 2; i >= 0; i--) {
+
+            aux = (int) get(0);
+            set(0, get(i + 1));
+            set(i + 1, aux);
+
+            crearHeap(0, i);
+
+        }
 
     }
 
@@ -215,14 +274,35 @@ public class ArbolBinarioEnVector extends Vector<Object> {
 
     }
 
-    public static void main(String[] args) {
+    public static <T> void main(String[] args) {
 
-        int[] A = { 1, 2, 3, 4, 5, 6, 7 };
+        int[] A = { 5, 9, 4, 1, 6, 2, 8, 3, 4, 45, 35, 12, 48, 6, 87, 95, 12, 32, 54 };
 
-        ArbolBinarioEnVector aV = consABV("a(b(c, d(e)), g(h, i(j, k(l))))");
+        long start, end;
 
-        System.out.println(aV);
+        ArbolBinarioEnVector aV = new ArbolBinarioEnVector(A);
+
         System.out.println(aV.toVecRepr(2));
+
+        start = System.nanoTime();
+        aV.heapSort();
+        end = System.nanoTime();
+
+        System.out.println(aV.toVecRepr(2) + "time:" + (end - start));
+
+        start = System.nanoTime();
+        aV.sort(new Comparator<Object>() {
+
+            @Override
+            public int compare(Object o1, Object o2) {
+                // TODO Auto-generated method stub
+                return Math.max((int) o1, (int) o2);
+            }
+
+        });
+        end = System.nanoTime();
+
+        System.out.println(aV.toVecRepr(2) + "time:" + (end - start));
 
     }
 

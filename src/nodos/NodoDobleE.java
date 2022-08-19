@@ -1,6 +1,6 @@
 ﻿package nodos;
 
-public class NodoDobleE extends NodoDoble{
+public class NodoDobleE extends NodoDoble {
 
 	/**
 	 * 0 - <b>Li</b> es una hebra. <br>
@@ -14,7 +14,6 @@ public class NodoDobleE extends NodoDoble{
 	 */
 	private int Bd;
 
-
 	/**
 	 * Constructor. Inicializa el objeto instanciado asignando el campo {@link #d}
 	 * con el parámetro entregado.
@@ -23,7 +22,7 @@ public class NodoDobleE extends NodoDoble{
 	 */
 	public NodoDobleE(Object d) {
 		super(d);
-		
+
 		this.Bi = 1;
 		this.Bd = 1;
 	}

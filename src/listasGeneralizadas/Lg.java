@@ -1,6 +1,7 @@
 package listasGeneralizadas;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -85,6 +86,40 @@ public class Lg extends LSL {
 
     }
 
+    public NodoLg find(Object d) {
+
+        Lg subLg;
+        NodoLg nodoX, subResult;
+
+        nodoX = (NodoLg) getPrimerNodo();
+
+        while (nodoX != null) {
+
+            if (nodoX.getSw() == 1) {
+
+                subLg = (Lg) nodoX.getDato();
+                subResult = subLg.find(d);
+
+                if (subResult != null) {
+                    return subResult;
+                }
+
+            } else {
+
+                if (nodoX.getDato().equals(d)) {
+                    return nodoX;
+                }
+
+            }
+
+            nodoX = (NodoLg) nodoX.getLiga();
+
+        }
+
+        return null;
+        
+    }
+
     public int countNumSubLg() {
 
         int count = 0;
@@ -109,7 +144,7 @@ public class Lg extends LSL {
 
     }
 
-    public void consLgRepr(ArrayList<StringBuilder> lines, int spacing, int parentLine, int fieldWidth) {
+    public void consLgRepr(List<StringBuilder> lines, int spacing, int parentLine, int fieldWidth) {
 
         StringBuilder topLine, line, bottomLine;
         topLine = new StringBuilder(" ".repeat(spacing));
@@ -239,7 +274,7 @@ public class Lg extends LSL {
         Lg A = consLg("((a, b, c, d), (a, (a, b, c, d), f, (a, b, c, d)), x, (a, b, c, d))");
 
         Lg B = new Lg();
-        
+
         A.show();
 
         System.out.println();

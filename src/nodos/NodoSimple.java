@@ -3,34 +3,25 @@ package nodos;
 import java.util.Arrays;
 import java.util.List;
 
-public class NodoSimple {
+public class NodoSimple extends Nodo {
 
-	private Object dato;
 	private NodoSimple liga;
 
 	public NodoSimple() {
-		dato = null;
+		super();
 	}
 
 	public NodoSimple(Object d) {
-		dato = d;
+		super(d);
 	}
 
 	public NodoSimple(Object d, NodoSimple liga) {
-		this.dato = d;
+		super(d);
 		this.liga = liga;
-	}
-
-	public Object getDato() {
-		return dato;
 	}
 
 	public NodoSimple getLiga() {
 		return liga;
-	}
-
-	public void setDato(Object D) {
-		dato = D;
 	}
 
 	public void setLiga(NodoSimple X) {
