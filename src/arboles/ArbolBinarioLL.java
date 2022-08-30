@@ -2,7 +2,6 @@ package arboles;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import nodos.Nodo;
@@ -92,6 +91,19 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
     }
 
+    public ArbolBinarioLL getLeftChild() {
+
+        return (ArbolBinarioLL) getLi();
+
+    }
+
+    public ArbolBinarioLL getRightChild() {
+
+        return (ArbolBinarioLL) getLd();
+
+    }
+
+    @Override
     public ArbolBinarioLL find(Object d) {
 
         if (d.equals(getDato())) {
@@ -288,29 +300,45 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
         sb.append(getDato().toString());
         sb.append("\n");
 
+        if (leftChild == null && rightChild == null) {
+
+            return;
+            
+        }
+        
         String leftPrefix, rightPrefix;
 
-        leftPrefix = prefix.concat((rightChild == null) ? "└" : "├");
+        leftPrefix = prefix.concat("├");
         leftPrefix = leftPrefix.concat("─".repeat(widthFix));
 
         rightPrefix = prefix.concat("└".concat("─".repeat(widthFix)));
 
+        sb.append(leftPrefix);
+
         if (leftChild != null) {
 
-            sb.append(leftPrefix);
-            leftPrefix = prefix.concat((rightChild == null ? " " : "│")).concat(" ".repeat(widthFix));
-
+            leftPrefix = prefix.concat("│").concat(" ".repeat(widthFix));
             leftChild.consTreeRepr(sb, leftPrefix, widthFix);
+
+        } else {
+
+            sb.replace(sb.length() - 2, sb.length(), "");
+            sb.append("\n");
 
         }
 
+        sb.append(rightPrefix);
+
         if (rightChild != null) {
 
-            sb.append(rightPrefix);
             rightPrefix = prefix.concat(" ").concat(" ".repeat(widthFix));
-
             rightChild.consTreeRepr(sb, rightPrefix, widthFix);
 
+        } else {
+
+            sb.replace(sb.length() - 2, sb.length(), "");
+            sb.append("\n");
+            
         }
 
     }
@@ -371,7 +399,7 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
         List<Object> ancestors = A.getAncestors(A.find("l"));
 
-        System.out.println(A.countLeafs());
+        System.out.println(ancestors);
 
     }
 

@@ -273,8 +273,6 @@ public class Lg extends LSL {
 
         Lg A = consLg("((a, b, c, d), (a, (a, b, c, d), f, (a, b, c, d)), x, (a, b, c, d))");
 
-        Lg B = new Lg();
-
         A.show();
 
         System.out.println();

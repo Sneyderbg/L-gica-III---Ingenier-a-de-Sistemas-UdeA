@@ -14,6 +14,15 @@ public class NodoDobleE extends NodoDoble {
 	 */
 	private int Bd;
 
+	public NodoDobleE() {
+
+		super();
+
+		this.Bd = 1;
+		this.Bi = 1;
+
+	}
+
 	/**
 	 * Constructor. Inicializa el objeto instanciado asignando el campo {@link #d}
 	 * con el parámetro entregado.
