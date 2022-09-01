@@ -1,5 +1,6 @@
 package arboles;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -42,10 +43,20 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
+    /**
+     * Retorna la raíz de este árbol.
+     * 
+     * @return {@link #root}
+     */
     public NodoLg getRoot() {
         return root;
     }
 
+    /**
+     * Asigna la raíz de este árbol.
+     * 
+     * @param root {@link NodoLg} Raíz a asignar.
+     */
     public void setRoot(NodoLg root) {
 
         this.root = root;
@@ -59,8 +70,8 @@ public class ArbolLg extends Lg implements Arbol {
      * entregado como parámetro.
      * 
      * @param arbolStr  String que representa el árbol a construir.
-     * @param globalIdx Índice en el String el cual indica donde comienza el arbol
-     *                  que se va a construir.
+     * @param globalIdx Índice global en el String que indica desde donde se
+     *                  comienza a construir el árbol o subárbol.
      * @return {@link ArbolLg} que representa el String dado.
      */
     private static ArbolLg consArbolLg(String arbolStr, AtomicInteger globalIdx) {
@@ -180,6 +191,13 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
+    /**
+     * Construye un árbol y sus subárboles recursivamente a partir del String
+     * entregado como parámetro.
+     * 
+     * @param arbolStr String que representa el árbol a construir.
+     * @return {@link ArbolLg} que representa el String dado.
+     */
     public static ArbolLg consArbolLg(String arbolStr) {
 
         return consArbolLg(arbolStr, new AtomicInteger(0));
@@ -291,6 +309,7 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
+    @Override
     public int getHeight() {
 
         ArbolLg subArbol;
@@ -324,6 +343,11 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
+    /**
+     * Calcula y retorna el máximo grado de este árbol de forma no recursiva.
+     * 
+     * @return Máximo grado de este árbol.
+     */
     public int getDegreeNonRecursive() {
 
         if (getRoot().getLiga() == null) {
@@ -370,6 +394,7 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
+    @Override
     public int getMaxDegree() {
 
         int degree, subDegree, maxSubDegree;
@@ -401,6 +426,7 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
+    @Override
     public int countLeafs() {
 
         int count, subCount;
@@ -432,7 +458,23 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
-    public void consTreeRepr(StringBuilder sb, String prefix, int widthFix) {
+    /**
+     * Construye una representación de este árbol en el {@link StringBuilder}
+     * <b>sb</b> de forma recursiva.
+     * 
+     * @param sb          {@link StringBuilder} en el cual se contruye la
+     *                    representación.
+     * @param prefix      Prefijo que se añadirá a cada hijo de este árbol o
+     *                    subárbol.
+     * @param branchWidth Ancho de las ramas del árbol.
+     */
+    public void consTreeRepr(StringBuilder sb, String prefix, int branchWidth) {
+
+        if (sb == null) {
+
+            throw new IllegalArgumentException("sb cannot be null");
+
+        }
 
         ArbolLg subArbol;
         NodoLg nodoX;
@@ -444,14 +486,14 @@ public class ArbolLg extends Lg implements Arbol {
 
         nodoX = (NodoLg) getRoot().getLiga();
 
-        newPrefix = prefix.concat("├").concat("─".repeat(widthFix));
+        newPrefix = prefix.concat("├").concat("─".repeat(branchWidth));
 
         // └ ┘ ┌ ┐ ─ │ ┼ ┴ ┬ ┤ ├
         while (nodoX != null) {
 
             if (nodoX == getUltimoNodo()) {
 
-                newPrefix = prefix.concat("└").concat("─".repeat(widthFix));
+                newPrefix = prefix.concat("└").concat("─".repeat(branchWidth));
 
             }
 
@@ -460,12 +502,12 @@ public class ArbolLg extends Lg implements Arbol {
             if (nodoX.getSw() == 1) {
 
                 newPrefix = prefix.concat((nodoX == getUltimoNodo()) ? " " : "│");
-                newPrefix = newPrefix.concat(" ".repeat(widthFix));
+                newPrefix = newPrefix.concat(" ".repeat(branchWidth));
 
                 subArbol = (ArbolLg) nodoX.getDato();
-                subArbol.consTreeRepr(sb, newPrefix, widthFix);
+                subArbol.consTreeRepr(sb, newPrefix, branchWidth);
 
-                newPrefix = prefix.concat("├").concat("─".repeat(widthFix));
+                newPrefix = prefix.concat("├").concat("─".repeat(branchWidth));
 
             } else {
 
@@ -480,6 +522,10 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
+    /**
+     * {@inheritDoc}
+     * (String con átomos, parentesis y comas)
+     */
     @Override
     public String toString() {
 
@@ -524,17 +570,19 @@ public class ArbolLg extends Lg implements Arbol {
 
     }
 
-    public String parentToString() {
-        return super.toString();
-    }
-
-    public void showAsTreeRepr() {
+    /**
+     * Imprime la representación de este árbol en el {@link PrintStream} dado como
+     * parámetro.
+     * 
+     * @param in {@link PrintStream} en el cual se imprime.
+     */
+    public void showAsTreeRepr(PrintStream in) {
 
         StringBuilder sb = new StringBuilder();
 
         consTreeRepr(sb, "", 1);
 
-        System.out.println(sb.toString());
+        in.println(sb);
 
     }
 
@@ -544,14 +592,14 @@ public class ArbolLg extends Lg implements Arbol {
 
         A.show();
 
-        A.showAsTreeRepr();
+        A.showAsTreeRepr(System.out);
 
         NodoLg B = A.find("p");
 
         System.out.println(B);
-        
+
         System.out.println(A.getAncestors(B));
-        
+
     }
 
 }
