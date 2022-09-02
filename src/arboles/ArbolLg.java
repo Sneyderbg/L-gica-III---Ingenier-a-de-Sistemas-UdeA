@@ -74,13 +74,7 @@ public class ArbolLg extends Lg implements Arbol {
      *                  comienza a construir el árbol o subárbol.
      * @return {@link ArbolLg} que representa el String dado.
      */
-    private static ArbolLg consArbolLg(String arbolStr, AtomicInteger globalIdx) {
-
-        if (arbolStr.trim().length() == 0) {
-
-            return null;
-
-        }
+    protected static ArbolLg consArbolLg(String arbolStr, AtomicInteger globalIdx) {
 
         ArbolLg A = null;
         ArbolLg subArbol;
@@ -188,19 +182,6 @@ public class ArbolLg extends Lg implements Arbol {
         globalIdx.set(charIdx);
 
         return A;
-
-    }
-
-    /**
-     * Construye un árbol y sus subárboles recursivamente a partir del String
-     * entregado como parámetro.
-     * 
-     * @param arbolStr String que representa el árbol a construir.
-     * @return {@link ArbolLg} que representa el String dado.
-     */
-    public static ArbolLg consArbolLg(String arbolStr) {
-
-        return consArbolLg(arbolStr, new AtomicInteger(0));
 
     }
 
@@ -588,11 +569,21 @@ public class ArbolLg extends Lg implements Arbol {
 
     public static void main(String[] args) {
 
-        ArbolLg A = consArbolLg("a(b(c, d(e)), f, g(h, i(j, k(l(x(z, o(p))))), m, n))", new AtomicInteger());
+        String arbolStr = "a(b(c, d(e)), f, g(h, i(j, k(l(x(z, o(p))))), m, n))";
+
+        ArbolLg A;
+        try {
+            A = Arboles.consArbolLg(arbolStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
         A.show();
 
         A.showAsTreeRepr(System.out);
+
+        A.showAsLgRepr(1);
 
         NodoLg B = A.find("p");
 

@@ -22,7 +22,7 @@ public class ArbolBinarioEnVector extends Vector<Object> {
 
     }
 
-    private static void consArbolBinario(ArbolBinarioEnVector A, String arbolStr, AtomicInteger globalCharIdx,
+    protected static void consABV(ArbolBinarioEnVector A, String arbolStr, AtomicInteger globalCharIdx,
             int parentIdx) {
 
         if (arbolStr.trim().length() == 0) {
@@ -54,7 +54,7 @@ public class ArbolBinarioEnVector extends Vector<Object> {
                     A.set(childIdx, atomo.trim());
 
                     globalCharIdx.set(charIdx + 1);
-                    consArbolBinario(A, arbolStr, globalCharIdx, childIdx);
+                    consABV(A, arbolStr, globalCharIdx, childIdx);
                     charIdx = globalCharIdx.get();
 
                     atomo = "";
@@ -97,16 +97,6 @@ public class ArbolBinarioEnVector extends Vector<Object> {
         } while (charIdx < arbolStr.length());
 
         globalCharIdx.set(charIdx);
-
-    }
-
-    public static ArbolBinarioEnVector consABV(String aBStr) {
-
-        ArbolBinarioEnVector A = new ArbolBinarioEnVector();
-
-        consArbolBinario(A, aBStr, new AtomicInteger(0), -1);
-
-        return A;
 
     }
 
@@ -294,7 +284,6 @@ public class ArbolBinarioEnVector extends Vector<Object> {
 
             @Override
             public int compare(Object o1, Object o2) {
-                // TODO Auto-generated method stub
                 return Math.max((int) o1, (int) o2);
             }
 

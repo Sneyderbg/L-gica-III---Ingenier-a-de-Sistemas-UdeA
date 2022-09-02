@@ -15,7 +15,7 @@ public class ArbolAVL extends ArbolBinarioLL {
     }
 
     // a(b(c, d(e)), g(h, i(j, k(l))))
-    public static ArbolAVL consArbolAVL(String arbolStr, AtomicInteger globalIdx) {
+    protected static ArbolAVL consArbolAVL(String arbolStr, AtomicInteger globalIdx) {
 
         ArbolAVL A, subArbol;
 
@@ -227,7 +227,7 @@ public class ArbolAVL extends ArbolBinarioLL {
 
     }
 
-    private void recalculateFb() {
+    protected void recalculateFb() {
 
         int leftHeight, rightHeight;
 
@@ -398,7 +398,13 @@ public class ArbolAVL extends ArbolBinarioLL {
     public static void main(String[] args) {
 
         String arbolStr = "5(3)";
-        ArbolAVL A = consArbolAVL(arbolStr, new AtomicInteger());
+        ArbolAVL A;
+        try {
+            A = Arboles.consArbolAVL(arbolStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
         A.showAsTreeRepr(2);
 
@@ -408,7 +414,6 @@ public class ArbolAVL extends ArbolBinarioLL {
 
             @Override
             public int compare(Object o1, Object o2) {
-                // TODO Auto-generated method stub
 
                 int i1, i2;
 

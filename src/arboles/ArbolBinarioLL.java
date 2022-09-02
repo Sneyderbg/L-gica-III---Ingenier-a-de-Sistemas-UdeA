@@ -391,7 +391,7 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
     public static void main(String[] args) {
 
-        ArbolBinarioLL A = consArbolBinario("a(b(c, d(e)), g(h, i(j, k(l(x(z, o(p)))))))", new AtomicInteger(0));
+        ArbolBinarioLL A = consArbolBinario("a(b(, d(e)), g(h, i(j, k(l(x(z, o(p)))))))", new AtomicInteger(0));
 
         A.show();
 

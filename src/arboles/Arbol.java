@@ -5,7 +5,7 @@ import java.util.List;
 import nodos.Nodo;
 
 public interface Arbol {
-
+    
     /**
      * Busca un dato en el árbol y retorna su {@link Nodo} correspondiente.
      * 
