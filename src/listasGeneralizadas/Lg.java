@@ -10,10 +10,21 @@ import nodos.NodoLg;
 
 public class Lg extends LSL {
 
+    /**
+     * Construye una lista generalizada vacía.
+     */
     public Lg() {
         super();
     }
 
+    /**
+     * Contruye una lista generalizada a partir del String dado.
+     * 
+     * @param strLg     Lista generalizada en forma de String.
+     * @param globalIdx Índice global con el cual se recorre el String de forma
+     *                  recursiva.
+     * @return {@link Lg} construida a partir del String dado.
+     */
     private static Lg consLg(String strLg, AtomicInteger globalIdx) {
 
         if (strLg.charAt(globalIdx.get()) != '(') {
@@ -80,12 +91,26 @@ public class Lg extends LSL {
 
     }
 
+    /**
+     * Contruye una lista generalizada llamando al método
+     * {@link #consLg(String, AtomicInteger)}.
+     * 
+     * @param strLg Representación en String de la lista generalizada.
+     * @return {@link Lg} contruida a partir de <b>strLg</b>.
+     */
     public static Lg consLg(String strLg) {
 
         return consLg(strLg, new AtomicInteger(0));
 
     }
 
+    /**
+     * Busca el {@link NodoLg} que contiene el dato <b>d</b>.
+     * 
+     * @param d Dato a buscar.
+     * @return {@link NodoLg} con el dato <b>d</b>. Si no se encuentra el dato, se
+     *         retornará {@code null}.
+     */
     public NodoLg find(Object d) {
 
         Lg subLg;
@@ -117,9 +142,17 @@ public class Lg extends LSL {
         }
 
         return null;
-        
+
     }
 
+    /**
+     * Calcula y retorna el número de sublistas generalizadas de esta lista
+     * generalizada.
+     * <p>
+     * Es lo mismo que contar el número total de nodos con switch igual a 1.
+     * 
+     * @return Número total de sublistas generalizadas.
+     */
     public int countNumSubLg() {
 
         int count = 0;
@@ -144,7 +177,24 @@ public class Lg extends LSL {
 
     }
 
-    public void consLgRepr(List<StringBuilder> lines, int spacing, int parentLine, int fieldWidth) {
+    /**
+     * Construye la representación gráfica de esta lista generalizada en la lista
+     * dada como parámetro.
+     * <p>
+     * Si <b>lines</b> es {@code null} se cancelará la contrucción.
+     * 
+     * @param lines      Lista de {@link StringBuilder} en la cual se construye la
+     *                   representación.
+     * @param spacing    Espaciado inicial que se aplicará a cada línea.
+     * @param parentLine Índice de la línea la linea de la lista que debe apuntar
+     *                   hacía está sublista. (Esto se usa para llamar al método de
+     *                   forma recursiva)
+     * @param fieldWidth Ancho de los campos de los nodos.
+     */
+    protected void consLgRepr(List<StringBuilder> lines, int spacing, int parentLine, int fieldWidth) {
+
+        if (lines == null)
+            return;
 
         StringBuilder topLine, line, bottomLine;
         topLine = new StringBuilder(" ".repeat(spacing));
@@ -256,16 +306,34 @@ public class Lg extends LSL {
 
     }
 
-    public void showAsLgRepr(int fieldWidth) {
+    /**
+     * Retorna un la representación gráfica de esta list generalizada.
+     * 
+     * @param fieldWidth Ancho de los campos de los nodos.
+     * @return Representación en forma de String.
+     */
+    public String lgRepr(int fieldWidth) {
+
+        StringBuilder repr = new StringBuilder();
 
         ArrayList<StringBuilder> lines = new ArrayList<StringBuilder>();
         consLgRepr(lines, 0, 0, fieldWidth);
 
-        for (StringBuilder sb : lines) {
+        lines.forEach((sb) -> {
+            repr.append(sb).append("\n");
+        });
 
-            System.out.println(sb.toString());
+        return repr.toString();
+    }
 
-        }
+    /**
+     * Muestra la representación grádica de esta lista generalizada por consola.
+     * 
+     * @param fieldWidth Ancho de los campos de los nodos.
+     */
+    public void showAsLgRepr(int fieldWidth) {
+
+        System.out.println(lgRepr(fieldWidth));
 
     }
 

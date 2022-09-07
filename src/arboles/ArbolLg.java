@@ -449,7 +449,7 @@ public class ArbolLg extends Lg implements Arbol {
      *                    subárbol.
      * @param branchWidth Ancho de las ramas del árbol.
      */
-    public void consTreeRepr(StringBuilder sb, String prefix, int branchWidth) {
+    protected void consTreeRepr(StringBuilder sb, String prefix, int branchWidth) {
 
         if (sb == null) {
 
@@ -505,7 +505,8 @@ public class ArbolLg extends Lg implements Arbol {
 
     /**
      * {@inheritDoc}
-     * (String con átomos, parentesis y comas)
+     * 
+     * @return {@inheritDoc} (String con átomos, parentesis y comas)
      */
     @Override
     public String toString() {
@@ -552,24 +553,185 @@ public class ArbolLg extends Lg implements Arbol {
     }
 
     /**
+     * Construye la representación gráfica en String de este árbol.
+     * 
+     * @param branchWidth Ancho de
+     * @return Representación gráfica de este árbol como String.
+     * @see #consTreeRepr(StringBuilder, String, int)
+     */
+    public String treeRepr(int branchWidth) {
+
+        StringBuilder repr = new StringBuilder();
+
+        consTreeRepr(repr, "", branchWidth);
+
+        return repr.toString();
+
+    }
+
+    /**
      * Imprime la representación de este árbol en el {@link PrintStream} dado como
      * parámetro.
      * 
-     * @param in {@link PrintStream} en el cual se imprime.
+     * @param branchWidth Ancho de las ramas del árbol.
      */
-    public void showAsTreeRepr(PrintStream in) {
+    public void showAsTreeRepr(int branchWidth) {
 
-        StringBuilder sb = new StringBuilder();
+        System.out.println(treeRepr(branchWidth));
 
-        consTreeRepr(sb, "", 1);
+    }
 
-        in.println(sb);
+    /**
+     * Cuenta las hojas del árbol de forma no recursiva.
+     * 
+     * @return Número de hojas del árbol.
+     * @see #countLeafs
+     */
+    public int countLeafs2() { // contar hojas no recursivo
+
+        if (root == null) {
+            return 0;
+        }
+
+        if (root.getLiga() == null) {
+            return 1;
+        }
+
+        int count = 0;
+        Stack<ArbolLg> stack = new Stack<>();
+        ArbolLg subArbol;
+        NodoLg nodoX = (NodoLg) getRoot().getLiga(); // root == primerNodo
+
+        while (nodoX != null) {
+
+            if (nodoX.getSw() == 0) {
+                count = count + 1;
+
+            } else {
+                subArbol = (ArbolLg) nodoX.getDato();
+                stack.push(subArbol);
+
+            }
+
+            if (nodoX.getLiga() == null) {
+                if (!stack.isEmpty()) {
+                    subArbol = (ArbolLg) stack.pop();
+                    nodoX = (NodoLg) subArbol.getRoot();
+                }
+
+            }
+
+            nodoX = (NodoLg) nodoX.getLiga();
+        }
+
+        return count;
+    }
+
+    /**
+     * Busca el nodo que contiene el dato <b>d</b> y retorna su grado.
+     * <p>
+     * Si no se encuentra el nodo, se lanzará una exception.
+     * 
+     * @param d Dato a buscar.
+     * @return Grado del nodo con dato <b>d</b>.
+     * @throws Exception Si no se encuentra el nodo con dato <b>d</b>.
+     */
+    public int degreeOf(Object d) throws Exception {
+
+        if (find(d) == null) {
+            throw new Exception(String.format("Nodo con dato '%s' no encontrado.", d.toString()));
+        }
+
+        int count = 0;
+        ArbolLg subArbol = null;
+        NodoLg nodoX = (NodoLg) getRoot(); // root == primerNodo
+
+        if (nodoX.getDato().equals(d)) {
+
+            nodoX = (NodoLg) nodoX.getLiga();
+
+            while (nodoX != null) {
+                count = count + 1;
+                nodoX = (NodoLg) nodoX.getLiga();
+
+            }
+            return count;
+        }
+
+        nodoX = (NodoLg) nodoX.getLiga();
+
+        while (nodoX != null) {
+
+            if (nodoX.getSw() == 1) {
+
+                subArbol = (ArbolLg) nodoX.getDato();
+                try {
+                    count = count + subArbol.degreeOf(d);
+                } catch (Exception e) {
+                }
+
+            }
+            nodoX = (NodoLg) nodoX.getLiga();
+
+        }
+
+        return count;
+    }
+
+    /**
+     * Calcula el nivel relativo en este árbol del nodo con dato <b>d</b>.
+     * 
+     * @param d Dato a buscar.
+     * @return Nivel relativo a este árbol del nodo con dato <b>d</b>.
+     * @throws Exception Si no se encuenta el nodo con dato <b>d</b>.
+     */
+    public int levelOf(Object d) throws Exception {
+
+        if (find(d) == null) {
+            throw new Exception(String.format("Nodo con dato '%s' no encontrado.", d.toString()));
+        }
+
+        int count = 1;
+        ArbolLg subArbol = null;
+        NodoLg nodoX = (NodoLg) getRoot(); // root == primerNodo
+
+        if (root.getDato().equals(d)) {
+
+            return 1;
+        }
+
+        nodoX = (NodoLg) nodoX.getLiga();
+
+        while (nodoX != null) {
+
+            if (nodoX.getSw() == 0 && nodoX.getDato().equals(d)) {
+                return count + 1;
+            }
+
+            if (nodoX.getSw() == 1) {
+                subArbol = (ArbolLg) nodoX.getDato();
+
+                if (subArbol.getRoot().equals(d)) {
+                    return count + 1;
+
+                }
+                try {
+                    count = count + subArbol.levelOf(d);
+                } catch (Exception e) {
+                }
+
+            }
+            nodoX = (NodoLg) nodoX.getLiga();
+
+        }
+
+        return count;
 
     }
 
     public static void main(String[] args) {
 
-        String arbolStr = "a(b(c, d(e)), f, g(h, i(j, k(l(x(z, o(p))))), m, n))";
+        String arbolStr = "a(b(c, d(e)), f, g(h, i(j, k(l(x(z, o(p))))), m, n(1, 2, 3, 4, 5)))";
 
         ArbolLg A;
         try {
@@ -581,15 +743,21 @@ public class ArbolLg extends Lg implements Arbol {
 
         A.show();
 
-        A.showAsTreeRepr(System.out);
+        A.showAsTreeRepr(2);
 
         A.showAsLgRepr(1);
 
-        NodoLg B = A.find("p");
+        NodoLg B = A.find("a");
 
-        System.out.println(B);
+        System.out.println("ancestors: " + A.getAncestors(B));
+        System.out.println("leafs: " + A.countLeafs2());
 
-        System.out.println(A.getAncestors(B));
+        try {
+            System.out.println("degree: " + A.degreeOf("g"));
+            System.out.println("level: " + A.levelOf("gf"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

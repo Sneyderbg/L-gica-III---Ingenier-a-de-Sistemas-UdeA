@@ -100,6 +100,14 @@ public class Arboles {
         return A;
     }
 
+    /**
+     * Válida y construye un árbol y sus subárboles recursivamente a partir del
+     * String entregado como parámetro.
+     * 
+     * @param arbolStr String que representa el árbol a construir.
+     * @return {@link ArbolLg} que representa el String dado.
+     * @throws Exception Si el String <b>arbolStr</b> tiene patrones inválidos.
+     */
     public static ArbolLg consArbolLg(String arbolStr) throws Exception {
 
         validateString(arbolStr, false);

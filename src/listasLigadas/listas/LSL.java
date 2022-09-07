@@ -12,6 +12,10 @@ public class LSL {
 	 */
 	protected NodoSimple primerNodo, ultimoNodo;
 
+	/**
+	 * Constructor. Construye una lista simplemente ligada con {@link #primerNodo} y
+	 * {@link #ultimoNodo} inicialmente nulos.
+	 */
 	public LSL() {
 		primerNodo = null;
 		ultimoNodo = null;
