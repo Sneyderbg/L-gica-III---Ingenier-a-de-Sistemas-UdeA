@@ -28,7 +28,7 @@ public class Arboles {
 
         char c = arbolStr.charAt(0);
 
-        if (Pattern.matches("(|)|,", Character.toString(c))) {
+        if (Pattern.matches("\\(|\\)|,", Character.toString(c))) {
 
             throw new PatternSyntaxException("Malformed tree", arbolStr, 0);
 

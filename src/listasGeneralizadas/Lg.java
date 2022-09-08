@@ -307,7 +307,7 @@ public class Lg extends LSL {
     }
 
     /**
-     * Retorna un la representación gráfica de esta list generalizada.
+     * Retorna un la representación gráfica de esta lista generalizada.
      * 
      * @param fieldWidth Ancho de los campos de los nodos.
      * @return Representación en forma de String.

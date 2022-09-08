@@ -1,26 +1,39 @@
-﻿import java.util.Vector;
-import java.util.concurrent.atomic.AtomicInteger;
+﻿import javax.swing.JFrame;
+import javax.swing.JTextArea;
 
-public class Main {
+import arboles.ArbolLg;
+import arboles.Arboles;
 
+public class Main extends JFrame{
+
+	public Main() {
+
+		super("test");
+
+		setSize(800, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JTextArea ta = new JTextArea();
+
+		this.add(ta);
+		
+		try {
+
+			ArbolLg A = Arboles.consArbolLg("a(b(c, d))");
+			ta.setText(A.lgRepr(2));
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public static void main(String[] args) {
 
-		Vector<Integer> a = new Vector<Integer>(0, 1);
+		Main m = new Main();
+		m.setVisible(true);
 
-		a.set(0, 1);
-		System.out.println(a.capacity() + ", " + a);
-
-		a.add(2);
-		System.out.println(a.capacity() + ", " + a);
-
-		a.setSize(11);
-		a.set(5, 5);
-		System.out.println(a.capacity() + ", " + a);
-
-	}
-
-	public static void change(AtomicInteger... i) {
-		
 	}
 
 }
