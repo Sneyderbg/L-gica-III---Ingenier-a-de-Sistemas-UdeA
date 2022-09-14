@@ -731,7 +731,7 @@ public class ArbolLg extends Lg implements Arbol {
 
     public static void main(String[] args) {
 
-        String arbolStr = "(a(b(c, d(e)), f, g(h, i(j, k(l(x(z, o(p))))), m, n(1, 2, 3, 4, 5))))";
+        String arbolStr = "a(b,c)a";
 
         ArbolLg A;
         try {
