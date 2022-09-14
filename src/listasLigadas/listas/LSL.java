@@ -1,6 +1,10 @@
 package listasLigadas.listas;
 
+import java.util.Arrays;
+import java.util.List;
+
 import nodos.NodoSimple;
+import utils.LinesChars;
 
 /**
  * Clase Lista Simplemente Ligada
@@ -211,6 +215,35 @@ public class LSL {
 		primerNodo = q;
 	}
 
+	public List<StringBuilder> consLSLRepr() {
+
+		StringBuilder topLineRepr, midLineRepr, bottomLineRepr;
+		topLineRepr = new StringBuilder();
+		midLineRepr = new StringBuilder();
+		bottomLineRepr = new StringBuilder();
+
+		NodoSimple x = getPrimerNodo();
+		List<StringBuilder> nodeRepr;
+
+		while (x != null) {
+
+			nodeRepr = x.consNodeRepr(false, 0);
+
+			topLineRepr.append("   ").append(nodeRepr.get(0));
+
+			midLineRepr.append(LinesChars.HORIZONTAL).append(LinesChars.HORIZONTAL).append('>');
+			midLineRepr.append(nodeRepr.get(1));
+
+			bottomLineRepr.append("   ").append(nodeRepr.get(2));
+
+			x = x.getLiga();
+
+		}
+
+		return Arrays.asList(topLineRepr, midLineRepr, bottomLineRepr);
+
+	}
+
 	@Override
 	public String toString() {
 
@@ -236,7 +269,25 @@ public class LSL {
 
 	public void show() {
 
-		System.out.println(toString());
+		List<StringBuilder> repr = consLSLRepr();
+
+		for (StringBuilder sb : repr) {
+
+			System.out.println(sb);
+
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+		LSL a = new LSL();
+
+		a.add(new NodoSimple(2));
+		a.add(new NodoSimple("hola"));
+		a.add(new NodoSimple('c'));
+
+		a.show();
 
 	}
 

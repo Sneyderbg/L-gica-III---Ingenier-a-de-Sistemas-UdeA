@@ -1,5 +1,6 @@
 package grafos;
 
+// TODO no c
 public abstract class Grafo {
 
     private int numVer, numLados;

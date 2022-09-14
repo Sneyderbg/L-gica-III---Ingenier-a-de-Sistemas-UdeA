@@ -1,5 +1,6 @@
 package grafos;
 
+// TODO tampoco c
 public class Vertex<T> {
 
     private int id;
