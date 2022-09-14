@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import matricesDispersas.Matrices;
+import listasLigadas.listas.LSL;
+import nodos.NodoSimple;
+import utils.Matrices;
 
 public class MatrizAdyacencia {
 
@@ -12,6 +14,10 @@ public class MatrizAdyacencia {
 
     public MatrizAdyacencia(int numVer) {
         adya = new int[numVer][numVer];
+    }
+
+    public MatrizAdyacencia(int[][] adya) {
+        this.adya = adya;
     }
 
     public int[][] getAdya() {
@@ -141,30 +147,136 @@ public class MatrizAdyacencia {
 
     }
 
+    public void dijkstra(int v, int[] costoMinimo, int[] ruta) {
+
+        int n = getCols();
+        boolean yaCalculado[] = new boolean[getRows()];
+        int i, w, j;
+
+        for (i = 0; i < n; i++) {
+
+            costoMinimo[i] = adya[v][i];
+            yaCalculado[i] = false;
+            ruta[i] = i;
+
+        }
+
+        yaCalculado[v] = true;
+        i = 0;
+
+        while (i < n - 1) {
+
+            j = 0;
+            while (yaCalculado[j]) {
+                j++;
+            }
+
+            w = j;
+
+            for (j = w + 1; j < n; j++) {
+
+                if (!yaCalculado[j] && costoMinimo[j] < costoMinimo[w]) {
+                    w = j;
+                }
+
+            }
+
+            yaCalculado[w] = true;
+            i++;
+
+            for (j = 0; j < n; j++) {
+
+                if (yaCalculado[j])
+                    continue;
+
+                // else
+                if (costoMinimo[w] + adya[w][j] < costoMinimo[j]) {
+
+                    costoMinimo[j] = costoMinimo[w] + adya[w][j];
+                    ruta[j] = w;
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public int[][] floyd() {
+
+        int[][] costosMinimos = new int[getCols()][getCols()];
+
+        for (int i = 0; i < costosMinimos.length; i++) {
+            for (int j = 0; j < costosMinimos.length; j++) {
+                costosMinimos[i][j] = adya[i][j];
+            }
+        }
+
+        int aux;
+        for (int k = 0; k < costosMinimos.length; k++) {
+
+            for (int i = 0; i < costosMinimos.length; i++) {
+
+                for (int j = 0; j < costosMinimos.length; j++) {
+
+                    aux = costosMinimos[i][k] + costosMinimos[k][j];
+                    costosMinimos[i][j] = Math.min(aux, costosMinimos[i][j]);
+
+                }
+
+            }
+
+        }
+
+        return costosMinimos;
+
+    }
+
+    public ListasLigadasAdyacencia toLLA() {
+
+        ListasLigadasAdyacencia lla = new ListasLigadasAdyacencia(getCols());
+
+        for (int i = 0; i < adya.length; i++) {
+
+            for (int j = 0; j < adya[i].length; j++) {
+
+                if (adya[i][j] == 0)
+                    continue;
+
+                if (lla.getLSL(i) == null) {
+
+                    lla.setLSL(i, new LSL());
+
+                }
+
+                lla.getLSL(i).add(new NodoSimple(j));
+
+            }
+
+        }
+
+        return lla;
+
+    }
+
     public static void main(String[] args) {
 
-        MatrizAdyacencia adya = new MatrizAdyacencia(9);
+        int[][] a = { { 0, 1, 1, 0, 0, 0, 1, 0, 0 },
+                { 0, 0, 1, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 1, 1, 1, 0, 0, 0 },
+                { 0, 0, 0, 0, 1, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 1, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 1, 1 },
+                { 0, 0, 0, 0, 0, 1, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 1, 0, 1, 0 } };
 
-        adya.addAll(false,
-                1, 2,
-                1, 3,
-                2, 9,
-                2, 4,
-                2, 5,
-                4, 8,
-                5, 8,
-                8, 6,
-                8, 7,
-                6, 3,
-                3, 7);
-        System.out.println();
-        System.out.println(Matrices.matrixRepr("adya", adya.getAdya(), 3, false, 1));
+        MatrizAdyacencia adya = new MatrizAdyacencia(a);
 
-        System.out.println();
+        System.out.println(Matrices.matrixRepr("adya", adya.getAdya(), 2, false, 0));
 
-        System.out.println(adya.bfs(5));
-
-        System.out.println(adya.bfsRecursivo(5));
+        adya.toLLA().show();
 
     }
 

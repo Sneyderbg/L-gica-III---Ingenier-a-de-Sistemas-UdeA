@@ -2,7 +2,7 @@ package nodos;
 
 public abstract class Nodo {
 
-    private Object dato;
+    protected Object dato;
 
     public Nodo() {
         this.dato = null;

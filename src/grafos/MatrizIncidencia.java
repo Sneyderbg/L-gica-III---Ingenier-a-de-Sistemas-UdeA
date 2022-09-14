@@ -1,6 +1,6 @@
 package grafos;
 
-import matricesDispersas.Matrices;
+import utils.Matrices;
 
 public class MatrizIncidencia {
 

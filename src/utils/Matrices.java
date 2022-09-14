@@ -1,4 +1,4 @@
-package matricesDispersas;
+package utils;
 
 public class Matrices {
 
@@ -35,12 +35,12 @@ public class Matrices {
 
             }
 
-            repr.append(String.format("%4d", i + firstIdx));
+            repr.append(String.format("%" + name.length() + "d", i + firstIdx));
             repr.append("│");
             for (int j = 0; j < matrix[0].length; j++) {
 
                 d = matrix[i][j];
-                s = (d == 0 ? (showZeros ? "0" : "") : "1");
+                s = (d == 0 ? (showZeros ? "0" : "") : Integer.toString(d));
 
                 repr.append(String.format("%" + fieldWidth + "s│", s));
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import listasLigadas.listas.LSL;
 import nodos.NodoSimple;
-import utils.LinesChars;
+import utils.Lines;
 
 public class ListasLigadasAdyacencia {
 
@@ -50,6 +50,14 @@ public class ListasLigadasAdyacencia {
 
     }
 
+    public LSL getLSL(int idx){
+        return vec[idx];
+    }
+
+    public void setLSL(int idx, LSL lsl){
+        vec[idx] = lsl;
+    }
+    
     private List<StringBuilder> consVerticalVec() {
 
         List<StringBuilder> lines = new ArrayList<StringBuilder>();
@@ -61,15 +69,15 @@ public class ListasLigadasAdyacencia {
         for (int i = 0; i < vec.length; i++) {
 
             top = new StringBuilder(String.format("   %s%s%s",
-                    i == 0 ? LinesChars.TOP_LEFT : LinesChars.LEFT_T,
-                    Character.toString(LinesChars.HORIZONTAL).repeat(4),
-                    i == 0 ? LinesChars.TOP_RIGHT : LinesChars.RIGHT_T));
+                    i == 0 ? Lines.TOP_LEFT : Lines.LEFT_T,
+                    Lines.HORIZONTAL.repeat(4),
+                    i == 0 ? Lines.TOP_RIGHT : Lines.RIGHT_T));
 
             mid = new StringBuilder(String.format("%2s %s%s%s",
                     i,
-                    LinesChars.VERTICAL,
+                    Lines.VERTICAL,
                     "    ",
-                    LinesChars.VERTICAL));
+                    Lines.VERTICAL));
 
             bottom = new StringBuilder(mid.toString());
             bottom.replace(1, 2, " ");
@@ -81,9 +89,9 @@ public class ListasLigadasAdyacencia {
         }
 
         lines.add(new StringBuilder(String.format("   %s%s%s",
-                LinesChars.BOTTOM_LEFT,
-                Character.toString(LinesChars.HORIZONTAL).repeat(4),
-                LinesChars.BOTTOM_RIGHT)));
+                Lines.BOTTOM_LEFT,
+                Lines.HORIZONTAL.repeat(4),
+                Lines.BOTTOM_RIGHT)));
 
         return lines;
 
