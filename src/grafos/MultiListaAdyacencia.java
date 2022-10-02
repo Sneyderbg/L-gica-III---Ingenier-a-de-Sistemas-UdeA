@@ -3,7 +3,7 @@ package grafos;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.Lines;
+import util.Symbols;
 
 public class MultiListaAdyacencia {
 
@@ -59,19 +59,19 @@ public class MultiListaAdyacencia {
 
         List<StringBuilder> lines = new ArrayList<>();
 
-        lines.add(new StringBuilder((Lines.TOP_T + Lines.HORIZONTAL.repeat(8)).repeat(vec.length))
-                .append(Lines.TOP_RIGHT).replace(0, 1, Lines.TOP_LEFT));
+        lines.add(new StringBuilder((Symbols.TOP_T + Symbols.HORIZONTAL.repeat(8)).repeat(vec.length))
+                .append(Symbols.TOP_RIGHT).replace(0, 1, Symbols.TOP_LEFT));
 
-        StringBuilder sb = new StringBuilder(Lines.VERTICAL);
+        StringBuilder sb = new StringBuilder(Symbols.VERTICAL);
         for (NodoAdya x : vec) {
 
-            sb.append(String.format("%8s%s", x == null ? "" : Integer.toHexString(x.hashCode()), Lines.VERTICAL));
+            sb.append(String.format("%8s%s", x == null ? "" : Integer.toHexString(x.hashCode()), Symbols.VERTICAL));
 
         }
         lines.add(sb);
 
-        lines.add(new StringBuilder((Lines.BOTTOM_T + Lines.HORIZONTAL.repeat(8)).repeat(vec.length))
-                .append(Lines.BOTTOM_RIGHT).replace(0, 1, Lines.BOTTOM_LEFT));
+        lines.add(new StringBuilder((Symbols.BOTTOM_T + Symbols.HORIZONTAL.repeat(8)).repeat(vec.length))
+                .append(Symbols.BOTTOM_RIGHT).replace(0, 1, Symbols.BOTTOM_LEFT));
 
         List<NodoAdya> allNodes = getAllNodes();
         List<StringBuilder> nodeRepr;

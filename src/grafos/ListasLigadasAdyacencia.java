@@ -5,7 +5,7 @@ import java.util.List;
 
 import listasLigadas.listas.LSL;
 import nodos.NodoSimple;
-import utils.Lines;
+import util.Symbols;
 
 public class ListasLigadasAdyacencia {
 
@@ -69,15 +69,15 @@ public class ListasLigadasAdyacencia {
         for (int i = 0; i < vec.length; i++) {
 
             top = new StringBuilder(String.format("   %s%s%s",
-                    i == 0 ? Lines.TOP_LEFT : Lines.LEFT_T,
-                    Lines.HORIZONTAL.repeat(4),
-                    i == 0 ? Lines.TOP_RIGHT : Lines.RIGHT_T));
+                    i == 0 ? Symbols.TOP_LEFT : Symbols.LEFT_T,
+                    Symbols.HORIZONTAL.repeat(4),
+                    i == 0 ? Symbols.TOP_RIGHT : Symbols.RIGHT_T));
 
             mid = new StringBuilder(String.format("%2s %s%s%s",
                     i,
-                    Lines.VERTICAL,
+                    Symbols.VERTICAL,
                     "    ",
-                    Lines.VERTICAL));
+                    Symbols.VERTICAL));
 
             bottom = new StringBuilder(mid.toString());
             bottom.replace(1, 2, " ");
@@ -89,9 +89,9 @@ public class ListasLigadasAdyacencia {
         }
 
         lines.add(new StringBuilder(String.format("   %s%s%s",
-                Lines.BOTTOM_LEFT,
-                Lines.HORIZONTAL.repeat(4),
-                Lines.BOTTOM_RIGHT)));
+                Symbols.BOTTOM_LEFT,
+                Symbols.HORIZONTAL.repeat(4),
+                Symbols.BOTTOM_RIGHT)));
 
         return lines;
 

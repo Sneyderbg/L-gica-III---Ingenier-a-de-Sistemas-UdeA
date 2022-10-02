@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import nodos.NodoDoble;
-import utils.Lines;
+import util.Symbols;
 
 public class NodoAdya extends NodoDoble {
 
@@ -66,15 +66,15 @@ public class NodoAdya extends NodoDoble {
                     Math.max(Integer.toString(getVi()).length(), Integer.toString(getVj()).length()));
         }
 
-        top = new StringBuilder((Lines.TOP_T + Lines.HORIZONTAL.repeat(fieldWidth)).repeat(4));
-        top.append(Lines.TOP_RIGHT).replace(0, 1, Lines.TOP_LEFT);
+        top = new StringBuilder((Symbols.TOP_T + Symbols.HORIZONTAL.repeat(fieldWidth)).repeat(4));
+        top.append(Symbols.TOP_RIGHT).replace(0, 1, Symbols.TOP_LEFT);
 
         mid = new StringBuilder(
-                String.format((Lines.VERTICAL + "%" + fieldWidth + "s").repeat(4).concat(Lines.VERTICAL),
+                String.format((Symbols.VERTICAL + "%" + fieldWidth + "s").repeat(4).concat(Symbols.VERTICAL),
                         getVi(), getVj(), LviId, LvjId));
 
-        bottom = new StringBuilder((Lines.BOTTOM_T + Lines.HORIZONTAL.repeat(fieldWidth)).repeat(4));
-        bottom.append(Lines.BOTTOM_RIGHT).replace(0, 1, Lines.BOTTOM_LEFT);
+        bottom = new StringBuilder((Symbols.BOTTOM_T + Symbols.HORIZONTAL.repeat(fieldWidth)).repeat(4));
+        bottom.append(Symbols.BOTTOM_RIGHT).replace(0, 1, Symbols.BOTTOM_LEFT);
 
         int idSpacing = (bottom.length() - nodeId.length()) / 2;
 

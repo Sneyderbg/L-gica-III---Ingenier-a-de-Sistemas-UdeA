@@ -1,6 +1,6 @@
-package utils;
+package util;
 
-public final class Lines {
+public final class Symbols {
 
     // └ ┘ ┌ ┐ ─ │ ┼ ┴ ┬ ┤ ├
     public static final String VERTICAL = "│";

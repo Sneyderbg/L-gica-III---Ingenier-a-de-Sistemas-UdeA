@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import nodos.NodoSimple;
-import utils.Lines;
+import util.Symbols;
 
 /**
  * Clase Lista Simplemente Ligada
@@ -231,7 +231,7 @@ public class LSL {
 
 			topLineRepr.append("   ").append(nodeRepr.get(0));
 
-			midLineRepr.append(Lines.HORIZONTAL).append(Lines.HORIZONTAL).append('>');
+			midLineRepr.append(Symbols.HORIZONTAL).append(Symbols.HORIZONTAL).append('>');
 			midLineRepr.append(nodeRepr.get(1));
 
 			bottomLineRepr.append("   ").append(nodeRepr.get(2));

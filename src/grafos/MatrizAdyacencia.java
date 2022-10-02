@@ -6,7 +6,7 @@ import java.util.Queue;
 
 import listasLigadas.listas.LSL;
 import nodos.NodoSimple;
-import utils.Matrices;
+import util.Matrices;
 
 public class MatrizAdyacencia {
 
