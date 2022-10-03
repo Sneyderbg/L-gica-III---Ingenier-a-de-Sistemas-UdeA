@@ -9,10 +9,10 @@ public interface Arbol {
     /**
      * Busca un dato en el árbol y retorna su {@link Nodo} correspondiente.
      * 
-     * @param d Dato a buscar.
+     * @param dato Dato a buscar.
      * @return {@link Nodo} que contiene el dato <b>d</b>.
      */
-    public Nodo find(Object d);
+    public Nodo find(Object dato);
 
     /**
      * Busca y retorna el {@link Nodo} padre que tiene como hijo el {@link Nodo}

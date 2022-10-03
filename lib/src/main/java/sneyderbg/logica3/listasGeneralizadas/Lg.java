@@ -108,11 +108,11 @@ public class Lg extends LSL {
     /**
      * Busca el {@link NodoLg} que contiene el dato <b>d</b>.
      * 
-     * @param d Dato a buscar.
+     * @param dato Dato a buscar.
      * @return {@link NodoLg} con el dato <b>d</b>. Si no se encuentra el dato, se
      *         retornará {@code null}.
      */
-    public NodoLg find(Object d) {
+    public NodoLg find(Object dato) {
 
         Lg subLg;
         NodoLg nodoX, subResult;
@@ -124,7 +124,7 @@ public class Lg extends LSL {
             if (nodoX.getSw() == 1) {
 
                 subLg = (Lg) nodoX.getDato();
-                subResult = subLg.find(d);
+                subResult = subLg.find(dato);
 
                 if (subResult != null) {
                     return subResult;
@@ -132,7 +132,7 @@ public class Lg extends LSL {
 
             } else {
 
-                if (nodoX.getDato().equals(d)) {
+                if (nodoX.getDato().equals(dato)) {
                     return nodoX;
                 }
 

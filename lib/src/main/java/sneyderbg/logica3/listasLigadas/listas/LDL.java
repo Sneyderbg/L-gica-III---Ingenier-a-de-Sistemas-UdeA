@@ -50,8 +50,8 @@ public class LDL {
 		return p.getLi();
 	}
 
-	public void Insertar(Object d, NodoDoble anterior) {
-		NodoDoble x = new NodoDoble(d);
+	public void Insertar(Object dato, NodoDoble anterior) {
+		NodoDoble x = new NodoDoble(dato);
 		Conectar(x, anterior);
 	}
 

@@ -13,7 +13,10 @@ public class Arboles {
      * Comprueba si el string dado como parámetro es un string válido que repreenta
      * un árbol. Si no es válido arrojará una excepción.
      * 
-     * @param arbolStr String a validar
+     * @param arbolStr  String a validar
+     * @param esBinario Determina si el árbol se analizara como arbol binario o no.
+     *                  A excepción de un árbol n-ario, una coma determina hijo
+     *                  izquierdo a su izquierda, e hijo derecho a su derecha.
      * @throws Exception Si el string no es una representación válida de un árbol.
      */
     public static void validateString(String arbolStr, boolean esBinario) throws Exception {

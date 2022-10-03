@@ -14,7 +14,7 @@ import sneyderbg.logica3.util.Symbols;
 public class NodoLg extends NodoSimple {
 
 	/**
-	 * Indica si el campo {@link #dato} es un átomo o es un apuntador hacia una
+	 * Indica si el campo {@link #datoato} es un átomo o es un apuntador hacia una
 	 * sublista, <b>0</b> y <b>1</b> respectivamente.
 	 */
 	private int sw;
@@ -34,11 +34,11 @@ public class NodoLg extends NodoSimple {
 	 * 
 	 * @param sw Switch. Determina si este nodo es un átomo o un apuntador hacia una
 	 *           sublista.
-	 * @param d  Dato a almacenar en el nodo.
+	 * @param dato Dato a almacenar en el nodo.
 	 * @param l  {@link NodoLg} al cual apunta la liga de este nodo.
 	 */
-	public NodoLg(int sw, Object d, NodoLg l) {
-		super(d, l);
+	public NodoLg(int sw, Object dato, NodoLg l) {
+		super(dato, l);
 		this.sw = sw;
 	}
 

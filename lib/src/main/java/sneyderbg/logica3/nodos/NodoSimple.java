@@ -13,12 +13,12 @@ public class NodoSimple extends Nodo {
 		super();
 	}
 
-	public NodoSimple(Object d) {
-		super(d);
+	public NodoSimple(Object dato) {
+		super(dato);
 	}
 
-	public NodoSimple(Object d, NodoSimple liga) {
-		super(d);
+	public NodoSimple(Object dato, NodoSimple liga) {
+		super(dato);
 		this.liga = liga;
 	}
 

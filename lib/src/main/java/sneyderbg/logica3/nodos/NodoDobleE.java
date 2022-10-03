@@ -24,13 +24,13 @@ public class NodoDobleE extends NodoDoble {
 	}
 
 	/**
-	 * Constructor. Inicializa el objeto instanciado asignando el campo {@link #d}
+	 * Constructor. Inicializa el objeto instanciado asignando el campo {@link #dato}
 	 * con el parámetro entregado.
 	 * 
-	 * @param d -> Valor a asignar al campo {@link #d}.
+	 * @param dato Valor a asignar al campo {@link #dato}.
 	 */
-	public NodoDobleE(Object d) {
-		super(d);
+	public NodoDobleE(Object dato) {
+		super(dato);
 
 		this.Bi = 1;
 		this.Bd = 1;
@@ -49,7 +49,7 @@ public class NodoDobleE extends NodoDoble {
 	 * Conecta el {@link NodoDobleE} entregado como parámetro a la liga izquierda de
 	 * este nodo.
 	 * 
-	 * @param li -> {@link NodoDobleE} a conectar.
+	 * @param li {@link NodoDobleE} a conectar.
 	 */
 	public void setLi(NodoDobleE li) {
 		super.setLi(li);
@@ -68,7 +68,7 @@ public class NodoDobleE extends NodoDoble {
 	 * Conecta el {@link NodoDobleE} entregado como parámetro a la liga derecha de
 	 * este nodo.
 	 * 
-	 * @param ld -> {@link NodoDobleE} a conectar.
+	 * @param ld {@link NodoDobleE} a conectar.
 	 */
 	public void setLd(NodoDobleE ld) {
 		super.setLd(ld);

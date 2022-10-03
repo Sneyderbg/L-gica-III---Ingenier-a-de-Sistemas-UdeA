@@ -97,8 +97,8 @@ public class LSL {
 	/**
 	 * Busca y retorna el nodo anterior a <b>p</b>.
 	 * 
-	 * @param p
-	 * @return
+	 * @param p {@link NodoSimple} del cual se retornará su nodo anterior.
+	 * @return {@link NodoSimple} anterior a <b>p</b>.
 	 */
 	public NodoSimple anterior(NodoSimple p) {
 		if (p == primerNodo) {
@@ -121,8 +121,8 @@ public class LSL {
 		return ap;
 	}
 
-	public void insertar(Object d, NodoSimple anterior) {
-		NodoSimple x = new NodoSimple(d);
+	public void insertar(Object dato, NodoSimple anterior) {
+		NodoSimple x = new NodoSimple(dato);
 		conectar(x, anterior);
 	}
 
@@ -164,16 +164,16 @@ public class LSL {
 	/**
 	 * Busca y retorna el {@link NodoSimple} que contiene el dato <b>d</b>.
 	 * 
-	 * @param d Dato a buscar.
+	 * @param dato Dato a buscar.
 	 * @return {@link NodoSimple} con el dato <b>d</b>. Si el dato <b>d</b> no se
 	 *         encontró, se retorna {@code null}.
 	 */
-	public NodoSimple buscarDato(Object d) {
+	public NodoSimple buscarDato(Object dato) {
 
 		assert (!isEmpty()) : "La lista está vacia";
 
 		NodoSimple p = getPrimerNodo();
-		while (!finDeRecorrido(p) && d != p.getDato()) {
+		while (!finDeRecorrido(p) && dato != p.getDato()) {
 			p = p.getLiga();
 		}
 		return p;

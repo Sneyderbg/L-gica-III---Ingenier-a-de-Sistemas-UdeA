@@ -33,3 +33,4 @@ tasks.named('test') {
 }
 
 compileJava.options.encoding = 'utf-8'
+javadoc.options.encoding = 'utf-8'

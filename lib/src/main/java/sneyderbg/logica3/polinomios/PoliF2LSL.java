@@ -642,10 +642,8 @@ public class PoliF2LSL extends LSL {
      * <b><i>C(x)</i></b> el cociente:
      * 
      * La división es: <br>
-     * </br>
      * <b><i>P(x)/Q(x) = C(x) + R(x)/Q(x)</i></b><br>
-     * </br>
-     * dónde solo se retornará <b><i>C(x)</i></b
+     * dónde solo se retornará <b><i>C(x)</i></b>
      * 
      * @param poliDivisor {@link PoliF2LSL} divisor.
      * @return {@link PoliF2LSL} Cociente de la división.

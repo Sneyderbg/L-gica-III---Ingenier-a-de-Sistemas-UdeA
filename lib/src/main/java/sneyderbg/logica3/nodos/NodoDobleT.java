@@ -11,10 +11,10 @@ import sneyderbg.logica3.matricesDispersas.Tripleta;
 public class NodoDobleT extends NodoDoble {
 
 	/**
-	 * Constructor. Inicializa el objeto instanciado asignando el campo {@link #d}
+	 * Constructor. Inicializa el objeto instanciado asignando el campo {@link #dato}
 	 * con el parámetro entregado.
 	 * 
-	 * @param d -> Valor a asignar al campo {@link #d}.
+	 * @param t Valor a asignar al campo {@link #dato}.
 	 */
 	public NodoDobleT(Tripleta t) {
 		super(t);
@@ -33,7 +33,7 @@ public class NodoDobleT extends NodoDoble {
 	 * Conecta el {@link NodoDobleT} entregado como parámetro a la liga izquierda de
 	 * este nodo.
 	 * 
-	 * @param li -> {@link NodoDobleT} a conectar.
+	 * @param li {@link NodoDobleT} a conectar.
 	 */
 	public void setLi(NodoDobleT li) {
 		super.setLi(li);
@@ -52,25 +52,25 @@ public class NodoDobleT extends NodoDoble {
 	 * Conecta el {@link NodoDobleT} entregado como parámetro a la liga derecha de
 	 * este nodo.
 	 * 
-	 * @param ld -> {@link NodoDobleT} a conectar.
+	 * @param ld {@link NodoDobleT} a conectar.
 	 */
 	public void setLd(NodoDobleT ld) {
 		super.setLd(ld);
 	}
 
 	/**
-	 * Retorna el objeto {@link #d}.
+	 * Retorna el objeto {@link #dato}.
 	 * 
-	 * @return El objeto del campo {@link #d}, sea nulo o no.
+	 * @return El objeto del campo {@link #dato}, sea nulo o no.
 	 */
 	public Tripleta getTripleta() {
 		return (Tripleta) super.getDato();
 	}
 
 	/**
-	 * Asigna al campo {@link #d} el objeto entregado en el parámetro.
+	 * Asigna al campo {@link #dato} el objeto entregado en el parámetro.
 	 * 
-	 * @param d -> Objeto a asignar al campo {@link #d}.
+	 * @param t Objeto a asignar al campo {@link #dato}.
 	 */
 	public void setTripleta(Tripleta t) {
 		super.setDato(t);

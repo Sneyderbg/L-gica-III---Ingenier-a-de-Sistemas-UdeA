@@ -97,16 +97,16 @@ public class ArbolAVL extends ArbolBinarioLL {
 
     }
 
-    public ArbolAVL insert(Object d, Comparator<Object> comparator) {
+    public ArbolAVL insert(Object dato, Comparator<Object> comparator) {
 
         if (getDato() == null) {
-            setDato(d);
+            setDato(dato);
             return this;
         }
 
         ArbolAVL p, q, pivote, pp, arbolX;
 
-        arbolX = new ArbolAVL(d);
+        arbolX = new ArbolAVL(dato);
 
         p = this;
         q = null;
@@ -116,7 +116,7 @@ public class ArbolAVL extends ArbolBinarioLL {
         while (p != null) {
 
             // dato repetido
-            if (comparator.compare(p.getDato(), d) == 0) {
+            if (comparator.compare(p.getDato(), dato) == 0) {
                 return this;
             }
 
@@ -127,7 +127,7 @@ public class ArbolAVL extends ArbolBinarioLL {
 
             q = p;
 
-            if (comparator.compare(d, p.getDato()) > 0) {
+            if (comparator.compare(dato, p.getDato()) > 0) {
 
                 p = (ArbolAVL) p.getRightChild();
 
@@ -139,7 +139,7 @@ public class ArbolAVL extends ArbolBinarioLL {
 
         }
 
-        if (comparator.compare(d, q.getDato()) < 0) {
+        if (comparator.compare(dato, q.getDato()) < 0) {
 
             q.setLi(arbolX);
 
@@ -149,7 +149,7 @@ public class ArbolAVL extends ArbolBinarioLL {
 
         }
 
-        if (comparator.compare(d, pivote.getDato()) < 0) {
+        if (comparator.compare(dato, pivote.getDato()) < 0) {
 
             pivote.setFb(pivote.getFb() + 1);
             q = (ArbolAVL) pivote.getLeftChild();
@@ -165,7 +165,7 @@ public class ArbolAVL extends ArbolBinarioLL {
 
         while (p != arbolX) {
 
-            if (comparator.compare(d, p.getDato()) < 0) {
+            if (comparator.compare(dato, p.getDato()) < 0) {
 
                 p.setFb(p.getFb() + 1);
                 p = (ArbolAVL) p.getLeftChild();
@@ -213,7 +213,7 @@ public class ArbolAVL extends ArbolBinarioLL {
             return p;
         }
 
-        if (comparator.compare(d, pp.getDato()) < 0) {
+        if (comparator.compare(dato, pp.getDato()) < 0) {
 
             pp.setLi(p);
 

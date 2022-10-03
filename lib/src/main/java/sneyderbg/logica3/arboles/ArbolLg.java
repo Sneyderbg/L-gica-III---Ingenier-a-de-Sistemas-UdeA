@@ -633,21 +633,21 @@ public class ArbolLg extends Lg implements Arbol {
      * <p>
      * Si no se encuentra el nodo, se lanzará una exception.
      * 
-     * @param d Dato a buscar.
+     * @param dato Dato a buscar.
      * @return Grado del nodo con dato <b>d</b>.
      * @throws Exception Si no se encuentra el nodo con dato <b>d</b>.
      */
-    public int degreeOf(Object d) throws Exception {
+    public int degreeOf(Object dato) throws Exception {
 
-        if (find(d) == null) {
-            throw new Exception(String.format("Nodo con dato '%s' no encontrado.", d.toString()));
+        if (find(dato) == null) {
+            throw new Exception(String.format("Nodo con dato '%s' no encontrado.", dato.toString()));
         }
 
         int count = 0;
         ArbolLg subArbol = null;
         NodoLg nodoX = (NodoLg) getRoot(); // root == primerNodo
 
-        if (nodoX.getDato().equals(d)) {
+        if (nodoX.getDato().equals(dato)) {
 
             nodoX = (NodoLg) nodoX.getLiga();
 
@@ -667,7 +667,7 @@ public class ArbolLg extends Lg implements Arbol {
 
                 subArbol = (ArbolLg) nodoX.getDato();
                 try {
-                    count = count + subArbol.degreeOf(d);
+                    count = count + subArbol.degreeOf(dato);
                 } catch (Exception e) {
                 }
 
@@ -682,21 +682,21 @@ public class ArbolLg extends Lg implements Arbol {
     /**
      * Calcula el nivel relativo en este árbol del nodo con dato <b>d</b>.
      * 
-     * @param d Dato a buscar.
+     * @param dato Dato a buscar.
      * @return Nivel relativo a este árbol del nodo con dato <b>d</b>.
      * @throws Exception Si no se encuenta el nodo con dato <b>d</b>.
      */
-    public int levelOf(Object d) throws Exception {
+    public int levelOf(Object dato) throws Exception {
 
-        if (find(d) == null) {
-            throw new Exception(String.format("Nodo con dato '%s' no encontrado.", d.toString()));
+        if (find(dato) == null) {
+            throw new Exception(String.format("Nodo con dato '%s' no encontrado.", dato.toString()));
         }
 
         int count = 1;
         ArbolLg subArbol = null;
         NodoLg nodoX = (NodoLg) getRoot(); // root == primerNodo
 
-        if (root.getDato().equals(d)) {
+        if (root.getDato().equals(dato)) {
 
             return 1;
         }
@@ -705,19 +705,19 @@ public class ArbolLg extends Lg implements Arbol {
 
         while (nodoX != null) {
 
-            if (nodoX.getSw() == 0 && nodoX.getDato().equals(d)) {
+            if (nodoX.getSw() == 0 && nodoX.getDato().equals(dato)) {
                 return count + 1;
             }
 
             if (nodoX.getSw() == 1) {
                 subArbol = (ArbolLg) nodoX.getDato();
 
-                if (subArbol.getRoot().equals(d)) {
+                if (subArbol.getRoot().equals(dato)) {
                     return count + 1;
 
                 }
                 try {
-                    count = count + subArbol.levelOf(d);
+                    count = count + subArbol.levelOf(dato);
                 } catch (Exception e) {
                 }
 

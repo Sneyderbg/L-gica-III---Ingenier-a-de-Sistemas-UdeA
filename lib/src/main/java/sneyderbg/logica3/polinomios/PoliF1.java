@@ -188,7 +188,7 @@ public class PoliF1 {
      * 
      * @param coef Coeficiente a sumar al vector.
      * @param exp  Exponente en donde se quiere sumar <b>coef</b>.
-     * @see {@link #getPos()}
+     * @see #getPos(int)
      */
     public void sumCoefByExp(double coef, int exp) {
 
@@ -647,7 +647,7 @@ public class PoliF1 {
      * 
      * @param coef Coeficiente del término a convertir.
      * @param exp  Exponente del término a convertir.
-     * @return String de la forma <b><i>(+/-)cx^e</i></b.
+     * @return String de la forma <b><i>(+/-)cx^e</i></b>.
      */
     public String termToString(double coef, int exp) {
 
@@ -703,7 +703,6 @@ public class PoliF1 {
      * <p>
      * <b>(+/-)cx^e</b>
      * <br>
-     * </br>
      * donde c es el coeficiente (un entero) y e el exponente(un entero no
      * negativo).
      * 
