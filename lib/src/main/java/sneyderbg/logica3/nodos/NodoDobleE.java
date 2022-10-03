@@ -1,4 +1,4 @@
-﻿package sneyderbg.logica3.nodos;
+package sneyderbg.logica3.nodos;
 
 public class NodoDobleE extends NodoDoble {
 

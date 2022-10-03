@@ -1,4 +1,4 @@
-﻿package sneyderbg.logica3.matricesDispersas;
+package sneyderbg.logica3.matricesDispersas;
 
 /**
  * Clase representativa de la estructura de una Tripleta.

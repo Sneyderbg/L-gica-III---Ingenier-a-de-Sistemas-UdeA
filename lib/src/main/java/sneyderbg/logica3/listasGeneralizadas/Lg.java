@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import sneyderbg.logica3.listasLigadas.listas.LSL;
 import sneyderbg.logica3.nodos.NodoLg;
+import sneyderbg.logica3.util.Symbols;
 
 public class Lg extends LSL {
 
@@ -228,7 +229,7 @@ public class Lg extends LSL {
             spacingX += 2 + nodoXRepr.get(0).length();
 
             topLine.append("  ").append(nodoXRepr.get(0));
-            line.append(String.format("%s>".concat(nodoXRepr.get(1).toString()), nodoX == getPrimerNodo() ? "└" : "─"));
+            line.append(String.format("%s>".concat(nodoXRepr.get(1).toString()), nodoX == getPrimerNodo() ? Symbols.BOTTOM_LEFT : Symbols.HORIZONTAL));
             bottomLine.append("  ").append(nodoXRepr.get(2));
 
             nodoX = (NodoLg) nodoX.getLiga();
@@ -248,7 +249,7 @@ public class Lg extends LSL {
         while (arrowLineIdx < currentLine) {
 
             sbTemp = lines.get(arrowLineIdx);
-            sbTemp.replace(arrowIdx, arrowIdx + 1, "│");
+            sbTemp.replace(arrowIdx, arrowIdx + 1, Symbols.VERTICAL);
 
             arrowLineIdx++;
 

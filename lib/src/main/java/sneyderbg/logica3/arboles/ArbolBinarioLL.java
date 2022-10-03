@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import sneyderbg.logica3.nodos.Nodo;
 import sneyderbg.logica3.nodos.NodoDoble;
+import sneyderbg.logica3.util.Symbols;
 
 public class ArbolBinarioLL extends NodoDoble implements Arbol {
 
@@ -308,16 +309,16 @@ public class ArbolBinarioLL extends NodoDoble implements Arbol {
         
         String leftPrefix, rightPrefix;
 
-        leftPrefix = prefix.concat("├");
-        leftPrefix = leftPrefix.concat("─".repeat(widthFix));
+        leftPrefix = prefix.concat(Symbols.LEFT_T);
+        leftPrefix = leftPrefix.concat(Symbols.HORIZONTAL.repeat(widthFix));
 
-        rightPrefix = prefix.concat("└".concat("─".repeat(widthFix)));
+        rightPrefix = prefix.concat(Symbols.BOTTOM_LEFT.concat(Symbols.HORIZONTAL.repeat(widthFix)));
 
         sb.append(leftPrefix);
 
         if (leftChild != null) {
 
-            leftPrefix = prefix.concat("│").concat(" ".repeat(widthFix));
+            leftPrefix = prefix.concat(Symbols.VERTICAL).concat(" ".repeat(widthFix));
             leftChild.consTreeRepr(sb, leftPrefix, widthFix);
 
         } else {

@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import sneyderbg.logica3.util.Symbols;
+
 public class ArbolBinarioEnVector extends Vector<Object> {
 
     public ArbolBinarioEnVector() {
@@ -197,12 +199,11 @@ public class ArbolBinarioEnVector extends Vector<Object> {
 
         int size = size();
 
-        // └ ┘ ┌ ┐ ─ │ ┼ ┴ ┬ ┤ ├
-        topLine = new StringBuilder(("┬" + "─".repeat(fieldWidth)).repeat(size));
-        topLine.replace(0, 1, "┌").append("┐");
+        topLine = new StringBuilder((Symbols.TOP_T + Symbols.HORIZONTAL.repeat(fieldWidth)).repeat(size));
+        topLine.replace(0, 1, Symbols.TOP_LEFT).append(Symbols.TOP_LEFT);
 
-        bottomLine = new StringBuilder(("┴" + "─".repeat(fieldWidth)).repeat(size));
-        bottomLine.replace(0, 1, "└").append("┘");
+        bottomLine = new StringBuilder((Symbols.BOTTOM_T + Symbols.HORIZONTAL.repeat(fieldWidth)).repeat(size));
+        bottomLine.replace(0, 1, Symbols.BOTTOM_LEFT).append(Symbols.BOTTOM_RIGHT);
 
         line = new StringBuilder("");
 
@@ -211,11 +212,11 @@ public class ArbolBinarioEnVector extends Vector<Object> {
         for (int i = 0; i < size; i++) {
 
             v = get(i) == null ? "" : get(i).toString();
-            line.append(String.format("│%" + fieldWidth + "s", v));
+            line.append(String.format(Symbols.VERTICAL + "%" + fieldWidth + "s", v));
 
         }
 
-        line.append("│");
+        line.append(Symbols.VERTICAL);
 
         return topLine.toString() + "\n" +
                 line.toString() + "\n" +

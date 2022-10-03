@@ -16,9 +16,9 @@ public class Matrices {
 
         repr.append("\n");
 
-        repr.append(" ".repeat(name.length()) + "┌");
-        repr.append(("─".repeat(fieldWidth) + "┬").repeat(matrix[0].length));
-        repr.replace(repr.length() - 1, repr.length(), "┐");
+        repr.append(" ".repeat(name.length()) + Symbols.TOP_LEFT);
+        repr.append((Symbols.HORIZONTAL.repeat(fieldWidth) + Symbols.TOP_T).repeat(matrix[0].length));
+        repr.replace(repr.length() - 1, repr.length(), Symbols.TOP_LEFT);
         repr.append("\n");
 
         int d;
@@ -28,15 +28,15 @@ public class Matrices {
 
             if (i > 0) {
 
-                repr.append(" ".repeat(name.length()) + "├");
-                repr.append(("─".repeat(fieldWidth) + "┼").repeat(matrix[0].length));
-                repr.replace(repr.length() - 1, repr.length(), "┤");
+                repr.append(" ".repeat(name.length()) + Symbols.LEFT_T);
+                repr.append((Symbols.HORIZONTAL.repeat(fieldWidth) + Symbols.CROSS).repeat(matrix[0].length));
+                repr.replace(repr.length() - 1, repr.length(), Symbols.RIGHT_T);
                 repr.append("\n");
 
             }
 
             repr.append(String.format("%" + name.length() + "d", i + firstIdx));
-            repr.append("│");
+            repr.append(Symbols.VERTICAL);
             for (int j = 0; j < matrix[0].length; j++) {
 
                 d = matrix[i][j];
@@ -50,9 +50,9 @@ public class Matrices {
 
         }
 
-        repr.append(" ".repeat(name.length()) + "└");
-        repr.append(("─".repeat(fieldWidth) + "┴").repeat(matrix[0].length));
-        repr.replace(repr.length() - 1, repr.length(), "┘");
+        repr.append(" ".repeat(name.length()) + Symbols.BOTTOM_LEFT);
+        repr.append((Symbols.HORIZONTAL.repeat(fieldWidth) + Symbols.BOTTOM_T).repeat(matrix[0].length));
+        repr.replace(repr.length() - 1, repr.length(), Symbols.BOTTOM_RIGHT);
 
         return repr.toString();
     }

@@ -14,5 +14,6 @@ public final class Symbols {
     public static final String TOP_T = "┬";
     public static final String BOTTOM_T = "┴";
     public static final String CROSS = "┼";
+    public static final String NULL = "¬";
 
 }

@@ -1,4 +1,4 @@
-﻿package sneyderbg.logica3.nodos;
+package sneyderbg.logica3.nodos;
 
 import sneyderbg.logica3.matricesDispersas.Tripleta;
 

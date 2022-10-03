@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import sneyderbg.logica3.listasGeneralizadas.Lg;
 import sneyderbg.logica3.nodos.Nodo;
 import sneyderbg.logica3.nodos.NodoLg;
+import sneyderbg.logica3.util.Symbols;
 
 /**
  * Esta clase representa un árbol n-ario cualquiera en forma de lista
@@ -329,7 +330,7 @@ public class ArbolLg extends Lg implements Arbol {
      * 
      * @return Máximo grado de este árbol.
      */
-    public int getDegreeNonRecursive() {
+    public int getMaxDegreeNonRecursive() {
 
         if (getRoot().getLiga() == null) {
             return 0;
@@ -467,14 +468,14 @@ public class ArbolLg extends Lg implements Arbol {
 
         nodoX = (NodoLg) getRoot().getLiga();
 
-        newPrefix = prefix.concat("├").concat("─".repeat(branchWidth));
+        newPrefix = prefix.concat(Symbols.LEFT_T).concat(Symbols.HORIZONTAL.repeat(branchWidth));
 
         // └ ┘ ┌ ┐ ─ │ ┼ ┴ ┬ ┤ ├
         while (nodoX != null) {
 
             if (nodoX == getUltimoNodo()) {
 
-                newPrefix = prefix.concat("└").concat("─".repeat(branchWidth));
+                newPrefix = prefix.concat(Symbols.BOTTOM_LEFT).concat(Symbols.HORIZONTAL.repeat(branchWidth));
 
             }
 
@@ -482,13 +483,13 @@ public class ArbolLg extends Lg implements Arbol {
 
             if (nodoX.getSw() == 1) {
 
-                newPrefix = prefix.concat((nodoX == getUltimoNodo()) ? " " : "│");
+                newPrefix = prefix.concat((nodoX == getUltimoNodo()) ? " " : Symbols.VERTICAL);
                 newPrefix = newPrefix.concat(" ".repeat(branchWidth));
 
                 subArbol = (ArbolLg) nodoX.getDato();
                 subArbol.consTreeRepr(sb, newPrefix, branchWidth);
 
-                newPrefix = prefix.concat("├").concat("─".repeat(branchWidth));
+                newPrefix = prefix.concat(Symbols.LEFT_T).concat(Symbols.HORIZONTAL.repeat(branchWidth));
 
             } else {
 
@@ -726,38 +727,6 @@ public class ArbolLg extends Lg implements Arbol {
         }
 
         return count;
-
-    }
-
-    public static void main(String[] args) {
-
-        String arbolStr = "a(b,c)a";
-
-        ArbolLg A;
-        try {
-            A = Arboles.consArbolLg(arbolStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-
-        A.show();
-
-        A.showAsTreeRepr(2);
-
-        A.showAsLgRepr(1);
-
-        NodoLg B = A.find("a");
-
-        System.out.println("ancestors: " + A.getAncestors(B));
-        System.out.println("leafs: " + A.countLeafs2());
-
-        try {
-            System.out.println("degree: " + A.degreeOf("g"));
-            System.out.println("level: " + A.levelOf("gf"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 

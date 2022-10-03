@@ -57,8 +57,8 @@ public class NodoAdya extends NodoDoble {
         String nodeId, LviId, LvjId;
 
         nodeId = Integer.toHexString(this.hashCode());
-        LviId = getLvi() == null ? "¬" : Integer.toHexString(getLvi().hashCode());
-        LvjId = getLvj() == null ? "¬" : Integer.toHexString(getLvj().hashCode());
+        LviId = getLvi() == null ? Symbols.NULL : Integer.toHexString(getLvi().hashCode());
+        LvjId = getLvj() == null ? Symbols.NULL : Integer.toHexString(getLvj().hashCode());
 
         if (fieldWidth == 0) {
             fieldWidth = Math.max(

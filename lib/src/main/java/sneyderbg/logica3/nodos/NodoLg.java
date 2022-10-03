@@ -1,7 +1,9 @@
-﻿package sneyderbg.logica3.nodos;
+package sneyderbg.logica3.nodos;
 
 import java.util.Arrays;
 import java.util.List;
+
+import sneyderbg.logica3.util.Symbols;
 
 /**
  * Clase que representa un nodo con 3 campos para las listas generalizadas.
@@ -56,7 +58,7 @@ public class NodoLg extends NodoSimple {
 
 		sw = Integer.toString(getSw());
 		d = (getSw() == 1) ? " " : (getDato() == null) ? " " : getDato().toString();
-		l = (getLiga() == null) ? "¬" : (showLiga ? "@" + Integer.toHexString(getLiga().hashCode()) : " ");
+		l = (getLiga() == null) ? Symbols.NULL : (showLiga ? "@" + Integer.toHexString(getLiga().hashCode()) : " ");
 
 		if (fieldWidth == 0) {
 
@@ -64,15 +66,15 @@ public class NodoLg extends NodoSimple {
 
 		}
 
-		topLine = new StringBuilder(("┬" + "─".repeat(fieldWidth)).repeat(3));
-		topLine.replace(0, 1, "┌").append("┐");
+		topLine = new StringBuilder((Symbols.TOP_T + Symbols.HORIZONTAL.repeat(fieldWidth)).repeat(3));
+		topLine.replace(0, 1, Symbols.TOP_LEFT).append(Symbols.TOP_LEFT);
 
-		line = new StringBuilder(("│%" + fieldWidth + "s").repeat(3));
-		line.append("│");
+		line = new StringBuilder((Symbols.VERTICAL + "%" + fieldWidth + "s").repeat(3));
+		line.append(Symbols.VERTICAL);
 		line = new StringBuilder(String.format(line.toString(), sw, d, l));
 
-		bottomLine = new StringBuilder(("┴" + "─".repeat(fieldWidth)).repeat(3));
-		bottomLine.replace(0, 1, "└").append("┘");
+		bottomLine = new StringBuilder((Symbols.BOTTOM_T + Symbols.HORIZONTAL.repeat(fieldWidth)).repeat(3));
+		bottomLine.replace(0, 1, Symbols.BOTTOM_LEFT).append(Symbols.BOTTOM_RIGHT);
 
 		return Arrays.asList(topLine, line, bottomLine);
 

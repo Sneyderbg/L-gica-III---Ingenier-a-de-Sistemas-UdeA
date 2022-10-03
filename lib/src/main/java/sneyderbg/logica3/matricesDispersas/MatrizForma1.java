@@ -1,6 +1,7 @@
 package sneyderbg.logica3.matricesDispersas;
 
 import sneyderbg.logica3.nodos.NodoDobleT;
+import sneyderbg.logica3.util.Symbols;
 
 public class MatrizForma1 implements MatrizDispersa {
 
@@ -431,8 +432,8 @@ public class MatrizForma1 implements MatrizDispersa {
     public String toMatrixRepr(int widthFix) {
 
         String s, line;
-        line = ("┬" + "─".repeat(widthFix)).repeat(getNumColumnas()) + "┐\n";
-        line = line.replaceFirst("┬", "┌");
+        line = (Symbols.TOP_T + Symbols.HORIZONTAL.repeat(widthFix)).repeat(getNumColumnas()) + Symbols.TOP_LEFT + "\n";
+        line = line.replaceFirst(Symbols.TOP_T, Symbols.TOP_LEFT);
         s = line;
 
         NodoDobleT nodoX, nodoFila;
@@ -447,13 +448,13 @@ public class MatrizForma1 implements MatrizDispersa {
 
                 if (nodoX != nodoFila && nodoX.getFila() == i && nodoX.getColumna() == j) {
 
-                    s = s.concat(String.format("│%" + widthFix + "d", nodoX.getValor()));
+                    s = s.concat(String.format(Symbols.VERTICAL + "%" + widthFix + "d", nodoX.getValor()));
 
                     nodoX = nodoX.getLd();
 
                 } else {
 
-                    s = s.concat(String.format("│%" + widthFix + "d", 0));
+                    s = s.concat(String.format(Symbols.VERTICAL + "%" + widthFix + "d", 0));
 
                 }
 
@@ -461,16 +462,16 @@ public class MatrizForma1 implements MatrizDispersa {
 
             if (i < getNumFilas() - 1) {
 
-                line = "│\n" + ("┼" + "─".repeat(widthFix)).repeat(getNumColumnas()) + "┤\n";
-                line = line.replaceFirst("┼", "├");
+                line = Symbols.VERTICAL + "\n" + (Symbols.CROSS + Symbols.HORIZONTAL.repeat(widthFix)).repeat(getNumColumnas()) + Symbols.RIGHT_T + "\n";
+                line = line.replaceFirst(Symbols.CROSS, Symbols.LEFT_T);
 
                 t = nodoFila.getTripleta();
                 nodoFila = (NodoDobleT) t.getValor();
 
             } else {
 
-                line = "│\n" + ("┴" + "─".repeat(widthFix)).repeat(getNumColumnas()) + "┘\n";
-                line = line.replaceFirst("┴", "└");
+                line = Symbols.VERTICAL + "\n" + (Symbols.BOTTOM_T + Symbols.HORIZONTAL.repeat(widthFix)).repeat(getNumColumnas()) + Symbols.BOTTOM_RIGHT + "\n";
+                line = line.replaceFirst(Symbols.BOTTOM_T, Symbols.BOTTOM_LEFT);
 
             }
             s = s.concat(line);

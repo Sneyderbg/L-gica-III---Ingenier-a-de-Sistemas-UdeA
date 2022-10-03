@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import sneyderbg.logica3.nodos.Nodo;
+import sneyderbg.logica3.util.Symbols;
 
 public class ArbolLL extends Nodo implements Arbol {
 
@@ -279,12 +280,12 @@ public class ArbolLL extends Nodo implements Arbol {
 
             lastChild = children.indexOf(child) == children.size() - 1;
 
-            subPrefix = prefix.concat(lastChild ? "└" : "├");
-            subPrefix = subPrefix.concat("─".repeat(widthFix));
+            subPrefix = prefix.concat(lastChild ? Symbols.BOTTOM_LEFT : Symbols.LEFT_T);
+            subPrefix = subPrefix.concat(Symbols.HORIZONTAL.repeat(widthFix));
 
             sb.append(subPrefix);
 
-            subPrefix = prefix.concat(lastChild ? " " : "│").concat(" ".repeat(widthFix));
+            subPrefix = prefix.concat(lastChild ? " " : Symbols.VERTICAL).concat(" ".repeat(widthFix));
 
             child.consTreeRepr(sb, subPrefix, widthFix);
 
